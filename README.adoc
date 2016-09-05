@@ -13,9 +13,34 @@ Demo for ReVector components. It would be spiffy to integrate this into the reve
 
 @todo
 
-=== Build
+=== Building
 
-@todo
+Create the local environment file (./src/environments/environment.local.ts) and add your firebase config to it:
+
+[source, javascript]
+/**
+ * Environment that does not get committed to source control
+ */
+export const noCommitEnvironment = {
+  firebaseConfig: {
+    apiKey: "$KEY",
+    authDomain: "$DOMAIN.firebaseapp.com",
+    databaseURL: "https://$DOMAIN.firebaseio.com",
+    storageBucket: "$DOMAIN.appspot.com",
+  }
+};
+
+Then:
+
+[source, bash]
+npm install
+ng serve
+
+You'll need to install angular-cli globally if you haven't already. Or (as I prefer to do) create an alias:
+
+[source, bash]
+echo alias ng="./node_modules/.bin/ng" >> ~/.bash_aliases
+source ~/.bash_aliases
 
 === Running unit tests
 
