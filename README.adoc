@@ -1,0 +1,27 @@
+
+= ReVector Demo
+
+== About
+
+Demo for ReVector components. It would be spiffy to integrate this into the revector project itself. Sadly there are issues with making the build systems play nice.
+
+== Use
+
+@todo
+
+== Contributing
+
+@todo
+
+=== Build
+
+@todo
+
+=== Running unit tests
+
+@todo
+
+=== Running end-to-end tests
+
+@todo
+
