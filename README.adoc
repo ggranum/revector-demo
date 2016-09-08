@@ -1,5 +1,8 @@
-
 = ReVector Demo
+
+ifdef::env-github[]
+image:https://img.shields.io/badge/release-standard%20version-brightgreen.svg[Standard Version, link=https://github.com/conventional-changelog/standard-version]
+endif::[]
 
 == About
 
