@@ -30,7 +30,8 @@
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update",
-    "e2e": "protractor"
+    "e2e": "protractor",
+    "release": "standard-version"
   },
   "dependencies": {
     "@angular/common": "2.0.0-rc.6",
