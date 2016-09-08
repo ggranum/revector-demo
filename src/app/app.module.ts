@@ -22,21 +22,24 @@ import {MdMenuModule} from '@angular2-material/menu/menu'
 
 
 // NG RX
-import {instrumentStore} from '@ngrx/store-devtools'
-import {StoreLogMonitorComponent, useLogMonitor} from '@ngrx/store-log-monitor'
+import {StoreDevtoolsModule} from '@ngrx/store-devtools'
+import {StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor'
 import {StoreModule, combineReducers} from '@ngrx/store'
+import {EffectsModule} from '@ngrx/effects';
 
 
-// Our Modules
-import {AuthModule, AuthReducer} from '@revector/auth-service'
-import {SimpleTopNavLoginModule} from "@revector/email-password-top-nav-login";
-import {RvAsciidoctorPanelModule} from "@revector/asciidoctor-panel";
+// Dev modules
+import {RvAsciidoctorPanelModule} from './asciidoctor-panel';
+import {AuthModule, AuthReducer, RoleReducer} from './auth-service'
+import {AdminUiModule} from "./admin-ui";
+import {SimpleTopNavLoginModule} from './email-password-top-nav-login';
 
 
 // Our Components
-import { environment } from '../environments/environment';
+import {environment} from '../environments/environment';
 import {AppContainer} from './app.container'
 import {AppComponent} from './app.component'
+import {AuthEffects, RoleEffects} from './auth-service/state'
 
 const firebaseConfig = environment.firebaseConfig
 
@@ -45,37 +48,57 @@ const firebaseAuthConfig = {
   method: AuthMethods.Password
 }
 
+let reducers = {
+  auth: combineReducers({
+    transient: AuthReducer,
+    roles: RoleReducer
+  })
+}
+
 @NgModule({
   declarations: [
     AppContainer,
-    AppComponent,
-    StoreLogMonitorComponent,
+    AppComponent
   ],
   imports: [
+    /* Dev modules */
+    AdminUiModule,
     RvAsciidoctorPanelModule,
     AuthModule,
     SimpleTopNavLoginModule,
+
+    /* Firebase Modules */
     AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
-    StoreModule.provideStore({ auth: AuthReducer, }),
+
+    /* NgRx */
+    StoreModule.provideStore(reducers),
+    StoreDevtoolsModule.instrumentStore({monitor: useLogMonitor({visible: true, position: 'left'})}),
+    StoreLogMonitorModule,
+    EffectsModule.run(AuthEffects),
+    EffectsModule.run(RoleEffects),
+
+    /* Ng2 Modules. */
     BrowserModule,
     CommonModule,
-    MdButtonModule,
-    MdCardModule,
-    MdCheckboxModule,
-    MdGridListModule,
-    MdIconModule,
-    MdInputModule,
-    MdListModule,
-    MdMenuModule,
-    MdRadioModule,
-    MdRippleModule,
-    MdSidenavModule,
-    MdTabsModule,
-    MdToolbarModule,
-    MdTooltipModule,
+
+    /* Ng2MD modules */
+    MdButtonModule.forRoot(),
+    MdCardModule.forRoot(),
+    MdCheckboxModule.forRoot(),
+    MdGridListModule.forRoot(),
+    MdIconModule.forRoot(),
+    MdInputModule.forRoot(),
+    MdListModule.forRoot(),
+    MdMenuModule.forRoot(),
+    MdRadioModule.forRoot(),
+    MdRippleModule.forRoot(),
+    MdSidenavModule.forRoot(),
+    MdTabsModule.forRoot(),
+    MdToolbarModule.forRoot(),
+    MdTooltipModule.forRoot(),
   ],
   providers: [
-    instrumentStore({ monitor: useLogMonitor({ visible: true, position: 'left' }) })
+
   ],
   entryComponents: [AppContainer],
   bootstrap: [AppContainer]

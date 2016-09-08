@@ -1,0 +1,35 @@
+{
+  "name": "@revector/email-password-top-nav-login",
+  "version": "0.0.1-alpha.5",
+  "description": "A horizontal login form that relies on @revector/auth-service",
+  "main": "./email-password-top-nav-login.module.js",
+  "typings": "./email-password-top-nav-login.module.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ggranum/revector.git"
+  },
+  "keywords": [
+    "angular",
+    "angular2",
+    "components",
+    "authentication",
+    "auth",
+    "firebase",
+    "angularFire"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ggranum/revector/issues"
+  },
+  "homepage": "https://github.com/ggranum/revector#readme",
+  "peerDependencies": {
+    "@angular/core": "2.0.0-rc.5",
+    "@angular/common": "2.0.0-rc.5",
+    "@angular/forms": "0.3.0",
+    "@angular2-material/button": "2.0.0-alpha.7-5",
+    "@angular2-material/checkbox": "2.0.0-alpha.7-5",
+    "@angular2-material/core": "2.0.0-alpha.7-5",
+    "@angular2-material/icon": "2.0.0-alpha.7-5",
+    "@angular2-material/input": "2.0.0-alpha.7-5"
+  }
+}

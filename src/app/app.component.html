@@ -13,15 +13,25 @@
 
       <span flex>{{title}}</span>
       <div flex="grow" layout-fill layout-align="end center" layout="row">
-        <gg-top-nav-login  flex align="end"></gg-top-nav-login>
+        <gg-top-nav-login flex align="end"></gg-top-nav-login>
       </div>
     </div>
 
   </md-toolbar>
 
-  <div class="app-content" layout="column" layout-align="start center">
+  <div class="app-content" layout="column" layout-align="start end">
+
     <md-card style="width: 50%;overflow: auto">
-      <rv-asciidoctor-panel style="white-space:normal;overflow-wrap: normal;overflow: auto" [content]="asciidoctorContent"></rv-asciidoctor-panel>
+      <rv-role-list></rv-role-list>
+    </md-card>
+
+    <md-card style="width: 50%;overflow: auto">
+      <rv-user-list></rv-user-list>
+    </md-card>
+
+    <md-card style="width: 50%;overflow: auto">
+      <rv-asciidoctor-panel style="white-space:normal;overflow-wrap: normal;overflow: auto"
+                            [content]="asciidoctorContent"></rv-asciidoctor-panel>
     </md-card>
     <md-card>
       <button md-button>FLAT</button>

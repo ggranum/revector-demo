@@ -1,0 +1,25 @@
+<div *ngIf="isSignedIn(signInState)" layout="row" layout-align="end center">
+
+  <md-icon (click)="showAccountFlyout = !showAccountFlyout">account_circle</md-icon>
+
+  <div *ngIf="showAccountFlyout" class="rv-profile-flyout" aria-label="Account Information" aria-hidden="false">
+    <div class="rv-profile-user-card" layout="row" layout-align="space-between center">
+      <div *ngIf="user.photoUrl" class="rv-profile-user-image" style="background-image: url({{user.photoUrl}});" title="Profile Photo"></div>
+      <div flex
+           class="rv-profile-user-info">
+        <div class="rv-user-given-name">{{user.displayName}}</div>
+        <div class="rv-user-email">{{user.email}}</div>
+      </div>
+    </div>
+    <div class="rv-profile-flyout-footer" layout="row" layout-align="end center">
+      <div layout="row" layout-align="end center">
+        <button md-raised-button color="accent" class="rv-logout rv-button" (click)="doLogoutAction()">
+          <span>
+            <i class="material-icons rv-button-icon">lock</i>
+            <i class="rv-button-text">{{logoutButtonLabel}}</i>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

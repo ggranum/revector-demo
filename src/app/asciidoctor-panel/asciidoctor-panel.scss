@@ -1,0 +1,18 @@
+
+:host {
+  display: flex;
+
+  white-space: nowrap;
+  outline: none;
+
+}
+
+.rv-asciidoctor-container {
+  display: flex;
+  flex: 1;
+}
+
+.rv-asciidoctor-body {
+  display: block;
+  flex: 1;
+}

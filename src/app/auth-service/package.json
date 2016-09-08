@@ -1,0 +1,29 @@
+{
+  "name": "@revector/auth-service",
+  "version": "0.0.1-alpha.5",
+  "description": "NgRx Store + AngularFire2 based authentication Module for Angular 2",
+  "main": "./auth.module.js",
+  "typings": "./auth.module.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ggranum/revector.git"
+  },
+  "keywords": [
+    "angular",
+    "angular2",
+    "components",
+    "authentication",
+    "auth",
+    "firebase",
+    "angularFire"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ggranum/revector/issues"
+  },
+  "homepage": "https://github.com/ggranum/revector#readme",
+  "peerDependencies": {
+    "@angular/core": "^2.0.0-rc.5",
+    "@angular/common": "^2.0.0-rc.5"
+  }
+}
