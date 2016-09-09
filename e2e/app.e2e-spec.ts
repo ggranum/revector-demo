@@ -1,10 +1,10 @@
-import { GgranumComPage } from './app.po';
+import { ReVectorDemoPage } from './app.po';
 
-describe('ggranum-com App', function() {
-  let page: GgranumComPage;
+describe('revector-demo App', function() {
+  let page: ReVectorDemoPage;
 
   beforeEach(() => {
-    page = new GgranumComPage();
+    page = new ReVectorDemoPage();
   });
 
   it('should display message saying app works', () => {

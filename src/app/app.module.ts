@@ -20,26 +20,24 @@ import {MdTooltipModule} from '@angular2-material/tooltip/tooltip'
 import {MdRippleModule} from '@angular2-material/core/ripple/ripple'
 import {MdMenuModule} from '@angular2-material/menu/menu'
 
-
 // NG RX
 import {StoreDevtoolsModule} from '@ngrx/store-devtools'
 import {StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor'
 import {StoreModule, combineReducers} from '@ngrx/store'
 import {EffectsModule} from '@ngrx/effects';
 
-
 // Dev modules
-import {RvAsciidoctorPanelModule} from './asciidoctor-panel';
-import {AuthModule, AuthReducer, RoleReducer} from './auth-service'
-import {AdminUiModule} from "./admin-ui";
-import {SimpleTopNavLoginModule} from './email-password-top-nav-login';
+import {RvAsciidoctorPanelModule} from './ui/asciidoctor-panel';
+import {AuthModule, AuthReducer, RoleReducer} from './services/auth-service'
+import {AdminUiModule} from "./ui/admin-ui";
+import {SimpleTopNavLoginModule} from './ui/email-password-top-nav-login';
 
 
 // Our Components
 import {environment} from '../environments/environment';
 import {AppContainer} from './app.container'
 import {AppComponent} from './app.component'
-import {AuthEffects, RoleEffects} from './auth-service/state'
+import {AuthEffects, RoleEffects} from './services/auth-service/state'
 
 const firebaseConfig = environment.firebaseConfig
 

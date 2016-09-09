@@ -24,6 +24,7 @@ Promise.all([
 ])
   // First, initialize the Angular testing environment.
   .then(([testing, testingBrowser]) => {
+    //noinspection TypeScriptUnresolvedVariable,TypeScriptUnresolvedFunction
     testing.setBaseTestProviders(
       testingBrowser.TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS,
       testingBrowser.TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS

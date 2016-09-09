@@ -1,4 +1,4 @@
-export class GgranumComPage {
+export class ReVectorDemoPage {
   navigateTo() {
     return browser.get('/');
   }
