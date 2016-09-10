@@ -1,6 +1,6 @@
 import {NgModule, SkipSelf, Optional} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {AuthEffects, RoleEffects} from "./state/index";
+import {AuthEffects, RoleEffects, PermissionEffects} from "./state/index";
 import {AuthServiceCIF, FirebaseAuthService} from "./service/index";
 
 
@@ -12,6 +12,7 @@ import {AuthServiceCIF, FirebaseAuthService} from "./service/index";
   providers: [
     AuthEffects,
     RoleEffects,
+    PermissionEffects,
     {provide: AuthServiceCIF, useClass: FirebaseAuthService},
   ],
   exports: [ ]

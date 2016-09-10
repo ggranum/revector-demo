@@ -13,6 +13,10 @@ import {RoleListContainer} from './roles/list/role-list.container'
 import {RoleListComponent} from './roles/list/role-list.component'
 import {RoleComponent} from './roles/role/role.component'
 
+import {PermissionListContainer} from './permissions/list/permission-list.container'
+import {PermissionListComponent} from './permissions/list/permission-list.component'
+import {PermissionComponent} from './permissions/permission/permission.component'
+
 import {MdButtonModule} from '@angular2-material/button/button'
 import {MdIconModule} from '@angular2-material/icon/icon'
 import {MdInputModule} from '@angular2-material/input/input'
@@ -29,6 +33,9 @@ import {MdListModule} from '@angular2-material/list/list'
     RoleListContainer,
     RoleListComponent,
     RoleComponent,
+    PermissionListContainer,
+    PermissionListComponent,
+    PermissionComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +49,8 @@ import {MdListModule} from '@angular2-material/list/list'
   ],
   exports: [
     UserListContainer,
-    RoleListContainer
+    RoleListContainer,
+    PermissionListContainer,
   ]
 })
 export class AdminUiModule {

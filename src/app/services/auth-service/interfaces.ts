@@ -3,8 +3,6 @@ import {RvError, ObjMap} from '../../shared/core-util'
  * Interfaces for the AuthService.
  */
 
-
-
 export interface EmailPasswordCredentials {
   email: string,
   password: string
@@ -12,6 +10,7 @@ export interface EmailPasswordCredentials {
 
 
 export interface Permission {
+  uid?: string,
   name: string,
   description?: string
 }
@@ -93,56 +92,4 @@ export interface AuthServiceState {
 
 export interface AuthServiceStoreData {
   auth: AuthServiceState
-}
-
-// Not used, exists as mental aid.
-interface MockAuthServiceData {
-  transient: {
-    signInState?: SignInState
-    currentUser?: {
-      lastSignInMils: number
-      createdMils: number
-      lastSignInIp: string
-      displayName: string
-      email: string
-      emailVerified: boolean
-      disabled: boolean
-    }
-  }
-  permissions?: {
-    [permission_uid: string]: {
-      name: string,
-      description?: string
-    }
-  }
-  roles?: {
-    [role_uid: string]: {
-      name: string,
-      description: string
-      // list of permissions from role_permissions
-    }
-  }
-  user_roles?: {
-    [user_uid: string]: {
-      [role_uid: string]: boolean
-    }
-  }
-  role_permissions?: {
-    [role_uid: string]: {
-      [permission_uid: string]: boolean
-    }
-  }
-  users?: {
-    [user_uid: string]: {
-      info: {
-        lastSignInMils: number
-        createdMils: number
-        lastSignInIp: string
-        displayName: string
-        email: string
-        emailVerified: boolean
-        disabled: boolean
-      }
-    }
-  }
 }
