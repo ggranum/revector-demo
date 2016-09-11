@@ -1,5 +1,5 @@
 import {Observable} from "rxjs";
-import {UserInfo} from '../interfaces'
+import {User} from '../interfaces'
 
 export interface EmailPasswordCredentials {
   email: string,
@@ -10,17 +10,17 @@ export interface EmailPasswordCredentials {
 
 export interface UserAuthTokenIF {
   uid: string;
-  auth: UserInfo
+  auth: User
   expires?: number;
   anonymous?: boolean;
 }
 
 export abstract class AuthServiceCIF {
   globalEventObserver: () => Observable<UserAuthTokenIF>
-  requestSignIn: (action: EmailPasswordCredentials) => Observable<UserInfo>
-  requestSignUp: (action: EmailPasswordCredentials) => Observable<UserInfo>;
-  populateNewAccountInfo: (user: UserInfo) => Observable<any>;
-  updateAccountInfo: (user: UserInfo) => Observable<any>;
+  requestSignIn: (action: EmailPasswordCredentials) => Observable<User>
+  requestSignUp: (action: EmailPasswordCredentials) => Observable<User>;
+  populateNewAccountInfo: (user: User) => Observable<any>;
+  updateAccountInfo: (user: User) => Observable<any>;
   logout: () => void;
 
   requestUsers: () => Observable<any>

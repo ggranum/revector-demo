@@ -4,7 +4,7 @@ import {Store} from '@ngrx/store'
 
 import {AuthServiceCIF, UserAuthTokenIF, EmailPasswordCredentials} from '../service/auth.service.interface'
 import {AuthActions} from './auth.actions'
-import {AuthServiceStoreData, SignInStates, AuthServiceState, UserInfo} from '../interfaces'
+import {AuthServiceStoreData, SignInStates, AuthServiceState, User} from '../interfaces'
 import {Actions, Effect} from '@ngrx/effects'
 import {TypedAction} from '../../../shared/rv-ngrx-util'
 
@@ -37,7 +37,7 @@ export class AuthEffects implements OnDestroy {
 
   requestSignIn(payload: EmailPasswordCredentials) {
     return this.authService.requestSignIn(payload).map(
-      (userAuthInfo: UserInfo) => {
+      (userAuthInfo: User) => {
         return AuthActions.signIn.fulfilled.action(userAuthInfo)
       },
       (e) => {
@@ -50,7 +50,7 @@ export class AuthEffects implements OnDestroy {
   onSigningUp(value: boolean) {
     // if (value === true) {
     //   this.authService.requestSignUp(this.appState.authToken).subscribe(
-    //     (userAuthInfo: UserInfo) => {
+    //     (userAuthInfo: User) => {
     //       this.store.dispatch(this.appActions.requestSignUpFulfilled(userAuthInfo))
     //     },
     //     (e) => {
@@ -77,22 +77,6 @@ export class AuthEffects implements OnDestroy {
     return Observable.of(AuthActions.signOut.fulfilled.action())
   }
 
-  onRequestingUsers(value: boolean) {
-    // if (value === true) {
-    //   this.authService.requestUsers().subscribe((users: UsersIF) => {
-    //     let x: UsersIF = {}
-    //     Object.keys(users).forEach((key) => {
-    //       if (key[0] != '$') {
-    //         x[key] = users[key]
-    //       }
-    //     })
-    //     this.store.dispatch(this.appActions.requestUsersFulfilled(x))
-    //   }, (e) => {
-    //     this.store.dispatch(this.appActions.requestUsersFailed(e))
-    //   })
-    //
-    // }
-  }
 
   private globalAuthEventHandler(authState: UserAuthTokenIF) {
     if (this.appState.transient.signInState.state == SignInStates.unknown) {
@@ -105,7 +89,7 @@ export class AuthEffects implements OnDestroy {
   }
 
   private handleUserRemembered(authState: UserAuthTokenIF) {
-    let user: UserInfo = <UserInfo>authState.auth
+    let user: User = <User>authState.auth
     this.store.dispatch(AuthActions.initialize.action(user))
   }
 

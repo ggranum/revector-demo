@@ -1,7 +1,7 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core'
 import {Store} from '@ngrx/store'
 
-import {AuthServiceState, UserInfo, AuthActions, SignInStates, SignInState} from '../../services/auth-service'
+import {AuthServiceState, User, AuthActions, SignInStates, SignInState} from '../../services/auth-service'
 
 // @revisit: There seems to be a bug. Using the /auth-service/index target for import causes Injection to fail.
 // import {} from '@revector/auth-service';
@@ -18,7 +18,7 @@ export class TopNavProfileComponent {
   @Input() signInState: SignInState  = {
     state: SignInStates.unknown
   }
-  @Input() user:UserInfo
+  @Input() user:User
 
   logoutButtonLabel:string = "Sign Out"
 

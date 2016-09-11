@@ -2,7 +2,7 @@ import {AngularFire, AngularFireAuth, FirebaseAuthState, AuthMethods, AuthProvid
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {AuthServiceCIF, UserAuthTokenIF, EmailPasswordCredentials} from "./auth.service.interface";
-import {UserInfo} from '../interfaces'
+import {User} from '../interfaces'
 
 const defaultAuthConfig = {
   provider: AuthProviders.Password,
@@ -19,7 +19,7 @@ export class FirebaseAuthService implements AuthServiceCIF {
     this._auth = angularFire.auth
   }
 
-  requestSignIn(payload: EmailPasswordCredentials): Observable<UserInfo> {
+  requestSignIn(payload: EmailPasswordCredentials): Observable<User> {
     let loginCfg = {
       email: payload.email,
       password: payload.password
@@ -27,7 +27,7 @@ export class FirebaseAuthService implements AuthServiceCIF {
     let promise: Promise<any> = <Promise<any>>this._auth.login(loginCfg, defaultAuthConfig)
     let response = promise.then((fbAuthState: FirebaseAuthState) => {
       if (fbAuthState != null) {
-        return this.userFromAuth(<UserInfo>fbAuthState.auth)
+        return this.userFromAuth(<User>fbAuthState.auth)
       } else {
         throw new Error("Unknown error.")
       }
@@ -37,11 +37,11 @@ export class FirebaseAuthService implements AuthServiceCIF {
     return Observable.fromPromise(response)
   }
 
-  requestSignUp(payload: EmailPasswordCredentials): Observable<UserInfo> {
+  requestSignUp(payload: EmailPasswordCredentials): Observable<User> {
     let promise: Promise<any> = <Promise<any>>this._auth.createUser(payload)
     let response = promise.then((fbAuthState: FirebaseAuthState) => {
       if (fbAuthState != null) {
-        return this.userFromAuth(<UserInfo>fbAuthState.auth)
+        return this.userFromAuth(<User>fbAuthState.auth)
       } else {
         throw new Error("Unknown error.")
       }
@@ -55,7 +55,7 @@ export class FirebaseAuthService implements AuthServiceCIF {
     return this.angularFire.database.object(`${this._fbRoot}/users/`)
   }
 
-  populateNewAccountInfo(user: UserInfo): Observable<any> {
+  populateNewAccountInfo(user: User): Observable<any> {
     let p = <Promise<any>>this.angularFire.database.object(`${this._fbRoot}/users/${user.uid}`).set({
       uid: user.uid,
       info: user
@@ -63,7 +63,7 @@ export class FirebaseAuthService implements AuthServiceCIF {
     return Observable.fromPromise(p)
   }
 
-  updateAccountInfo(user: UserInfo): Observable<any> {
+  updateAccountInfo(user: User): Observable<any> {
     let info = this.angularFire.database.object(`${this._fbRoot}/users/${user.uid}/info`)
     let p = <Promise<any>>info.set(user)
     return Observable.fromPromise(p)
@@ -78,13 +78,13 @@ export class FirebaseAuthService implements AuthServiceCIF {
       let result:UserAuthTokenIF = null
       if(fbAuthState && fbAuthState.auth){
         result = Object.assign({}, <UserAuthTokenIF>fbAuthState)
-        result.auth = this.userFromAuth(<UserInfo>fbAuthState.auth)
+        result.auth = this.userFromAuth(<User>fbAuthState.auth)
       }
       return result
     })
   }
 
-  private userFromAuth(fbAuth: UserInfo): UserInfo {
+  private userFromAuth(fbAuth: User): User {
     return {
       lastSignInIp: '',
       lastSignInMils: Date.now(),

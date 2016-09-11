@@ -37,8 +37,9 @@ import {SimpleTopNavLoginModule} from './ui/email-password-top-nav-login';
 import {environment} from '../environments/environment';
 import {AppContainer} from './app.container'
 import {AppComponent} from './app.component'
-import {AuthEffects, RoleEffects, PermissionEffects} from './services/auth-service/state'
+import {AuthEffects, RoleEffects, PermissionEffects, UserEffects} from './services/auth-service/state'
 import {PermissionReducer} from './services/auth-service/state/permission/permission.state'
+import {UserReducer} from './services/auth-service/state/user/user.state'
 
 const firebaseConfig = environment.firebaseConfig
 
@@ -51,7 +52,8 @@ let reducers = {
   auth: combineReducers({
     transient: AuthReducer,
     roles: RoleReducer,
-    permissions: PermissionReducer
+    permissions: PermissionReducer,
+    users: UserReducer
   })
 }
 
@@ -77,6 +79,7 @@ let reducers = {
     EffectsModule.run(AuthEffects),
     EffectsModule.run(RoleEffects),
     EffectsModule.run(PermissionEffects),
+    EffectsModule.run(UserEffects),
 
     /* Ng2 Modules. */
     BrowserModule,

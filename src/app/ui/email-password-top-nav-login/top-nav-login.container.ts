@@ -1,7 +1,7 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core'
 import {Observable} from 'rxjs'
 import {Store} from '@ngrx/store'
-import {UserInfo, SignInState, AuthServiceStoreData} from '../../services/auth-service'
+import {User, SignInState, AuthServiceStoreData} from '../../services/auth-service'
 
 
 @Component({
@@ -15,7 +15,7 @@ import {UserInfo, SignInState, AuthServiceStoreData} from '../../services/auth-s
 export class TopNavLoginContainer {
 
   signInState$: Observable<SignInState>
-  user$: Observable<UserInfo>
+  user$: Observable<User>
   errorMessage:Observable<string>
 
   constructor(private _store: Store<AuthServiceStoreData>) {

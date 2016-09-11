@@ -36,22 +36,19 @@ export interface RolePermissionsMappings {
   }
 }
 
-export interface UserInfo {
-  uid: string
-  lastSignInMils: number
+export interface User {
+  uid?: string
+  lastSignInMils?: number
   createdMils: number
-  lastSignInIp: string
-  displayName: string
-  email: string
+  lastSignInIp?: string
+  displayName?: string
+  email?: string
   photoURL?: string,
   emailVerified?: boolean
   disabled?: boolean,
   isAnonymous?: boolean,
 }
 
-export interface User {
-  info: UserInfo
-}
 
 
 /**
@@ -77,7 +74,7 @@ export interface SignInState {
 
 export interface AuthServiceSignInState {
   signInState?: SignInState
-  currentUser?: UserInfo
+  currentUser?: User
 }
 
 

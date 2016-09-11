@@ -1,0 +1,24 @@
+{
+  "rules": {
+    "auth":{
+      "permissions": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      },
+      "roles": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      },
+      "users": {
+        ".read": "auth != null",
+        "$uid": {
+          ".read": "$uid === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
+      }},
+    "items": {
+      ".read": "true",
+      ".write": "auth != null"
+    }
+  }
+}

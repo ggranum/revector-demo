@@ -79,6 +79,13 @@ export class ActionReducers<S> {
     this._reducers[actionDefinition.type] = reducer || ((state: S, action: TypedAction<T>) => state)
   }
 
+  registerError<T>(actionDefinition: TypedActionDefinition<S,T>) {
+    this._reducers[actionDefinition.type] = ((state: S, action: TypedAction<RvError>) => {
+      console.error(action.type = ": ",  action.payload)
+      return state
+    })
+  }
+
   reducer<T>(): (state: S, action: TypedAction<T>) => S {
     return <T>(state: S = this._initialState, action: TypedAction<T>): S => {
       let newState: S = null

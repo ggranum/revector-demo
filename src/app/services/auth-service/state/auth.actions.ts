@@ -1,19 +1,19 @@
-import {UserInfo, AuthServiceSignInState, EmailPasswordCredentials} from '../interfaces'
+import {User, AuthServiceSignInState, EmailPasswordCredentials} from '../interfaces'
 import {TypedActionDefinition, InvokableActionSet, typedActionDefinition, invokableActionSet} from '../../../shared'
 
 const PREFIX = '[Auth.app] '
 
 export interface AuthActionsIF {
-  initialize: TypedActionDefinition<AuthServiceSignInState, UserInfo>
-  signIn: InvokableActionSet<AuthServiceSignInState, EmailPasswordCredentials, UserInfo>
-  signUp: InvokableActionSet<AuthServiceSignInState, EmailPasswordCredentials, UserInfo>
-  signOut: InvokableActionSet<AuthServiceSignInState, UserInfo, void>
+  initialize: TypedActionDefinition<AuthServiceSignInState, User>
+  signIn: InvokableActionSet<AuthServiceSignInState, EmailPasswordCredentials, User>
+  signUp: InvokableActionSet<AuthServiceSignInState, EmailPasswordCredentials, User>
+  signOut: InvokableActionSet<AuthServiceSignInState, User, void>
 
 }
 export const AuthActions: AuthActionsIF = {
-  initialize: typedActionDefinition<AuthServiceSignInState, UserInfo>('[Auth.app] Initialize'),
-  signIn: invokableActionSet<AuthServiceSignInState, EmailPasswordCredentials, UserInfo>(PREFIX + 'Request Sign In'),
-  signUp: invokableActionSet<AuthServiceSignInState, EmailPasswordCredentials, UserInfo>(PREFIX + 'Request Sign Up'),
-  signOut: invokableActionSet<AuthServiceSignInState, UserInfo, void>(PREFIX + 'Request Sign Out'),
+  initialize: typedActionDefinition<AuthServiceSignInState, User>('[Auth.app] Initialize'),
+  signIn: invokableActionSet<AuthServiceSignInState, EmailPasswordCredentials, User>(PREFIX + 'Request Sign In'),
+  signUp: invokableActionSet<AuthServiceSignInState, EmailPasswordCredentials, User>(PREFIX + 'Request Sign Up'),
+  signOut: invokableActionSet<AuthServiceSignInState, User, void>(PREFIX + 'Request Sign Out'),
 }
 
