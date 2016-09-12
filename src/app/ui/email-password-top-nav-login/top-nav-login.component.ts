@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceStoreData, SignInStates, SignInState, AuthActions} from '../../services/auth-service';
+import {AuthServiceStoreState, SignInStates, SignInState, CurrentUserActions} from '../../services/auth-service';
 
 
 @Component({
@@ -24,7 +24,7 @@ export class TopNavLoginComponent {
   loginButtonLabel:string = "Sign In"
   signupButtonLabel:string = "Sign Up"
 
-  constructor( private _store: Store<AuthServiceStoreData>) {
+  constructor( private _store: Store<AuthServiceStoreState>) {
   }
 
   isSignedOut(signInState:SignInState){
@@ -41,11 +41,11 @@ export class TopNavLoginComponent {
   doLoginAction(event:Event) {
     event.preventDefault()
     event.stopPropagation()
-    this._store.dispatch(AuthActions.signIn.invoke.action({email: this.username, password:this.password}))
+    this._store.dispatch(CurrentUserActions.signIn.invoke.action({email: this.username, password:this.password}))
   }
 
   doSignupAction() {
-    this._store.dispatch(AuthActions.signUp.invoke.action({email: this.username, password:this.password}))
+    this._store.dispatch(CurrentUserActions.signUp.invoke.action({email: this.username, password:this.password}))
   }
 
   onSubmit(event:Event) {

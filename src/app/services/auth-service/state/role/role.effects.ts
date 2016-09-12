@@ -1,6 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceStoreData, Role} from '../../interfaces'
+import {AuthServiceStoreState, Role} from '../../interfaces'
 import {Actions, Effect} from '@ngrx/effects'
 import {Observable} from 'rxjs'
 import {RoleActions} from './role.actions'
@@ -14,7 +14,7 @@ export class RoleEffects implements OnDestroy {
 
   private _fbRoot: string = '/auth'
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreData>, public firebase: AngularFire) {
+  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {
 
   }
 
@@ -37,7 +37,7 @@ export class RoleEffects implements OnDestroy {
 
 
   onError(e: Error): void {
-    console.error("AuthEffects", "onError", e)
+    console.error("CurrentUserEffects", "onError", e)
   }
 
   getRoles(payload: any) {

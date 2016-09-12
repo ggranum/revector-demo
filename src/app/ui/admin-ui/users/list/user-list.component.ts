@@ -1,7 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input, EventEmitter, Output} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceState, User} from '../../../../services/auth-service/index'
-import {ObjMap} from '../../../../shared'
+import {AuthServiceState, User, UserState} from '../../../../services/auth-service'
 
 
 
@@ -13,7 +12,7 @@ import {ObjMap} from '../../../../shared'
 })
 export class UserListComponent {
 
-  @Input() usersObj:{[key:string]: ObjMap<User>} = {}
+  @Input() usersObj:{[key:string]: UserState} = {}
 
   @Output() addUser: EventEmitter<User> = new EventEmitter<User>(false)
   @Output() userChange:EventEmitter<User> = new EventEmitter<User>(false)

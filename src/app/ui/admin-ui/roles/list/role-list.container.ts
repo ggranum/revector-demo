@@ -4,11 +4,11 @@ import {Store} from '@ngrx/store'
 import {
   RoleActions,
   Role,
-  AuthServiceStoreData,
+  AuthServiceStoreState,
   SignInState,
-  SignInStates
-} from '../../../../services/auth-service/index'
-import {ObjMap} from '../../../../shared'
+  SignInStates,
+  RoleState
+} from '../../../../services/auth-service'
 
 
 @Component({
@@ -24,12 +24,12 @@ import {ObjMap} from '../../../../shared'
 })
 export class RoleListContainer {
 
-  roles$: Observable<ObjMap<Role>>
+  roles$: Observable<RoleState>
 
-  constructor(private _store: Store<AuthServiceStoreData>) {
-    _store.select((s: AuthServiceStoreData) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
+  constructor(private _store: Store<AuthServiceStoreState>) {
+    _store.select((s: AuthServiceStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
 
-    this.roles$ = _store.select((s: AuthServiceStoreData) => s.auth.roles)
+    this.roles$ = _store.select((s: AuthServiceStoreState) => s.auth.roles)
   }
 
   onSignedIn(value: SignInState) {
@@ -53,7 +53,7 @@ export class RoleListContainer {
 
 
   onError(e: Error): void {
-    console.error("AuthEffects", "onError", e)
+    console.error("CurrentUserEffects", "onError", e)
   }
 }
 

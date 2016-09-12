@@ -1,17 +1,22 @@
-import {ActionReducer} from '@ngrx/store'
-import {Role} from '../../interfaces'
+import {Role, RoleState, AuthServiceState} from '../../interfaces'
 import {RoleActions} from './role.actions'
-import {TypedAction, ActionReducers, ObjMap} from '../../../../shared'
+import {TypedAction, ActionReducerSet} from '../../../../shared'
 import {generatePushID} from '../../../../shared/firebase-generate-push-id'
 
-let initialState: ObjMap<Role> = {}
 
+export const roleReducers = new ActionReducerSet<AuthServiceState>()
 
-const actionReducers = new ActionReducers<ObjMap<Role>>('[Auth.role]', initialState)
-export const RoleReducer: ActionReducer<ObjMap<Role>> = actionReducers.reducer()
+const MAPPING = {
+  toMapped: (state: AuthServiceState): RoleState => {
+    return state.roles
+  },
+  fromMapped: (state: AuthServiceState, mapped: RoleState): AuthServiceState => {
+    state.roles = mapped
+    return state
+  },
+}
 
-
-actionReducers.register(RoleActions.addRole.invoke, (state: ObjMap<Role>, action: TypedAction<Role>) => {
+roleReducers.registerMapped(RoleActions.addRole.invoke, MAPPING,  (state:  RoleState, action: TypedAction<Role>) => {
   let newState = Object.assign({}, state)
   let role = action.payload
   if (!role.uid) {
@@ -19,31 +24,32 @@ actionReducers.register(RoleActions.addRole.invoke, (state: ObjMap<Role>, action
     newState[role.uid] = role
   }
   return newState
-
 })
 
-actionReducers.register(RoleActions.addRole.fulfilled, (state: ObjMap<Role>, action: TypedAction<Role>) => {
+roleReducers.registerMapped(RoleActions.addRole.fulfilled, MAPPING,  (state:  RoleState, action: TypedAction<Role>) => {
   return state
 })
-actionReducers.register(RoleActions.addRole.failed)
+roleReducers.register(RoleActions.addRole.failed)
 
 
-actionReducers.register(RoleActions.getRoles.invoke)
-actionReducers.register(RoleActions.getRoles.fulfilled, (state: ObjMap<Role>, action: TypedAction<ObjMap<Role>>) => {
+roleReducers.register(RoleActions.getRoles.invoke)
+roleReducers.registerMapped(RoleActions.getRoles.fulfilled, MAPPING,  (state:  RoleState, action: TypedAction<RoleState>) => {
   state = Object.assign({}, action.payload)
   return state
 })
-actionReducers.register(RoleActions.getRoles.failed)
+roleReducers.register(RoleActions.getRoles.failed)
 
 
-actionReducers.register(RoleActions.updateRole.invoke)
-actionReducers.register(RoleActions.updateRole.fulfilled, (state: ObjMap<Role>, action: TypedAction<Role>) => {
+roleReducers.register(RoleActions.updateRole.invoke)
+roleReducers.registerMapped(RoleActions.updateRole.fulfilled, MAPPING,  (state:  RoleState, action: TypedAction<Role>) => {
   return Object.assign({}, state, {[action.payload.uid]: action.payload})
 })
 
 
-actionReducers.register(RoleActions.removeRole.invoke)
-actionReducers.register(RoleActions.removeRole.fulfilled, (state: ObjMap<Role>, action: TypedAction<Role>) => {
+roleReducers.register(RoleActions.removeRole.invoke)
+roleReducers.registerMapped(RoleActions.removeRole.fulfilled,
+  MAPPING,
+  (state: RoleState, action: TypedAction<Role>) => {
   let newState = Object.assign({}, state)
   delete newState[action.payload.uid]
   return newState

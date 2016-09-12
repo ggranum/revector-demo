@@ -2,46 +2,46 @@ import {Injectable, OnDestroy} from '@angular/core'
 import {Observable} from 'rxjs'
 import {Store} from '@ngrx/store'
 
-import {AuthServiceCIF, UserAuthTokenIF, EmailPasswordCredentials} from '../service/auth.service.interface'
-import {AuthActions} from './auth.actions'
-import {AuthServiceStoreData, SignInStates, AuthServiceState, User} from '../interfaces'
+import {AuthServiceCIF, UserAuthTokenIF, EmailPasswordCredentials} from '../../service/auth.service.interface'
+import {CurrentUserActions} from './current-user.actions'
+import {AuthServiceStoreState, SignInStates, AuthServiceState, User} from '../../interfaces'
 import {Actions, Effect} from '@ngrx/effects'
-import {TypedAction} from '../../../shared/rv-ngrx-util'
+import {TypedAction} from '../../../../shared/rv-ngrx-util'
 
 
 @Injectable()
-export class AuthEffects implements OnDestroy {
+export class CurrentUserEffects implements OnDestroy {
 
   appState: AuthServiceState
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreData>, public authService: AuthServiceCIF) {
+  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public authService: AuthServiceCIF) {
     authService.globalEventObserver().subscribe((authState: UserAuthTokenIF) => {
       this.globalAuthEventHandler(authState)
     })
 
-    store.select((s: AuthServiceStoreData) => s.auth).subscribe((s: AuthServiceState) => this.appState = s, this.onError)
+    store.select((s: AuthServiceStoreState) => s.auth).subscribe((s: AuthServiceState) => this.appState = s, this.onError)
   }
 
   @Effect() requestSignIn$ = this.actions$
-    .ofType(AuthActions.signIn.invoke.type)
+    .ofType(CurrentUserActions.signIn.invoke.type)
     .switchMap((action:TypedAction<EmailPasswordCredentials>) => this.requestSignIn(action.payload))
 
 
   @Effect() requestSignOut$ = this.actions$
-    .ofType(AuthActions.signOut.invoke.type)
+    .ofType(CurrentUserActions.signOut.invoke.type)
     .switchMap(payload => this.requestSignOut())
 
   onError(e: Error): void {
-    console.error("AuthEffects", "onError", e)
+    console.error("CurrentUserEffects", "onError", e)
   }
 
   requestSignIn(payload: EmailPasswordCredentials) {
     return this.authService.requestSignIn(payload).map(
       (userAuthInfo: User) => {
-        return AuthActions.signIn.fulfilled.action(userAuthInfo)
+        return CurrentUserActions.signIn.fulfilled.action(userAuthInfo)
       },
       (e) => {
-        return AuthActions.signIn.failed.action(e)
+        return CurrentUserActions.signIn.failed.action(e)
       }
     )
   }
@@ -74,7 +74,7 @@ export class AuthEffects implements OnDestroy {
 
   requestSignOut() {
     this.authService.logout()
-    return Observable.of(AuthActions.signOut.fulfilled.action())
+    return Observable.of(CurrentUserActions.signOut.fulfilled.action())
   }
 
 
@@ -90,11 +90,11 @@ export class AuthEffects implements OnDestroy {
 
   private handleUserRemembered(authState: UserAuthTokenIF) {
     let user: User = <User>authState.auth
-    this.store.dispatch(AuthActions.initialize.action(user))
+    this.store.dispatch(CurrentUserActions.initialize.action(user))
   }
 
   private handleAnonymousUser() {
-    this.store.dispatch(AuthActions.initialize.action(null))
+    this.store.dispatch(CurrentUserActions.initialize.action(null))
   }
 
 

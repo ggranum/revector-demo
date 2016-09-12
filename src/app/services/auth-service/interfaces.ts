@@ -8,13 +8,11 @@ export interface EmailPasswordCredentials {
   password: string
 }
 
-
 export interface Permission {
   uid?: string,
   name: string,
   description?: string
 }
-
 
 export interface Role {
   uid?: string,
@@ -23,6 +21,10 @@ export interface Role {
   // list of permissions from role_permissions
 }
 
+export interface UserRoleMapping {
+  user_uid: string
+  role_uid: string
+}
 
 export interface UserRolesMappings {
   [user_uid: string]: {
@@ -48,8 +50,6 @@ export interface User {
   disabled?: boolean,
   isAnonymous?: boolean,
 }
-
-
 
 /**
  * Transient 'per session', for flow state management and/or convenience.
@@ -78,15 +78,20 @@ export interface AuthServiceSignInState {
 }
 
 
+export interface RoleState extends ObjMap<Role>{}
+export interface UserState extends ObjMap<User>{}
+export interface PermissionState extends ObjMap<Permission>{}
+
+
 export interface AuthServiceState {
   transient: AuthServiceSignInState
-  permissions?: ObjMap<Permission>
-  roles?: ObjMap<Role>
+  permissions?: PermissionState
+  roles?: RoleState
   user_roles?: UserRolesMappings
   role_permissions?: RolePermissionsMappings
-  users?: ObjMap<User>
+  users?: UserState
 }
 
-export interface AuthServiceStoreData {
+export interface AuthServiceStoreState {
   auth: AuthServiceState
 }

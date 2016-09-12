@@ -4,11 +4,11 @@ import {Store} from '@ngrx/store'
 import {
   UserActions,
   User,
-  AuthServiceStoreData,
+  AuthServiceStoreState,
   SignInState,
-  SignInStates
-} from '../../../../services/auth-service/index'
-import {ObjMap} from '../../../../shared'
+  SignInStates,
+  UserState
+} from '../../../../services/auth-service'
 
 
 @Component({
@@ -24,12 +24,12 @@ import {ObjMap} from '../../../../shared'
 })
 export class UserListContainer {
 
-  users$: Observable<ObjMap<User>>
+  users$: Observable<UserState>
 
-  constructor(private _store: Store<AuthServiceStoreData>) {
-    _store.select((s: AuthServiceStoreData) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
+  constructor(private _store: Store<AuthServiceStoreState>) {
+    _store.select((s: AuthServiceStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
 
-    this.users$ = _store.select((s: AuthServiceStoreData) => s.auth.users)
+    this.users$ = _store.select((s: AuthServiceStoreState) => s.auth.users)
   }
 
   onSignedIn(value: SignInState) {
@@ -53,7 +53,7 @@ export class UserListContainer {
 
 
   onError(e: Error): void {
-    console.error("AuthEffects", "onError", e)
+    console.error("CurrentUserEffects", "onError", e)
   }
 }
 

@@ -1,23 +1,22 @@
-import {Role} from '../../interfaces'
+import {Role, RoleState} from '../../interfaces'
 import {
-  ObjMap,
   ActionDefinition, InvokableActionSet, actionDefinition,
   invokableActionSet
 } from '../../../../shared'
 
-
+const ROLE_PREFIX = '[Auth.role] '
 export interface RoleActionsIF {
-  initialize: ActionDefinition<ObjMap<Role>>
-  getRoles: InvokableActionSet<ObjMap<Role>, void, ObjMap<Role>>
-  addRole: InvokableActionSet<ObjMap<Role>, Role, Role>
-  updateRole: InvokableActionSet<ObjMap<Role>, Role, Role>
-  removeRole: InvokableActionSet<ObjMap<Role>, Role, Role>
+  initialize: ActionDefinition<RoleState>
+  getRoles: InvokableActionSet<RoleState, void, RoleState>
+  addRole: InvokableActionSet<RoleState, Role, Role>
+  updateRole: InvokableActionSet<RoleState, Role, Role>
+  removeRole: InvokableActionSet<RoleState, Role, Role>
 }
 
 export let RoleActions: RoleActionsIF = {
-  initialize: actionDefinition('[Auth.role] Initialize'),
-  getRoles: invokableActionSet<ObjMap<Role>, void, ObjMap<Role>>('[Auth.role] Get Roles'),
-  addRole: invokableActionSet<ObjMap<Role>, Role, Role>('[Auth.role] Add Role'),
-  updateRole: invokableActionSet<ObjMap<Role>, Role, Role>('[Auth.role] Update Role'),
-  removeRole: invokableActionSet<ObjMap<Role>, Role, Role>('[Auth.role] Remove Role')
+  initialize: actionDefinition(ROLE_PREFIX + 'Initialize'),
+  getRoles: invokableActionSet<RoleState, void, RoleState>(ROLE_PREFIX + 'Get Roles'),
+  addRole: invokableActionSet<RoleState, Role, Role>(ROLE_PREFIX + 'Add Role'),
+  updateRole: invokableActionSet<RoleState, Role, Role>(ROLE_PREFIX + 'Update Role'),
+  removeRole: invokableActionSet<RoleState, Role, Role>(ROLE_PREFIX + 'Remove Role')
 }

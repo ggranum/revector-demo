@@ -1,6 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceStoreData, Permission} from '../../interfaces'
+import {AuthServiceStoreState, Permission} from '../../interfaces'
 import {Actions, Effect} from '@ngrx/effects'
 import {Observable} from 'rxjs'
 import {PermissionActions} from './permission.actions'
@@ -14,7 +14,7 @@ export class PermissionEffects implements OnDestroy {
 
   private _fbRoot: string = '/auth'
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreData>, public firebase: AngularFire) {
+  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {
 
   }
 
@@ -37,7 +37,7 @@ export class PermissionEffects implements OnDestroy {
 
 
   onError(e: Error): void {
-    console.error("AuthEffects", "onError", e)
+    console.error("CurrentUserEffects", "onError", e)
   }
 
   getPermissions(payload: any) {

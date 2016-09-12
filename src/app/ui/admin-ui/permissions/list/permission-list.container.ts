@@ -4,11 +4,12 @@ import {Store} from '@ngrx/store'
 import {
   PermissionActions,
   Permission,
-  AuthServiceStoreData,
+  AuthServiceStoreState,
   SignInState,
-  SignInStates
+  SignInStates,
+  PermissionState
 } from '../../../../services/auth-service/index'
-import {ObjMap} from '../../../../shared'
+
 
 
 @Component({
@@ -24,12 +25,15 @@ import {ObjMap} from '../../../../shared'
 })
 export class PermissionListContainer {
 
-  permissions$: Observable<ObjMap<Permission>>
+  permissions$: Observable<PermissionState>
 
-  constructor(private _store: Store<AuthServiceStoreData>) {
-    _store.select((s: AuthServiceStoreData) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
+  constructor(private _store: Store<AuthServiceStoreState>) {
+    _store.select((s: AuthServiceStoreState) => {
+      console.log("PermissionListContainer", s, s.auth)
+      return s.auth.transient.signInState
+    }).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
 
-    this.permissions$ = _store.select((s: AuthServiceStoreData) => s.auth.permissions)
+    this.permissions$ = _store.select((s: AuthServiceStoreState) => s.auth.permissions)
   }
 
   onSignedIn(value: SignInState) {
@@ -53,7 +57,7 @@ export class PermissionListContainer {
 
 
   onError(e: Error): void {
-    console.error("AuthEffects", "onError", e)
+    console.error("CurrentUserEffects", "onError", e)
   }
 }
 

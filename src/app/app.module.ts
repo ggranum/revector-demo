@@ -28,7 +28,7 @@ import {EffectsModule} from '@ngrx/effects';
 
 // Dev modules
 import {RvAsciidoctorPanelModule} from './ui/asciidoctor-panel';
-import {AuthModule, AuthReducer, RoleReducer} from './services/auth-service'
+import {AuthModule, AuthReducers} from './services/auth-service'
 import {AdminUiModule} from "./ui/admin-ui";
 import {SimpleTopNavLoginModule} from './ui/email-password-top-nav-login';
 
@@ -37,9 +37,7 @@ import {SimpleTopNavLoginModule} from './ui/email-password-top-nav-login';
 import {environment} from '../environments/environment';
 import {AppContainer} from './app.container'
 import {AppComponent} from './app.component'
-import {AuthEffects, RoleEffects, PermissionEffects, UserEffects} from './services/auth-service/state'
-import {PermissionReducer} from './services/auth-service/state/permission/permission.state'
-import {UserReducer} from './services/auth-service/state/user/user.state'
+import {CurrentUserEffects, RoleEffects, PermissionEffects, UserEffects} from './services/auth-service/state'
 
 const firebaseConfig = environment.firebaseConfig
 
@@ -49,12 +47,7 @@ const firebaseAuthConfig = {
 }
 
 let reducers = {
-  auth: combineReducers({
-    transient: AuthReducer,
-    roles: RoleReducer,
-    permissions: PermissionReducer,
-    users: UserReducer
-  })
+  auth: AuthReducers
 }
 
 @NgModule({
@@ -76,7 +69,7 @@ let reducers = {
     StoreModule.provideStore(reducers),
     StoreDevtoolsModule.instrumentStore({monitor: useLogMonitor({visible: true, position: 'left'})}),
     StoreLogMonitorModule,
-    EffectsModule.run(AuthEffects),
+    EffectsModule.run(CurrentUserEffects),
     EffectsModule.run(RoleEffects),
     EffectsModule.run(PermissionEffects),
     EffectsModule.run(UserEffects),

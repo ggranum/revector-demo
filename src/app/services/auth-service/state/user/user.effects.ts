@@ -1,10 +1,10 @@
 import {Injectable, OnDestroy} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceStoreData, User} from '../../interfaces'
+import {AngularFire} from 'angularfire2'
 import {Actions, Effect} from '@ngrx/effects'
 import {Observable} from 'rxjs'
 import {UserActions} from './user.actions'
-import {AngularFire} from 'angularfire2'
+import {AuthServiceStoreState, User} from '../../interfaces'
 import {TypedAction, cleanFirebaseMap} from '../../../../shared'
 import {UserModel} from '../../models/user-model'
 
@@ -14,7 +14,7 @@ export class UserEffects implements OnDestroy {
 
   private _fbRoot: string = '/auth'
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreData>, public firebase: AngularFire) {
+  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {
 
   }
 
@@ -37,7 +37,7 @@ export class UserEffects implements OnDestroy {
 
 
   onError(e: Error): void {
-    console.error("AuthEffects", "onError", e)
+    console.error("CurrentUserEffects", "onError", e)
   }
 
   getUsers(payload: any) {

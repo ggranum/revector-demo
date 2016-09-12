@@ -1,7 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input, EventEmitter, Output} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceState, Role} from '../../../../services/auth-service/index'
-import {ObjMap} from '../../../../shared'
+import {AuthServiceState, Role, RoleState} from '../../../../services/auth-service'
 
 
 
@@ -13,7 +12,7 @@ import {ObjMap} from '../../../../shared'
 })
 export class RoleListComponent {
 
-  @Input() rolesObj:{[key:string]: ObjMap<Role>} = {}
+  @Input() rolesObj:{[key:string]: RoleState} = {}
 
   @Output() addRole: EventEmitter<Role> = new EventEmitter<Role>(false)
   @Output() roleChange:EventEmitter<Role> = new EventEmitter<Role>(false)
