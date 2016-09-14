@@ -2,7 +2,6 @@ import {Role} from '../interfaces'
 
 
 export class RoleModel implements Role {
-  uid: string
   name: string
   description: string
 
@@ -17,7 +16,6 @@ export class RoleModel implements Role {
     let checks = []
     let result = null
 
-    checks.push(this.checkUid())
     checks.push(this.checkName())
 
     checks.forEach((item) => {
@@ -31,15 +29,6 @@ export class RoleModel implements Role {
     return result
   }
 
-  private checkUid() {
-    let result = null
-    if (!this.uid) {
-      result = {
-        uid: {notNull: "ID cannot be empty"}
-      }
-    }
-    return result
-  }
 
   private checkName() {
     let result = null

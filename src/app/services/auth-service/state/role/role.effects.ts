@@ -1,12 +1,12 @@
 import {Injectable, OnDestroy} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceStoreState, Role} from '../../interfaces'
 import {Actions, Effect} from '@ngrx/effects'
-import {Observable} from 'rxjs'
-import {RoleActions} from './role.actions'
 import {AngularFire} from 'angularfire2'
-import {TypedAction, cleanFirebaseMap} from '../../../../shared'
+import {Observable} from 'rxjs'
+import {AuthServiceStoreState, Role, RolePermission, MappedPermission, RolePermissionsMappings} from '../../interfaces'
+import {RoleActions} from './role.actions'
 import {RoleModel} from '../../models/role-model'
+import {ObjMap, TypedAction, cleanFirebaseMap, Update} from '../../../../shared'
 
 
 @Injectable()
@@ -18,76 +18,146 @@ export class RoleEffects implements OnDestroy {
 
   }
 
+  //noinspection JSUnusedGlobalSymbols
   @Effect() getRoles$ = this.actions$
     .ofType(RoleActions.getRoles.invoke.type)
-    .switchMap((action: TypedAction<Role>) => this.getRoles(action.payload))
+    .switchMap((action: TypedAction<Role>) => this.getRoles())
 
-
+  //noinspection JSUnusedGlobalSymbols
   @Effect() addRole$ = this.actions$
     .ofType(RoleActions.addRole.invoke.type)
     .switchMap((action: TypedAction<Role>) => this.addRole(action.payload))
 
+  //noinspection JSUnusedGlobalSymbols
   @Effect() updateRole$ = this.actions$
     .ofType(RoleActions.updateRole.invoke.type)
-    .switchMap((action: TypedAction<Role>) => this.updateRole(action.payload))
+    .switchMap((action: TypedAction<Update<Role>>) => this.updateRole(action.payload))
 
+  //noinspection JSUnusedGlobalSymbols
   @Effect() removeRole$ = this.actions$
     .ofType(RoleActions.removeRole.invoke.type)
     .switchMap((action: TypedAction<Role>) => this.removeRole(action.payload))
 
+  //noinspection JSUnusedGlobalSymbols
+  @Effect() getRolePermissions$ = this.actions$
+    .ofType(RoleActions.getRolePermissions.invoke.type)
+    .switchMap((action: TypedAction<RolePermissionsMappings>) => this.getRolePermissions())
 
-  onError(e: Error): void {
-    console.error("CurrentUserEffects", "onError", e)
-  }
+  //noinspection JSUnusedGlobalSymbols
+  @Effect() grantPermission$ = this.actions$
+    .ofType(RoleActions.grantPermissionToRole.invoke.type)
+    .switchMap((action: TypedAction<RolePermission>) => this.grantPermission(action.payload))
 
-  getRoles(payload: any) {
-    let p = <Observable<any>>this.firebase.database.object(`${this._fbRoot}/roles`)
-    p = p.map((v) => {
+  //noinspection JSUnusedGlobalSymbols
+  @Effect() revokePermission$ = this.actions$
+    .ofType(RoleActions.revokePermissionFromRole.invoke.type)
+    .switchMap((action: TypedAction<RolePermission>) => this.revokePermission(action.payload))
+
+  getRoles() {
+    let fbRoles = <Observable<any>>this.firebase.database.object(`${this._fbRoot}/roles`).first()
+    fbRoles = fbRoles.map((v) => {
       let map = cleanFirebaseMap<Role>(v)
       Object.keys(map).forEach((key: string) => {
-        map[key].uid = key
+        map[key].name = key
       })
       return RoleActions.getRoles.fulfilled.action(map)
     })
-    return p
+    return fbRoles
   }
 
   addRole(role: Role) {
     let model = RoleModel.from(role)
-    if(model.validate() === null){
-      let x = this.firebase.database.object(`${this._fbRoot}/roles/${role.uid}`)
-      let p = <Promise<any>>x.update(role)
-      p = p.then((reply) => {
+    if (model.validate() === null) {
+      let fbRole = this.firebase.database.object(`${this._fbRoot}/roles/${role.name}`)
+      delete role.name
+      let fbPromise = <Promise<any>>fbRole.set(role)
+      fbPromise = fbPromise.then(() => {
         return RoleActions.addRole.fulfilled.action(role)
       }, (e) => {
         return RoleActions.addRole.failed.action(e)
       })
-      return Observable.fromPromise(p)
+      return Observable.fromPromise(fbPromise)
     }
   }
 
-  updateRole(role: Role) {
-    let p = <Promise<any>>this.firebase.database.object(`${this._fbRoot}/roles/${role.uid}`).set(role)
-    p = p.then((reply) => {
-      return RoleActions.updateRole.fulfilled.action(role)
-    }, (e) => {
-      return RoleActions.updateRole.failed.action(e)
-    })
-    return Observable.fromPromise(p)
+  updateRole(update: Update<Role>) {
+    let previous: Role = update.previous
+    let current: Role = update.current
+    let fbRole = this.firebase.database.object(`${this._fbRoot}/roles/${previous.name}`)
+    let promise: Promise<any>
+
+    if (previous.name === current.name) {
+      delete current.name
+      promise = <Promise<any>>fbRole.set(current)
+      promise = promise.then(() => {
+        return RoleActions.updateRole.fulfilled.action(update)
+      }, (e) => {
+        return RoleActions.updateRole.failed.action(e)
+      })
+    } else {
+      promise = <Promise<any>>fbRole.remove()
+      promise = promise.then(() => {
+        let fbNewPerm = this.firebase.database.object(`${this._fbRoot}/roles/${current.name}`)
+        delete current.name
+        let newPromise = <Promise<any>>fbNewPerm.set(current)
+        return newPromise.then(() => {
+          return RoleActions.updateRole.fulfilled.action(update)
+        })
+      }, (e) => {
+        return RoleActions.updateRole.failed.action(e)
+      })
+    }
+    return Observable.fromPromise(promise)
   }
 
   removeRole(role: Role) {
-    console.log("RoleEffects", "removeRole", role)
-    let p = <Promise<any>>this.firebase.database.object(`${this._fbRoot}/roles/${role.uid}`).remove()
-    p = p.then((reply) => {
+    let fbPromise = <Promise<any>>this.firebase.database.object(`${this._fbRoot}/roles/${role.name}`).remove()
+    fbPromise = fbPromise.then(() => {
       return RoleActions.removeRole.fulfilled.action(role)
     }, (e) => {
       return RoleActions.removeRole.failed.action(e)
     })
-    return Observable.fromPromise(p)
+    return Observable.fromPromise(fbPromise)
   }
 
+  getRolePermissions() {
+    let fbRolePermissions = <Observable<any>>this.firebase.database.object(`${this._fbRoot}/role_permissions`).first()
+    fbRolePermissions = fbRolePermissions.map((v) => {
+      let map = cleanFirebaseMap<{[permission_name: string]: MappedPermission}>(v)
+      return RoleActions.getRolePermissions.fulfilled.action(map)
+    })
+    return fbRolePermissions
+  }
 
+  grantPermission(rolePermission: RolePermission) {
+    let current: MappedPermission = null
+    this.store.select((s: AuthServiceStoreState) => s.auth.role_permissions[rolePermission.role_name])
+      .subscribe((rolePermissions: ObjMap<MappedPermission>) => {
+        current = rolePermissions[rolePermission.permission_name]
+      })
+    let fbRolePermRef = this.firebase.database.object(`${this._fbRoot}/role_permissions/${rolePermission.role_name}/${rolePermission.permission_name}`)
+    delete current.name
+    let fbAddRolePromise = <Promise<any>>fbRolePermRef.set(current)
+
+    fbAddRolePromise = fbAddRolePromise.then(() => {
+      return RoleActions.grantPermissionToRole.fulfilled.action(rolePermission)
+    }, (e) => {
+      return RoleActions.grantPermissionToRole.failed.action(e)
+    })
+    return Observable.fromPromise(fbAddRolePromise)
+  }
+
+  revokePermission(rolePermission: RolePermission) {
+    console.log("RoleEffects", "revokePermission", rolePermission)
+    let fbRolePermRef = this.firebase.database.object(`${this._fbRoot}/role_permissions/${rolePermission.role_name}/${rolePermission.permission_name}`)
+    let fbPromise = <Promise<any>>fbRolePermRef.remove()
+    fbPromise = fbPromise.then(() => {
+      return RoleActions.revokePermissionFromRole.fulfilled.action(rolePermission)
+    }, (e) => {
+      return RoleActions.revokePermissionFromRole.failed.action(e)
+    })
+    return Observable.fromPromise(fbPromise)
+  }
 
   public ngOnDestroy(): void {
   }

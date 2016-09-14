@@ -20,6 +20,7 @@
     <md-list-item *ngFor="let role of roles" class="rv-role-list-item" layout-fill>
       <rv-role layout-fill
                [role]="role"
+               [permissions]="permissions"
                (change)="onChange($event)"
                (removeRole)="onRemoveRole($event)"
       ></rv-role>

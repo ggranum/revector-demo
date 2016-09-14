@@ -7,29 +7,37 @@ import {
   AuthServiceStoreState,
   SignInState,
   SignInStates,
-  UserState
+  UserState,
+  RoleState,
+  PermissionState
 } from '../../../../services/auth-service'
 
 
 @Component({
   selector: 'rv-user-list',
-  template: ` 
- <rv-user-list-component [usersObj]="users$ | async"
- (addUser)="onAddUser($event)"
- (userChange)="onUserChange($event)"
- (removeUser)="onRemoveUser($event)"
- ></rv-user-list-component>
+  template: `<rv-user-list-component
+  [usersObj]="users$ | async"
+  [rolesObj]="roles$ | async"
+  [permissionsObj]="permissions$ | async"
+  (addUser)="onAddUser($event)"
+  (userChange)="onUserChange($event)"
+  (removeUser)="onRemoveUser($event)"
+></rv-user-list-component>
 `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserListContainer {
 
   users$: Observable<UserState>
+  roles$: Observable<RoleState>
+  permissions$: Observable<PermissionState>
 
   constructor(private _store: Store<AuthServiceStoreState>) {
     _store.select((s: AuthServiceStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
 
     this.users$ = _store.select((s: AuthServiceStoreState) => s.auth.users)
+    this.roles$ = _store.select((s: AuthServiceStoreState) => s.auth.roles)
+    this.permissions$ = _store.select((s: AuthServiceStoreState) => s.auth.permissions)
   }
 
   onSignedIn(value: SignInState) {
@@ -49,7 +57,6 @@ export class UserListContainer {
   onRemoveUser(user: User) {
     this._store.dispatch(UserActions.removeUser.invoke.action(user))
   }
-
 
 
   onError(e: Error): void {

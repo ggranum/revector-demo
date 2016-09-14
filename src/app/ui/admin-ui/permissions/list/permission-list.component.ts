@@ -3,7 +3,6 @@ import {Store} from '@ngrx/store'
 import {AuthServiceState, Permission, PermissionState} from '../../../../services/auth-service'
 
 
-
 @Component({
   selector: 'rv-permission-list-component',
   templateUrl: 'permission-list.component.html',
@@ -12,42 +11,58 @@ import {AuthServiceState, Permission, PermissionState} from '../../../../service
 })
 export class PermissionListComponent {
 
-  @Input() permissionsObj:{[key:string]: PermissionState} = {}
+  @Input() permissionsObj: {[key: string]: PermissionState} = {}
 
   @Output() addPermission: EventEmitter<Permission> = new EventEmitter<Permission>(false)
-  @Output() permissionChange:EventEmitter<Permission> = new EventEmitter<Permission>(false)
+  @Output() permissionChange: EventEmitter<Permission> = new EventEmitter<Permission>(false)
   @Output() removePermission: EventEmitter<Permission> = new EventEmitter<Permission>(false)
 
-  permissions:Permission[] = []
+  permissions: Permission[] = []
+  tempIdx:number = 0
 
   constructor(private _store: Store<AuthServiceState>) {
 
   }
 
-  ngOnChanges(change){
-    if(change.permissionsObj){
+  ngOnChanges(change) {
+    if (change.permissionsObj) {
       let permissionsObj = change.permissionsObj.currentValue
-      this.permissions = Object.keys(permissionsObj).map((key:string)=>{
+      let tempPermissions:Permission[] = Object.keys(permissionsObj).map((key: string) => {
         return permissionsObj[key]
       })
+      tempPermissions.sort((a, b) => {
+        return a.orderIndex - b.orderIndex
+      })
+      this.permissions = tempPermissions
     }
   }
 
-  onRemovePermission(permission:Permission){
+  onRemovePermission(permission: Permission) {
     this.removePermission.emit(permission)
   }
 
-  onChange(permission:Permission){
-    if(permission.uid){
-      this.permissionChange.emit(permission)
-    } else{
-      this.addPermission.emit(permission)
-    }
+  onChange(permission: Permission) {
+    this.permissionChange.emit(permission)
   }
 
-  doAddPermission(){
-    let permission:Permission = { name: "", description: ""}
+  doAddPermission() {
+    let permission: Permission = {
+      name: this._nextName("Permission"),
+      description: "",
+      orderIndex: this.permissions[this.permissions.length - 1].orderIndex + 1
+    }
     this.addPermission.emit(permission)
+  }
+
+  _nextName(name:string){
+    while(this._nameExists(name + ' ' + (++this.tempIdx))) {}
+    return name + ' ' + this.tempIdx
+  }
+
+  _nameExists(name:string){
+    return this.permissions.some((permission:Permission) =>{
+      return permission.name == name
+    })
   }
 
 }

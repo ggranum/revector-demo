@@ -1,7 +1,11 @@
-import {User, UserState, UserRoleMapping, UserRolesMappings, AuthServiceState} from '../../interfaces'
+import {
+  User, UserState, UserRole, UserRolesMappings, AuthServiceState, UserPermissionsMappings,
+  UserPermission, MappedPermission
+} from '../../interfaces'
 import {UserActions} from './user.actions'
 import {TypedAction, ActionReducerSet} from '../../../../shared'
 import {generatePushID} from '../../../../shared/firebase-generate-push-id'
+import {ensureExists, pathExists, ObjMap, removeIfExists} from '../../../../shared/core-util'
 
 
 export const userReducers = new ActionReducerSet<AuthServiceState>()
@@ -76,10 +80,132 @@ const USER_ROLE_MAPPING = {
     return state
   },
 }
-
-
-userReducers.registerMapped(UserActions.addUserToRole.invoke,
+userReducers.register(UserActions.getUserRoles.invoke)
+userReducers.registerMapped(UserActions.getUserRoles.fulfilled,
   USER_ROLE_MAPPING,
-  (state: UserRolesMappings, action: TypedAction<UserRoleMapping>) => {
+  (state: UserRolesMappings, action: TypedAction<UserRolesMappings>) => {
+    return action.payload
+  })
+userReducers.registerError(UserActions.getUserRoles.failed)
+
+userReducers.register(UserActions.addUserToRole.invoke,
+  (state: AuthServiceState, action: TypedAction<UserRole>) => {
+    let userId = action.payload.user_uid
+    let roleName = action.payload.role_name
+    let path = `user_roles.${userId}.${roleName}`
+    if (!pathExists(state, path)) {
+      ensureExists(state, path, true)
+    }
+    // now update the user's permissions.
+    let permissions: ObjMap<boolean> = ensureExists(state, `role_permissions.${roleName}`, {})
+    let userPermissions: ObjMap<MappedPermission> = ensureExists(state, `user_permissions.${userId}`, {})
+    Object.keys(permissions).forEach((permissionName: string) => {
+      let userPermission: MappedPermission = userPermissions[permissionName] || {}
+      userPermission.roles = Object.assign({}, userPermission.roles)
+      userPermission.roles[roleName] = true
+      userPermissions[permissionName] = userPermission
+    })
+    state.user_permissions[userId] = userPermissions
     return state
   })
+userReducers.register(UserActions.addUserToRole.fulfilled)
+userReducers.registerError(UserActions.addUserToRole.failed)
+
+userReducers.register(UserActions.removeUserFromRole.invoke,
+  (state: AuthServiceState, action: TypedAction<UserRole>) => {
+    let userId = action.payload.user_uid
+    let roleName = action.payload.role_name
+    let path = `user_roles.${userId}.${roleName}`
+    let existed = removeIfExists(state, path)
+    if(existed){
+      state.user_roles[userId] = Object.assign({}, state.user_roles[userId])
+      let permissions: ObjMap<boolean> = ensureExists(state, `role_permissions.${roleName}`, {})
+      let userPermissions: ObjMap<MappedPermission> = ensureExists(state, `user_permissions.${userId}`, {})
+      Object.keys(permissions).forEach((permissionName: string) => {
+        let userPermission: MappedPermission = userPermissions[permissionName] || {}
+        userPermission.roles = Object.assign({}, userPermission.roles)
+        delete userPermission.roles[roleName]
+        if(Object.keys(userPermission.roles).length === 0){
+          delete userPermission.roles
+        }
+        if(userPermission.explicitlyGranted === false){
+          delete userPermission.explicitlyGranted
+        }
+        if(userPermission.explicitlyRevoked === false){
+          delete userPermission.explicitlyRevoked
+        }
+        if(Object.keys(userPermission).length === 0){
+          delete userPermissions[permissionName]
+        } else{
+          userPermissions[permissionName] = userPermission
+        }
+      })
+      state.user_permissions[userId] = Object.assign({}, userPermissions)
+    }
+    return state
+  })
+userReducers.register(UserActions.removeUserFromRole.fulfilled)
+userReducers.registerError(UserActions.removeUserFromRole.failed)
+
+
+const USER_PERMISSION_MAPPING = {
+  toMapped: (state: AuthServiceState): UserPermissionsMappings => {
+    return state.user_permissions
+  },
+  fromMapped: (state: AuthServiceState, mapped: UserPermissionsMappings): AuthServiceState => {
+    state.user_permissions = mapped
+    return state
+  },
+}
+
+userReducers.register(UserActions.getUserPermissions.invoke)
+userReducers.registerMapped(UserActions.getUserPermissions.fulfilled,
+  USER_PERMISSION_MAPPING,
+  (state: UserPermissionsMappings, action: TypedAction<UserPermissionsMappings>) => {
+    return action.payload
+  })
+userReducers.registerError(UserActions.getUserPermissions.failed)
+
+userReducers.registerMapped(UserActions.grantPermissionToUser.invoke,
+  USER_PERMISSION_MAPPING,
+  (state: UserPermissionsMappings, action: TypedAction<UserPermission>) => {
+    let newState = state
+    let userId = action.payload.user_uid
+    let permissionId = action.payload.permission_name
+    let userPermissions = newState[userId]
+    if (!userPermissions) {
+      newState = Object.assign({}, state)
+      userPermissions = {}
+    }
+    let permission = userPermissions[permissionId] || {}
+
+    permission = Object.assign({}, permission, {
+      name: action.payload.permission_name,
+      explicitlyGranted: true
+    })
+    delete permission.explicitlyRevoked
+    userPermissions[permissionId] = permission
+    newState[userId] = userPermissions
+
+    return newState
+  })
+userReducers.register(UserActions.grantPermissionToUser.fulfilled)
+userReducers.registerError(UserActions.grantPermissionToUser.failed)
+
+userReducers.registerMapped(UserActions.revokePermissionFromUser.invoke,
+  USER_PERMISSION_MAPPING,
+  (state: UserPermissionsMappings, action: TypedAction<UserPermission>) => {
+    let newState = state
+    let userId = action.payload.user_uid
+    let permissionId = action.payload.permission_name
+    if (state[userId] && state[userId][permissionId]) {
+      newState = Object.assign({}, state)
+      delete state[userId][permissionId]
+    }
+    return newState
+  })
+userReducers.register(UserActions.revokePermissionFromUser.fulfilled)
+userReducers.registerError(UserActions.revokePermissionFromUser.failed)
+
+
+

@@ -29,6 +29,7 @@ const initialState: AuthServiceState = {
   roles: {},
   permissions: {},
   role_permissions: {},
+  user_permissions: {},
   user_roles: {},
 }
 const authReducerSet: ActionReducerSet<AuthServiceState> = new ActionReducerSet<AuthServiceState>(initialState);

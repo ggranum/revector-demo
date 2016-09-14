@@ -1,9 +1,8 @@
 import {Action} from '@ngrx/store'
 import {RvError} from './core-util'
 
-
-export interface ReducerSignature<S,T> {
-  (state: S, action: TypedAction<T>): S
+export interface TypedAction<T> extends Action {
+  payload: T
 }
 
 export interface TypedActionFactorySignature<T> {
@@ -12,10 +11,6 @@ export interface TypedActionFactorySignature<T> {
 export interface TypedActionDefinition<S, T> {
   type: string,
   action: TypedActionFactorySignature<T>
-}
-
-export interface TypedAction<T> extends Action {
-  payload: T
 }
 
 export interface ActionDefinitionSignature {
@@ -62,6 +57,36 @@ export const invokableActionSet = function<S, I, M>(baseTypeKey: string): Invoka
     fulfilled: typedActionDefinition<S, M>(baseTypeKey + '  fulfilled'),
     failed: typedActionDefinition<S, RvError>(baseTypeKey + '  failed')
   }
+}
+
+
+export const updateActionDefinition = function<S, T>(type: string): TypedActionDefinition<S, T> {
+  return {
+    type: type,
+    action(payload?: T) {
+      return {
+        type: type,
+        payload: payload
+      }
+    }
+  }
+}
+
+export interface Update<T> {
+  current: T,
+  previous: T
+}
+
+export const invokableUpdateActionSet = function<S, I, M>(baseTypeKey: string): InvokableActionSet<S, I, M> {
+  return {
+    invoke: updateActionDefinition<S, I>(baseTypeKey + ' invoke'),
+    fulfilled: updateActionDefinition<S, M>(baseTypeKey + '  fulfilled'),
+    failed: updateActionDefinition<S, RvError>(baseTypeKey + '  failed')
+  }
+}
+
+export interface ReducerSignature<S,T> {
+  (state: S, action: TypedAction<T>): S
 }
 
 export interface ReducerMapping<S,M> { toMapped: (S)=>M, fromMapped: (S, M)=>S }
@@ -113,7 +138,6 @@ export class ActionReducerSet<S> {
 
   reducer<T>(): (state: S, action: TypedAction<T>) => S {
     return <T>(state: S = this._initialState, action: TypedAction<T>): S => {
-      console.log("ActionReducerSet", action.type)
       let newState: S = null
       let reducerEntry: ReducerEntry<S, any> = this._reducers[action.type]
       if (reducerEntry) {
@@ -128,7 +152,6 @@ export class ActionReducerSet<S> {
           }
         }
       } else if(!action.type.startsWith('@ngrx')) {
-        debugger
         console.log(`Missing reducer function for '${action.type}`, action)
       }
       return newState || state;

@@ -1,0 +1,16 @@
+= DEVELOPER
+
+== Terminology
+
+=== Variable Naming
+
+You will find various interfaces that refer to 'keys' or 'uid' etc. Here are the general thoughts and intended conventions behind the vairious identifier name patterns.
+
+{ [*_uid:string]: any } ::
+    The field identifier represented by *.uid is a Firebase generated identifier. See link:./src/app/shared/firebase-generate-push-id.ts[]
+{ [*_key:string]: any } ::
+    The field identifier represented by *_key is a human string. For example, Roles and Permissions use their names as their identifier.
+FooBarsMappings::
+     A one to many mapping between `Foo` and `Bars`.
+
+

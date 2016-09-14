@@ -1,10 +1,11 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core'
-import {User} from '../../../../services/auth-service'
 import {Observable} from 'rxjs'
+import {User, Role, UserRole, Permission, UserPermission, MappedPermission} from '../../../../services/auth-service'
+import {ObjMap} from '../../../../shared'
 
 
 @Component({
-  selector: 'rv-user',
+  selector: 'rv-user-component',
   templateUrl: 'user.component.html',
   styleUrls: ['user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -12,9 +13,18 @@ import {Observable} from 'rxjs'
 export class UserComponent {
 
   @Input() user: User
+  @Input() roles: Role[]
+  @Input() userRoles: ObjMap<boolean> = {}
+  @Input() permissions: Permission[]
+  @Input() userPermissions: ObjMap<MappedPermission> = {}
 
   @Output() change: Observable<User>;
   @Output() removeUser: EventEmitter<User> = new EventEmitter<User>(false)
+  @Output() addUserRole: EventEmitter<UserRole> = new EventEmitter<UserRole>(false)
+  @Output() removeUserRole: EventEmitter<UserRole> = new EventEmitter<UserRole>(false)
+  @Output() addUserPermission: EventEmitter<UserPermission> = new EventEmitter<UserPermission>(false)
+  @Output() removeUserPermission: EventEmitter<UserPermission> = new EventEmitter<UserPermission>(false)
+
 
   private _focusDebouncer: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
@@ -41,12 +51,41 @@ export class UserComponent {
     this.blur = distinct
       .filter((v) => v === false)
       .map(() => new Event('blur'))
+  }
 
-
+  ngOnChanges(change:any){
+    if(change['userPermissions']){
+    }
   }
 
   doRemoveUser() {
     this.removeUser.emit(this.user)
+  }
+
+  doToggleRole(role: Role) {
+    let userRole = {
+      role_name: role.name,
+      user_uid: this.user.uid
+    }
+    if (this.userRoles[role.name]) {
+      this.removeUserRole.emit(userRole)
+    } else {
+      this.addUserRole.emit(userRole)
+    }
+
+  }
+
+  doTogglePermission(permission: Permission) {
+    let userPermission = {
+      permission_name: permission.name,
+      user_uid: this.user.uid
+    }
+    if (this.userPermissions[permission.name]) {
+      this.removeUserPermission.emit(userPermission)
+    } else {
+      this.addUserPermission.emit(userPermission)
+    }
+
   }
 
   onChange(event: Event) {
@@ -70,9 +109,18 @@ export class UserComponent {
     this.submitted = true;
   }
 
-  // TODO: Remove this when we're done
-  get diagnostic() {
-    return JSON.stringify(this.user);
+  hasPermission(perm:Permission){
+    return !!this.userPermissions[perm.name]
+  }
+
+  isExplicitlyAssigned(perm:Permission){
+    let userPerm = this.userPermissions[perm.name]
+    return userPerm && userPerm.explicitlyGranted === true
+  }
+
+  isExplicitlyRevoked(perm:Permission){
+    let userPerm = this.userPermissions[perm.name]
+    return userPerm && userPerm.explicitlyRevoked === true
   }
 
 }

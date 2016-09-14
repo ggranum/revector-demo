@@ -1,10 +1,11 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core'
-import {Role} from '../../../../services/auth-service'
 import {Observable} from 'rxjs'
+import {RolePermission, MappedPermission, Permission, Role} from '../../../../services/auth-service'
+import {ObjMap, Update} from '../../../../shared'
 
 
 @Component({
-  selector: 'rv-role',
+  selector: 'rv-role-component',
   templateUrl: 'role.component.html',
   styleUrls: ['role.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -12,18 +13,23 @@ import {Observable} from 'rxjs'
 export class RoleComponent {
 
   @Input() role: Role
+  @Input() permissions: Permission[]
+  @Input() rolePermissions: ObjMap<MappedPermission>
 
-  @Output() change: Observable<Role>;
+  @Output() change: Observable<Update<Role>>
   @Output() removeRole: EventEmitter<Role> = new EventEmitter<Role>(false)
 
   private _focusDebouncer: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
+  @Output() addRolePermission: EventEmitter<RolePermission> = new EventEmitter<RolePermission>(false)
+  @Output() removeRolePermission: EventEmitter<RolePermission> = new EventEmitter<RolePermission>(false)
   @Output() focus: Observable<Event>
   @Output() blur: Observable<Event>
 
 
   submitted = false;
-  private _changed
+  private _changed:boolean
+  private _previous:Role
 
 
   constructor() {
@@ -35,8 +41,16 @@ export class RoleComponent {
       .map(() => new Event('focus'))
 
     this.change = distinct
-      .filter((v) => v === false && this._changed)
-      .map(() => this.role)
+      .filter((focused) => focused === false && this._changed)
+      .map(() => {
+        let change = {
+          previous: Object.assign({}, this._previous),
+          current: this.role
+        }
+        this._previous = Object.assign({}, this.role)
+        this._changed = false
+        return change
+      })
 
     this.blur = distinct
       .filter((v) => v === false)
@@ -70,9 +84,26 @@ export class RoleComponent {
     this.submitted = true;
   }
 
-  // TODO: Remove this when we're done
-  get diagnostic() {
-    return JSON.stringify(this.role);
+  doTogglePermission(permission: Permission) {
+    let rolePermission:RolePermission = {
+      permission_name: permission.name,
+      role_name: this.role.name
+    }
+    if (this.rolePermissions[permission.name]) {
+      this.removeRolePermission.emit(rolePermission)
+    } else {
+      this.addRolePermission.emit(rolePermission)
+    }
+  }
+
+  hasPermission(perm:Permission){
+    let userPerm = this.rolePermissions[perm.name]
+    return userPerm && userPerm.explicitlyGranted === true
+  }
+
+  isExplicitlyRevoked(perm:Permission){
+    let userPerm = this.rolePermissions[perm.name]
+    return userPerm && userPerm.explicitlyRevoked === true
   }
 
 }

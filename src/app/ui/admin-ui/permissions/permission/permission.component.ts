@@ -1,6 +1,7 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core'
-import {Permission} from '../../../../services/auth-service'
 import {Observable} from 'rxjs'
+import {Permission} from '../../../../services/auth-service'
+import {Update} from '../../../../shared'
 
 
 @Component({
@@ -13,7 +14,7 @@ export class PermissionComponent {
 
   @Input() permission: Permission
 
-  @Output() change: Observable<Permission>;
+  @Output() change: Observable<Update<Permission>>;
   @Output() removePermission: EventEmitter<Permission> = new EventEmitter<Permission>(false)
 
   private _focusDebouncer: EventEmitter<boolean> = new EventEmitter<boolean>(false);
@@ -23,7 +24,8 @@ export class PermissionComponent {
 
 
   submitted = false;
-  private _changed
+  private _changed:boolean
+  private _previous:Permission
 
 
   constructor() {
@@ -35,14 +37,27 @@ export class PermissionComponent {
       .map(() => new Event('focus'))
 
     this.change = distinct
-      .filter((v) => v === false && this._changed)
-      .map(() => this.permission)
+      .filter((focused) => focused === false && this._changed)
+      .map(() => {
+        let change = {
+          previous: Object.assign({}, this._previous),
+          current: this.permission
+        }
+        this._previous = Object.assign({}, this.permission)
+        this._changed = false
+        return change
+      })
 
     this.blur = distinct
       .filter((v) => v === false)
       .map(() => new Event('blur'))
+  }
 
-
+  ngOnChanges(change:any){
+    if(change['permission']){
+      this._previous = Object.assign({}, this.permission)
+      this._changed = false
+    }
   }
 
   doRemovePermission() {
@@ -68,11 +83,6 @@ export class PermissionComponent {
   onSubmit() {
     console.log("PermissionComponent", "onSubmit")
     this.submitted = true;
-  }
-
-  // TODO: Remove this when we're done
-  get diagnostic() {
-    return JSON.stringify(this.permission);
   }
 
 }

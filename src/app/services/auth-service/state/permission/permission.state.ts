@@ -1,7 +1,6 @@
 import {Permission, PermissionState, AuthServiceState} from '../../interfaces'
 import {PermissionActions} from './permission.actions'
-import {TypedAction, ActionReducerSet} from '../../../../shared'
-import {generatePushID} from '../../../../shared/firebase-generate-push-id'
+import {Update, TypedAction, ActionReducerSet} from '../../../../shared'
 
 export const permissionReducers = new ActionReducerSet<AuthServiceState>()
 
@@ -16,16 +15,22 @@ const MAPPING = {
   },
 }
 
+permissionReducers.register(PermissionActions.getPermissions.invoke)
+permissionReducers.registerMapped(PermissionActions.getPermissions.fulfilled,
+  MAPPING,
+  (state: PermissionState, action: TypedAction<PermissionState>) => {
+    state = Object.assign({}, action.payload)
+    return state
+  })
+permissionReducers.register(PermissionActions.getPermissions.failed)
+
 
 permissionReducers.registerMapped(PermissionActions.addPermission.invoke,
   MAPPING,
   (state: PermissionState, action: TypedAction<Permission>) => {
     let newState = Object.assign({}, state)
     let permission = action.payload
-    if (!permission.uid) {
-      permission.uid = generatePushID()
-      newState[permission.uid] = permission
-    }
+    newState[permission.name] = permission
     return newState
   })
 
@@ -37,28 +42,20 @@ permissionReducers.registerMapped(PermissionActions.addPermission.fulfilled,
 permissionReducers.register(PermissionActions.addPermission.failed)
 
 
-permissionReducers.register(PermissionActions.getPermissions.invoke)
-permissionReducers.registerMapped(PermissionActions.getPermissions.fulfilled,
-  MAPPING,
-  (state: PermissionState, action: TypedAction<PermissionState>) => {
-    state = Object.assign({}, action.payload)
-    return state
-  })
-permissionReducers.register(PermissionActions.getPermissions.failed)
-
-
 permissionReducers.register(PermissionActions.updatePermission.invoke)
 permissionReducers.registerMapped(PermissionActions.updatePermission.fulfilled,
   MAPPING,
-  (state: PermissionState, action: TypedAction<Permission>) => {
-    return Object.assign({}, state, {[action.payload.uid]: action.payload})
+  (state: PermissionState, action: TypedAction<Update<Permission>>) => {
+    let newState = Object.assign({}, state)
+    delete newState[action.payload.previous.name]
+    newState[action.payload.current.name] = action.payload.current
+    return newState
   })
-
 
 permissionReducers.register(PermissionActions.removePermission.invoke)
 permissionReducers.registerMapped(PermissionActions.removePermission.fulfilled, MAPPING, (state: PermissionState, action: TypedAction<Permission>) => {
   let newState = Object.assign({}, state)
-  delete newState[action.payload.uid]
+  delete newState[action.payload.name]
   return newState
 })
 

@@ -1,12 +1,11 @@
-rv-role-list /deep/ md-list md-list-item .md-list-item {
-  height:5em;
+/deep/  rv-role-list md-list md-list-item .md-list-item {
+  height:auto;
 }
 
-
-rv-role-list /deep/ .ng-valid[required], .ng-valid.required  {
+/deep/ rv-role-list .ng-valid[required], .ng-valid.required  {
   border-left: 5px solid #42A948; /* green */
 }
 
-rv-role-list /deep/ .ng-invalid:not(form)  {
+/deep/ rv-role-list .ng-invalid:not(form)  {
   border-left: 5px solid #a94442; /* red */
 }

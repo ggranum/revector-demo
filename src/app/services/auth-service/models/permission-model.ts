@@ -2,7 +2,6 @@ import {Permission} from '../interfaces'
 
 
 export class PermissionModel implements Permission {
-  uid: string
   name: string
   description: string
 
@@ -17,7 +16,6 @@ export class PermissionModel implements Permission {
     let checks = []
     let result = null
 
-    checks.push(this.checkUid())
     checks.push(this.checkName())
 
     checks.forEach((item) => {
@@ -28,16 +26,6 @@ export class PermissionModel implements Permission {
         result = Object.assign(result, item)
       }
     })
-    return result
-  }
-
-  private checkUid() {
-    let result = null
-    if (!this.uid) {
-      result = {
-        uid: {notNull: "ID cannot be empty"}
-      }
-    }
     return result
   }
 

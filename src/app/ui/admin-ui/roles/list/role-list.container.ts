@@ -7,8 +7,10 @@ import {
   AuthServiceStoreState,
   SignInState,
   SignInStates,
-  RoleState
+  RoleState,
+  PermissionState
 } from '../../../../services/auth-service'
+import {Update} from '../../../../shared/'
 
 
 @Component({
@@ -16,6 +18,7 @@ import {
   template: ` 
  <rv-role-list-component [rolesObj]="roles$ | async"
  (addRole)="onAddRole($event)"
+ [permissionsObj]="permissions$ | async"
  (roleChange)="onRoleChange($event)"
  (removeRole)="onRemoveRole($event)"
  ></rv-role-list-component>
@@ -25,11 +28,13 @@ import {
 export class RoleListContainer {
 
   roles$: Observable<RoleState>
+  permissions$: Observable<PermissionState>
 
   constructor(private _store: Store<AuthServiceStoreState>) {
     _store.select((s: AuthServiceStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
 
     this.roles$ = _store.select((s: AuthServiceStoreState) => s.auth.roles)
+    this.permissions$ = _store.select((s: AuthServiceStoreState) => s.auth.permissions)
   }
 
   onSignedIn(value: SignInState) {
@@ -42,8 +47,8 @@ export class RoleListContainer {
     this._store.dispatch(RoleActions.addRole.invoke.action(role))
   }
 
-  onRoleChange(role: Role) {
-    this._store.dispatch(RoleActions.updateRole.invoke.action(role))
+  onRoleChange(change: Update<Role>) {
+    this._store.dispatch(RoleActions.updateRole.invoke.action(change))
   }
 
   onRemoveRole(role: Role) {

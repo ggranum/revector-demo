@@ -9,21 +9,19 @@ export interface EmailPasswordCredentials {
 }
 
 export interface Permission {
-  uid?: string,
   name: string,
   description?: string
+  orderIndex?: number
 }
 
 export interface Role {
-  uid?: string,
   name: string,
   description: string
-  // list of permissions from role_permissions
 }
 
-export interface UserRoleMapping {
+export interface UserRole {
   user_uid: string
-  role_uid: string
+  role_name: string
 }
 
 export interface UserRolesMappings {
@@ -32,9 +30,57 @@ export interface UserRolesMappings {
   }
 }
 
+export interface UserPermission {
+  user_uid: string
+  permission_name: string
+}
+
+export interface RolePermission {
+  role_name: string
+  permission_name: string
+}
+
+/**
+ *
+ * Defines a permission that can be:
+ *  - [*] Manually/explicitly assigned
+ *  - [*] Assigned via the assignment of a Role
+ *  - [*] Manually/explicitly Revoked, even if it is assigned as part of a Role
+ *
+ *
+ * This data structure also retains the general awareness of the original assignment structure, sufficient to allow the
+ * reconstruction of a user's permissions from their assigned Roles.
+ *
+ * let somePermission = {
+ *    ADD_ROLE,
+ *    explicitlyGranted: true,
+ *    explicitlyRevoked: false,
+ *    roles: {
+ *      ADMINISTRATOR: true,
+ *      USER: true
+ *    },
+ *  }
+ *
+ */
+export interface MappedPermission {
+  $key?: string
+  name?: string
+  explicitlyGranted?: boolean,
+  explicitlyRevoked?: boolean,
+  roles?: {
+    [role_key: string]: boolean
+  }
+}
+
 export interface RolePermissionsMappings {
   [role_uid: string]: {
-    [permission_uid: string]: boolean
+    [permission_uid: string]: MappedPermission
+  }
+}
+
+export interface UserPermissionsMappings {
+  [user_uid: string]: {
+    [permission_uid: string]: MappedPermission
   }
 }
 
@@ -78,9 +124,12 @@ export interface AuthServiceSignInState {
 }
 
 
-export interface RoleState extends ObjMap<Role>{}
-export interface UserState extends ObjMap<User>{}
-export interface PermissionState extends ObjMap<Permission>{}
+export interface RoleState extends ObjMap<Role> {
+}
+export interface UserState extends ObjMap<User> {
+}
+export interface PermissionState extends ObjMap<Permission> {
+}
 
 
 export interface AuthServiceState {
@@ -89,6 +138,7 @@ export interface AuthServiceState {
   roles?: RoleState
   user_roles?: UserRolesMappings
   role_permissions?: RolePermissionsMappings
+  user_permissions?: RolePermissionsMappings
   users?: UserState
 }
 

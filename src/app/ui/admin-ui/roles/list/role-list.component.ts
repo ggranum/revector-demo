@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input, EventEmitter, Output} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceState, Role, RoleState} from '../../../../services/auth-service'
+import {Role, RoleState, Permission, PermissionState, AuthServiceState} from '../../../../services/auth-service'
 
 
 
@@ -13,23 +13,35 @@ import {AuthServiceState, Role, RoleState} from '../../../../services/auth-servi
 export class RoleListComponent {
 
   @Input() rolesObj:{[key:string]: RoleState} = {}
+  @Input() permissionsObj:{[key:string]: PermissionState} = {}
 
   @Output() addRole: EventEmitter<Role> = new EventEmitter<Role>(false)
   @Output() roleChange:EventEmitter<Role> = new EventEmitter<Role>(false)
   @Output() removeRole: EventEmitter<Role> = new EventEmitter<Role>(false)
 
   roles:Role[] = []
+  permissions:Permission[] = []
 
   constructor(private _store: Store<AuthServiceState>) {
 
   }
 
-  ngOnChanges(change){
+  ngOnChanges(change:any){
     if(change.rolesObj){
       let rolesObj = change.rolesObj.currentValue
       this.roles = Object.keys(rolesObj).map((key:string)=>{
         return rolesObj[key]
       })
+    }
+    if(change.permissionsObj && this.permissionsObj){
+      let permissionsObj = change.permissionsObj.currentValue
+      let tempPermissions:Permission[] = Object.keys(permissionsObj).map((key: string) => {
+        return permissionsObj[key]
+      })
+      tempPermissions.sort((a, b) => {
+        return a.orderIndex - b.orderIndex
+      })
+      this.permissions = tempPermissions
     }
   }
 
@@ -38,11 +50,7 @@ export class RoleListComponent {
   }
 
   onChange(role:Role){
-    if(role.uid){
       this.roleChange.emit(role)
-    } else{
-      this.addRole.emit(role)
-    }
   }
 
   doAddRole(){

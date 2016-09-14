@@ -8,7 +8,8 @@ import {
   SignInState,
   SignInStates,
   PermissionState
-} from '../../../../services/auth-service/index'
+} from '../../../../services/auth-service'
+import {Update} from '../../../../shared'
 
 
 
@@ -29,7 +30,6 @@ export class PermissionListContainer {
 
   constructor(private _store: Store<AuthServiceStoreState>) {
     _store.select((s: AuthServiceStoreState) => {
-      console.log("PermissionListContainer", s, s.auth)
       return s.auth.transient.signInState
     }).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
 
@@ -46,15 +46,13 @@ export class PermissionListContainer {
     this._store.dispatch(PermissionActions.addPermission.invoke.action(permission))
   }
 
-  onPermissionChange(permission: Permission) {
-    this._store.dispatch(PermissionActions.updatePermission.invoke.action(permission))
+  onPermissionChange(change: Update<Permission>) {
+    this._store.dispatch(PermissionActions.updatePermission.invoke.action(change))
   }
 
   onRemovePermission(permission: Permission) {
     this._store.dispatch(PermissionActions.removePermission.invoke.action(permission))
   }
-
-
 
   onError(e: Error): void {
     console.error("CurrentUserEffects", "onError", e)

@@ -1,3 +1,14 @@
 .rv-input {
   margin-left: 2em;
 }
+
+.rv-user-roles-wrapper, .rv-user-permissions-wrapper {
+  margin-left: 4em;
+  .rv-user-role, .rv-user-permission {
+    margin-left: 2em;
+  }
+}
+
+.rv-sub-heading {
+  font-size: larger;
+}
