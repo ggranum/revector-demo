@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/ggranum/revector-demo/compare/v0.4.0...v0.5.0) (2016-09-14)
+
+
+### Features
+
+* **User Permissions:** assigning role to users maps permissions accordingly ([50cf660](https://github.com/ggranum/revector-demo/commit/50cf660))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/ggranum/revector-demo/compare/v0.3.0...v0.4.0) (2016-09-12)
 
