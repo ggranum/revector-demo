@@ -23,7 +23,7 @@ import {MdMenuModule} from '@angular2-material/menu/menu'
 // NG RX
 import {StoreDevtoolsModule} from '@ngrx/store-devtools'
 import {StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor'
-import {StoreModule, combineReducers} from '@ngrx/store'
+import {StoreModule} from '@ngrx/store'
 import {EffectsModule} from '@ngrx/effects';
 
 // Dev modules
