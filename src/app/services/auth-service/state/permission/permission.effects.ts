@@ -42,6 +42,9 @@ export class PermissionEffects implements OnDestroy {
     let fbPermissions = <Observable<any>>this.firebase.database.object(`${this._fbRoot}/permissions`).first()
     fbPermissions = fbPermissions.map((v) => {
       let map = cleanFirebaseMap<Permission>(v, true)
+      Object.keys(map).forEach((key: string) => {
+        map[key].name = key
+      })
       return PermissionActions.getPermissions.fulfilled.action(map)
     })
     return fbPermissions

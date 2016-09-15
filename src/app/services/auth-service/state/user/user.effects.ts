@@ -8,7 +8,7 @@ import {
   AuthServiceStoreState, User, UserRole, UserRolesMappings, UserPermission,
   UserPermissionsMappings, MappedPermission
 } from '../../interfaces'
-import {TypedAction, cleanFirebaseMap, ObjMap, RvError} from '../../../../shared'
+import {TypedAction, cleanFirebaseMap, ObjMap} from '../../../../shared'
 import {UserModel} from '../../models/user-model'
 
 
@@ -17,17 +17,9 @@ export class UserEffects implements OnDestroy {
 
   private _fbRoot: string = '/auth'
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {
-    // let letters = Observable.of('a', 'b', 'c');
-    // let result = letters.mergeMap(x =>
-    //   Observable.interval(1000).map(i => x+i).take(10)
-    // );
-    // result.subscribe(x => console.log("letters:", x), (e)=>{}, () =>{
-    //   console.log("UserEffects", "done")
-    // });
-  }
+  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) { }
 
-//noinspection JSUnusedGlobalSymbols
+  //noinspection JSUnusedGlobalSymbols
   @Effect() getUsers$ = this.actions$
     .ofType(UserActions.getUsers.invoke.type)
     .switchMap((action: TypedAction<User>) => this.getUsers())
