@@ -45,7 +45,7 @@ export class RoleComponent {
       .map(() => {
         let change = {
           previous: Object.assign({}, this._previous),
-          current: this.role
+          current: Object.assign({}, this.role)
         }
         this._previous = Object.assign({}, this.role)
         this._changed = false
@@ -55,8 +55,13 @@ export class RoleComponent {
     this.blur = distinct
       .filter((v) => v === false)
       .map(() => new Event('blur'))
+  }
 
-
+  ngOnChanges(change:any){
+    if(change['role']){
+      this._previous = Object.assign({}, this.role)
+      this._changed = false
+    }
   }
 
   doRemoveRole() {
@@ -86,10 +91,10 @@ export class RoleComponent {
 
   doTogglePermission(permission: Permission) {
     let rolePermission:RolePermission = {
-      permission_name: permission.name,
-      role_name: this.role.name
+      permission_name: permission.$key,
+      role_name: this.role.$key
     }
-    if (this.rolePermissions[permission.name]) {
+    if (this.rolePermissions[permission.$key]) {
       this.removeRolePermission.emit(rolePermission)
     } else {
       this.addRolePermission.emit(rolePermission)
@@ -97,12 +102,12 @@ export class RoleComponent {
   }
 
   hasPermission(perm:Permission){
-    let userPerm = this.rolePermissions[perm.name]
+    let userPerm = this.rolePermissions[perm.$key]
     return userPerm && userPerm.explicitlyGranted === true
   }
 
   isExplicitlyRevoked(perm:Permission){
-    let userPerm = this.rolePermissions[perm.name]
+    let userPerm = this.rolePermissions[perm.$key]
     return userPerm && userPerm.explicitlyRevoked === true
   }
 

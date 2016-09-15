@@ -186,7 +186,6 @@ userReducers.registerMapped(UserActions.grantPermissionToUser.invoke,
     delete permission.explicitlyRevoked
     userPermissions[permissionId] = permission
     newState[userId] = userPermissions
-
     return newState
   })
 userReducers.register(UserActions.grantPermissionToUser.fulfilled)
@@ -198,10 +197,20 @@ userReducers.registerMapped(UserActions.revokePermissionFromUser.invoke,
     let newState = state
     let userId = action.payload.user_uid
     let permissionId = action.payload.permission_name
-    if (state[userId] && state[userId][permissionId]) {
+    let userPermissions = newState[userId]
+    if (!userPermissions) {
       newState = Object.assign({}, state)
-      delete state[userId][permissionId]
+      userPermissions = {}
     }
+    let permission = userPermissions[permissionId] || {}
+
+    permission = Object.assign({}, permission, {
+      name: action.payload.permission_name,
+      explicitlyRevoked: true
+    })
+    delete permission.explicitlyGranted
+    userPermissions[permissionId] = permission
+    newState[userId] = userPermissions
     return newState
   })
 userReducers.register(UserActions.revokePermissionFromUser.fulfilled)

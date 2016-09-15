@@ -54,7 +54,7 @@ export class RoleContainer {
     } )
 
     this.rolePermissions$ = allRolePermissions$.map(permissions => {
-      return permissions[this.role.name] || {}
+      return permissions[this.role.$key] || {}
     })
   }
 

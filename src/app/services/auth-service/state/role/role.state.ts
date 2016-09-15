@@ -19,7 +19,7 @@ const MAPPING = {
 roleReducers.registerMapped(RoleActions.addRole.invoke, MAPPING, (state: RoleState, action: TypedAction<Role>) => {
   let newState = Object.assign({}, state)
   let role = action.payload
-  newState[role.name] = role
+  newState[role.$key] = role
   return newState
 })
 
@@ -35,21 +35,22 @@ roleReducers.registerMapped(RoleActions.getRoles.fulfilled, MAPPING, (state: Rol
 roleReducers.register(RoleActions.getRoles.failed)
 
 
-roleReducers.register(RoleActions.updateRole.invoke)
-roleReducers.registerMapped(RoleActions.updateRole.fulfilled, MAPPING, (state: RoleState, action: TypedAction<Update<Role>>) => {
+
+roleReducers.registerMapped(RoleActions.updateRole.invoke, MAPPING, (state: RoleState, action: TypedAction<Update<Role>>) => {
   let newState = Object.assign({}, state)
-  delete newState[action.payload.previous.name]
-  newState[action.payload.current.name] = action.payload.current
+  delete newState[action.payload.previous.$key]
+  newState[action.payload.current.$key] = Object.assign({}, action.payload.current)
   return newState
 })
-
+roleReducers.register(RoleActions.updateRole.fulfilled)
+roleReducers.registerError(RoleActions.updateRole.failed)
 
 roleReducers.register(RoleActions.removeRole.invoke)
 roleReducers.registerMapped(RoleActions.removeRole.fulfilled,
   MAPPING,
   (state: RoleState, action: TypedAction<Role>) => {
     let newState = Object.assign({}, state)
-    delete newState[action.payload.name]
+    delete newState[action.payload.$key]
     return newState
   })
 

@@ -30,7 +30,7 @@ permissionReducers.registerMapped(PermissionActions.addPermission.invoke,
   (state: PermissionState, action: TypedAction<Permission>) => {
     let newState = Object.assign({}, state)
     let permission = action.payload
-    newState[permission.name] = permission
+    newState[permission.$key] = permission
     return newState
   })
 
@@ -47,15 +47,15 @@ permissionReducers.registerMapped(PermissionActions.updatePermission.fulfilled,
   MAPPING,
   (state: PermissionState, action: TypedAction<Update<Permission>>) => {
     let newState = Object.assign({}, state)
-    delete newState[action.payload.previous.name]
-    newState[action.payload.current.name] = action.payload.current
+    delete newState[action.payload.previous.$key]
+    newState[action.payload.current.$key] = action.payload.current
     return newState
   })
 
 permissionReducers.register(PermissionActions.removePermission.invoke)
 permissionReducers.registerMapped(PermissionActions.removePermission.fulfilled, MAPPING, (state: PermissionState, action: TypedAction<Permission>) => {
   let newState = Object.assign({}, state)
-  delete newState[action.payload.name]
+  delete newState[action.payload.$key]
   return newState
 })
 

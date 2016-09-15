@@ -64,10 +64,10 @@ export class UserComponent {
 
   doToggleRole(role: Role) {
     let userRole = {
-      role_name: role.name,
+      role_name: role.$key,
       user_uid: this.user.uid
     }
-    if (this.userRoles[role.name]) {
+    if (this.userRoles[role.$key]) {
       this.removeUserRole.emit(userRole)
     } else {
       this.addUserRole.emit(userRole)
@@ -77,10 +77,10 @@ export class UserComponent {
 
   doTogglePermission(permission: Permission) {
     let userPermission = {
-      permission_name: permission.name,
+      permission_name: permission.$key,
       user_uid: this.user.uid
     }
-    if (this.userPermissions[permission.name]) {
+    if (this.userPermissions[permission.$key]) {
       this.removeUserPermission.emit(userPermission)
     } else {
       this.addUserPermission.emit(userPermission)
@@ -110,16 +110,16 @@ export class UserComponent {
   }
 
   hasPermission(perm:Permission){
-    return !!this.userPermissions[perm.name]
+    return !!this.userPermissions[perm.$key]
   }
 
-  isExplicitlyAssigned(perm:Permission){
-    let userPerm = this.userPermissions[perm.name]
+  isExplicitlyGranted(perm:Permission){
+    let userPerm = this.userPermissions[perm.$key]
     return userPerm && userPerm.explicitlyGranted === true
   }
 
   isExplicitlyRevoked(perm:Permission){
-    let userPerm = this.userPermissions[perm.name]
+    let userPerm = this.userPermissions[perm.$key]
     return userPerm && userPerm.explicitlyRevoked === true
   }
 

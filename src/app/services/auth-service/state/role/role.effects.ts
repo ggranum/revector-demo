@@ -53,14 +53,26 @@ export class RoleEffects implements OnDestroy {
     .ofType(RoleActions.revokePermissionFromRole.invoke.type)
     .switchMap((action: TypedAction<RolePermission>) => this.revokePermission(action.payload))
 
+  toFirebaseValue(value: Role): Role {
+    return Object.assign({}, value)
+  }
+
+  mappedPermissionToFirebase(value: MappedPermission): MappedPermission {
+    let result: MappedPermission = Object.assign({}, value)
+    if(value && value.roles){
+      result.roles = Object.assign({}, value.roles)
+    }
+    return result
+  }
+
   getRoles() {
     let fbRoles = <Observable<any>>this.firebase.database.object(`${this._fbRoot}/roles`).first()
-    fbRoles = fbRoles.map((v) => {
-      let map = cleanFirebaseMap<Role>(v)
-      Object.keys(map).forEach((key: string) => {
-        map[key].name = key
+    fbRoles = fbRoles.map((roleMap:ObjMap<Role>) => {
+      delete roleMap['$key']
+      Object.keys(roleMap).forEach((key: string) => {
+        roleMap[key].$key = key
       })
-      return RoleActions.getRoles.fulfilled.action(map)
+      return RoleActions.getRoles.fulfilled.action(roleMap)
     })
     return fbRoles
   }
@@ -68,9 +80,11 @@ export class RoleEffects implements OnDestroy {
   addRole(role: Role) {
     let model = RoleModel.from(role)
     if (model.validate() === null) {
-      let fbRole = this.firebase.database.object(`${this._fbRoot}/roles/${role.name}`)
-      delete role.name
-      let fbPromise = <Promise<any>>fbRole.set(role)
+      let fireValue: Role = {
+        description: role.description
+      }
+      let fbRole = this.firebase.database.object(`${this._fbRoot}/roles/${role.$key}`)
+      let fbPromise = <Promise<any>>fbRole.set(fireValue)
       fbPromise = fbPromise.then(() => {
         return RoleActions.addRole.fulfilled.action(role)
       }, (e) => {
@@ -83,12 +97,12 @@ export class RoleEffects implements OnDestroy {
   updateRole(update: Update<Role>) {
     let previous: Role = update.previous
     let current: Role = update.current
-    let fbRole = this.firebase.database.object(`${this._fbRoot}/roles/${previous.name}`)
+    let fireValue = this.toFirebaseValue(current)
+    let fbRole = this.firebase.database.object(`${this._fbRoot}/roles/${previous.$key}`)
     let promise: Promise<any>
 
-    if (previous.name === current.name) {
-      delete current.name
-      promise = <Promise<any>>fbRole.set(current)
+    if (previous.$key === current.$key) {
+      promise = <Promise<any>>fbRole.set(fireValue)
       promise = promise.then(() => {
         return RoleActions.updateRole.fulfilled.action(update)
       }, (e) => {
@@ -97,9 +111,8 @@ export class RoleEffects implements OnDestroy {
     } else {
       promise = <Promise<any>>fbRole.remove()
       promise = promise.then(() => {
-        let fbNewPerm = this.firebase.database.object(`${this._fbRoot}/roles/${current.name}`)
-        delete current.name
-        let newPromise = <Promise<any>>fbNewPerm.set(current)
+        let fbNewPerm = this.firebase.database.object(`${this._fbRoot}/roles/${current.$key}`)
+        let newPromise = <Promise<any>>fbNewPerm.set(fireValue)
         return newPromise.then(() => {
           return RoleActions.updateRole.fulfilled.action(update)
         })
@@ -111,7 +124,7 @@ export class RoleEffects implements OnDestroy {
   }
 
   removeRole(role: Role) {
-    let fbPromise = <Promise<any>>this.firebase.database.object(`${this._fbRoot}/roles/${role.name}`).remove()
+    let fbPromise = <Promise<any>>this.firebase.database.object(`${this._fbRoot}/roles/${role.$key}`).remove()
     fbPromise = fbPromise.then(() => {
       return RoleActions.removeRole.fulfilled.action(role)
     }, (e) => {
@@ -130,14 +143,14 @@ export class RoleEffects implements OnDestroy {
   }
 
   grantPermission(rolePermission: RolePermission) {
-    let current: MappedPermission = null
+    let fireValue: MappedPermission
     this.store.select((s: AuthServiceStoreState) => s.auth.role_permissions[rolePermission.role_name])
       .subscribe((rolePermissions: ObjMap<MappedPermission>) => {
-        current = rolePermissions[rolePermission.permission_name]
+        let current: MappedPermission = rolePermissions[rolePermission.permission_name]
+        fireValue = this.mappedPermissionToFirebase(current)
       })
     let fbRolePermRef = this.firebase.database.object(`${this._fbRoot}/role_permissions/${rolePermission.role_name}/${rolePermission.permission_name}`)
-    delete current.name
-    let fbAddRolePromise = <Promise<any>>fbRolePermRef.set(current)
+    let fbAddRolePromise = <Promise<any>>fbRolePermRef.set(fireValue)
 
     fbAddRolePromise = fbAddRolePromise.then(() => {
       return RoleActions.grantPermissionToRole.fulfilled.action(rolePermission)
@@ -148,7 +161,6 @@ export class RoleEffects implements OnDestroy {
   }
 
   revokePermission(rolePermission: RolePermission) {
-    console.log("RoleEffects", "revokePermission", rolePermission)
     let fbRolePermRef = this.firebase.database.object(`${this._fbRoot}/role_permissions/${rolePermission.role_name}/${rolePermission.permission_name}`)
     let fbPromise = <Promise<any>>fbRolePermRef.remove()
     fbPromise = fbPromise.then(() => {

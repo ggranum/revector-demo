@@ -5,13 +5,13 @@
         layout-align="space-between center">
 
     <div class="rv-permission-inputs-wrapper" layout="row" flex="80" layout-align="space-between start">
-      <md-input [(ngModel)]="permission.name" name="name" #fName="ngModel"
+      <md-input [(ngModel)]="permission.$key" name="name" #fName="ngModel"
                 class="rv-input"
                 dividerColor="accent"
-                flex="30"
+                flex="40"
                 [type]="'text'"
-                required minlength="5"
-                value="{{permission.name}}"
+                required minlength="2"
+                value="{{permission.$key}}"
                 placeholder="Name"
                 (change)="onChange($event)"
                 (focus)="onFocus($event)"
@@ -20,9 +20,8 @@
       <md-input [(ngModel)]="permission.description" name="description" #fDescription="ngModel"
                 class="rv-description rv-input"
                 dividerColor="accent"
-                flex="70"
+                flex="60"
                 [type]="'text'"
-                minlength="8"
                 value="{{permission.description}}"
                 (change)="onChange($event)"
                 (focus)="onFocus($event)"

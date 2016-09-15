@@ -9,14 +9,15 @@ export interface EmailPasswordCredentials {
 }
 
 export interface Permission {
-  name: string,
+  $key?: string
   description?: string
   orderIndex?: number
 }
 
 export interface Role {
-  name: string,
+  $key?: string
   description: string
+  orderIndex?: number
 }
 
 export interface UserRole {
@@ -64,7 +65,6 @@ export interface RolePermission {
  */
 export interface MappedPermission {
   $key?: string
-  name?: string
   explicitlyGranted?: boolean,
   explicitlyRevoked?: boolean,
   roles?: {
@@ -72,10 +72,20 @@ export interface MappedPermission {
   }
 }
 
+
 export interface RolePermissionsMappings {
   [role_uid: string]: {
     [permission_uid: string]: MappedPermission
   }
+}
+
+/**
+ * @todo ggranum: Implement a separation between revoked and granted permissions, so that
+ * permission checking can base 'has permission' checks on a simple existence check against the one data structure.
+ */
+export interface RolePermissions {
+  grants: RolePermissionsMappings,
+  revocations: RolePermissionsMappings
 }
 
 export interface UserPermissionsMappings {
