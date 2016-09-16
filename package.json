@@ -69,7 +69,7 @@
     "@ngrx/store-log-monitor": "3.0.2",
     "@types/hammerjs": "2.0.32",
     "@types/whatwg-fetch": "0.0.30",
-    "angularfire2": "2.0.0-beta.4",
+    "angularfire2": "2.0.0-beta.5-preview",
     "asciidoctorjs-web-repack": "^1.5.5-2.4",
     "core-js": "2.4.1",
     "firebase": "3.4.0",
