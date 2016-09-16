@@ -1,0 +1,5 @@
+= Admin UI
+
+A user management console that consumes events from @revector/services/auth-services to provide a simple but usable user management console.
+
+

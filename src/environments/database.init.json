@@ -1,0 +1,206 @@
+{
+  "auth" : {
+    "permissions" : {
+      "ADD PERMISSION" : {
+        "description" : "",
+        "orderIndex" : 1
+      },
+      "ADD ROLE" : {
+        "description" : "",
+        "name" : "ADD ROLE",
+        "orderIndex" : 10
+      },
+      "ADD USER" : {
+        "description" : "",
+        "orderIndex" : 4
+      },
+      "ASSIGN ADMIN ROLE" : {
+        "description" : "",
+        "orderIndex" : 15
+      },
+      "GRANT USER PERMISSION" : {
+        "description" : "",
+        "orderIndex" : 13
+      },
+      "MODIFY PERMISSION" : {
+        "description" : "",
+        "orderIndex" : 2
+      },
+      "MODIFY ROLE" : {
+        "description" : "",
+        "name" : "MODIFY ROLE",
+        "orderIndex" : 11
+      },
+      "MODIFY USER" : {
+        "description" : "",
+        "orderIndex" : 5
+      },
+      "REMOVE PERMISSION" : {
+        "description" : "",
+        "orderIndex" : 3
+      },
+      "REMOVE ROLE" : {
+        "description" : "",
+        "name" : "REMOVE ROLE",
+        "orderIndex" : 12
+      },
+      "REMOVE USER" : {
+        "description" : "",
+        "name" : "REMOVE USER",
+        "orderIndex" : 6
+      },
+      "REVOKE USER PERMISSION" : {
+        "description" : "",
+        "orderIndex" : 14
+      }
+    },
+    "role_permissions" : {
+      "Administrator" : {
+        "ADD PERMISSION" : {
+          "explicitlyGranted" : true
+        },
+        "ADD ROLE" : {
+          "explicitlyGranted" : true,
+          "name" : "ADD ROLE"
+        },
+        "ADD USER" : {
+          "explicitlyGranted" : true,
+          "name" : "ADD USER"
+        },
+        "GRANT USER PERMISSION" : {
+          "explicitlyGranted" : true,
+          "name" : "GRANT USER PERMISSION"
+        },
+        "MODIFY PERMISSION" : {
+          "explicitlyGranted" : true
+        },
+        "MODIFY ROLE" : {
+          "explicitlyGranted" : true,
+          "name" : "MODIFY ROLE"
+        },
+        "MODIFY USER" : {
+          "explicitlyGranted" : true,
+          "name" : "MODIFY USER"
+        },
+        "REMOVE PERMISSION" : {
+          "explicitlyGranted" : true
+        },
+        "REMOVE ROLE" : {
+          "explicitlyGranted" : true,
+          "name" : "REMOVE ROLE"
+        },
+        "REMOVE USER" : {
+          "explicitlyGranted" : true,
+          "name" : "REMOVE USER"
+        },
+        "REVOKE USER PERMISSION" : {
+          "explicitlyGranted" : true,
+          "name" : "REVOKE USER PERMISSION"
+        }
+      },
+      "Author" : {
+        "ADD USER" : {
+          "explicitlyGranted" : true
+        },
+        "MODIFY USER" : {
+          "explicitlyGranted" : true
+        },
+        "REMOVE USER" : {
+          "explicitlyGranted" : true
+        }
+      },
+      "SuperAdmin" : {
+        "ADD PERMISSION" : {
+          "explicitlyGranted" : true,
+          "name" : "ADD PERMISSION"
+        },
+        "ADD ROLE" : {
+          "explicitlyGranted" : true,
+          "name" : "ADD ROLE"
+        },
+        "ADD USER" : {
+          "explicitlyGranted" : true,
+          "name" : "ADD USER"
+        },
+        "ASSIGN ADMIN ROLE" : {
+          "explicitlyGranted" : true,
+          "name" : "ASSIGN ADMIN ROLE"
+        },
+        "GRANT USER PERMISSION" : {
+          "explicitlyGranted" : true,
+          "name" : "GRANT USER PERMISSION"
+        },
+        "MODIFY PERMISSION" : {
+          "explicitlyGranted" : true,
+          "name" : "MODIFY PERMISSION"
+        },
+        "MODIFY ROLE" : {
+          "explicitlyGranted" : true,
+          "name" : "MODIFY ROLE"
+        },
+        "MODIFY USER" : {
+          "explicitlyGranted" : true,
+          "name" : "MODIFY USER"
+        },
+        "REMOVE PERMISSION" : {
+          "explicitlyGranted" : true,
+          "name" : "REMOVE PERMISSION"
+        },
+        "REMOVE ROLE" : {
+          "explicitlyGranted" : true,
+          "name" : "REMOVE ROLE"
+        },
+        "REMOVE USER" : {
+          "explicitlyGranted" : true,
+          "name" : "REMOVE USER"
+        },
+        "REVOKE USER PERMISSION" : {
+          "explicitlyGranted" : true,
+          "name" : "REVOKE USER PERMISSION"
+        }
+      }
+    },
+    "roles" : {
+      "Administrator" : {
+        "description" : "Create and administer users and system configuration."
+      },
+      "Anonymous" : {
+        "description" : "Can register for an account only"
+      },
+      "SuperAdmin" : {
+        "description" : "Can create other admins."
+      },
+      "User" : {
+        "description" : "General peeps"
+      }
+    },
+    "user_permissions" : {
+      "TeOexMl6ulM27TpKaEouRvGn5H93" : {
+        "ADD PERMISSION" : {
+          "explicitlyGranted" : true
+        },
+        "ADD ROLE" : {
+          "explicitlyGranted" : true
+        },
+        "MODIFY PERMISSION" : {
+          "explicitlyRevoked" : true,
+          "name" : "MODIFY PERMISSION"
+        },
+        "REMOVE PERMISSION" : {
+          "explicitlyGranted" : true
+        },
+        "REMOVE ROLE" : {
+          "explicitlyGranted" : true
+        }
+      }
+    },
+    "users" : {
+      "TeOexMl6ulM27TpKaEouRvGn5H93" : {
+        "createdMils" : 1472547955944,
+        "displayName" : "admin",
+        "email" : "admin@example.com",
+        "uid" : "TeOexMl6ulM27TpKaEouRvGn5H93"
+      }
+    }
+  }
+}

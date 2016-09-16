@@ -6,48 +6,164 @@ endif::[]
 
 == About
 
-Demo for ReVector components. It would be spiffy to integrate this into the revector project itself. Sadly there are issues with making the build systems play nice.
+Demo for https://github.com/ggranum/revector[ReVector] components. Currently hosts all source for ReVector due to https://github.com/angular/angular-cli/issues/1465[angular/angular-cli issue 1465]
 
-== Use
+This project uses https://angular.io[Angular2], https://firebase.google.com[Firebase], and https://github.com/ngrx/store[@ngrx] to create 'reactive' style modules that can be dropped into projects that make use of similar features.
 
-@todo
+
+The flagship module at the moment is the Authentication & Authorization Module - AKA User Management. Check it out [here]
+
+== Getting Started
+
+
+=== Using ReVector-Demo to bootstrap your new project
+
+You can use this project as a quick-start / bootstrap for your own project. You will want to copy this ReVector-Demo project into a new director and then `git init` that. Something like:
+
+[source, bash]
+> cd ~/github/MyProjects
+> git clone git@github.com:ggranum/revector-demo.git SomeNewProject
+> cd SomeNewProject
+> rm -rf ./.git
+> git init
+> git add .
+> git commit -m "Initial Commit"
+
+
+Or just download the https://github.com/ggranum/revector-demo/archive/master.zip[zip file] and expand it into the directory of your choice.
+
+[small]##(side note: while we're waiting on https://github.com/angular/angular-cli/issues/1465[angular/angular-cli issue 1465] this will mean having a lot of extra 3rd party code in your project)##
+
+=== NPM Install
+
+Whether you're just playing or are using this project as a bootstrap, you'll need to install all the toys before you can do much. Just run
+
+[source, bash]
+npm install
+
+
+There are a handful of tools that are usually installed globally included in the devDependencies. Global NPM installs should be discouraged, as keeping versions in sync is a pain. It is better to create aliases to locally installed versions of tool libraries, or reference them via scripts in the package.json file.
+
+
+To create aliases for the tools used by this project, execute the following:
+
+[source, bash]
+echo source ~/.bash_aliases >> ~/.bashrc
+echo alias firebase="./node_modules/.bin/firebase" >> ~/.bash_aliases
+echo alias ng="./node_modules/.bin/ng"  >> ~/.bash_aliases
+source ~/.bash_aliases
+
+
+The use of a bash_aliases file is optional, but often calling `source` on ~/.bashrc repeatedly isn't completely side effect free (e.g. `path` becoming very, very, very long), and who has the energy to fix that?
+
+The above use of aliases does restrict the use of these tools to the base directory of active projects. In practice this is rarely a problem.
+
+This can also be solved via NPM scripts, which we've provided for this project. To call `ng serve` via the script you need to instead call the npm script we've provided (see 'scripts' in link:package.json[]):
+
+[source, bash]
+npm run ng -- serve
+
+Note the `--` before `serve`. This is how you pass arguments to an NPM script.
+
+Generally speaking, adding an alias is more developer friendly. But when that's not possible npm scripts are there to fall back on.
+
+=== Create and configure your firebase project
+
+The backend is provided by Firebase. So you'll need a firebase project. Create one here: https://console.firebase.google.com/.
+
+Once you've created the project, open it to the overview page (if it wasn't opened for you: https://console.firebase.google.com/project/${YourProject}/overview) and click 'Add Firebase to your web app'. You'll be given a popup that contains your Firebase configuration.
+
+==== Firebase API Configuration: environment.local.ts
+Back in your copy of ReVector-Demo, navigate to './src/environments' and create a new file named 'environment.local.ts'. Paste your firebase credentials in so the file looks like the following:
+
+[source, javascript]
+
+export const noCommitEnvironment = {
+  firebaseConfig: {
+    apiKey: "your-key",
+    authDomain: "yourDomain",
+    databaseURL: "https://yourdomain.firebaseio.com",
+    storageBucket: "yourdomain.appspot.com",
+    messagingSenderId: "yourSenderId"
+  }
+};
+
+==== Initialize your Firebase project
+
+Right now you have no data stored in your firebase project (*NOTE* if this is not the case, make backups or go start a new project!). The User Management console has a bit of a boot-strap issue, as you need certain permissions in order to assign permissions to User's... but if you don't have any user's with those rights... Exactly. So we will bypass the ReVector-Demo admin panel for this first bit of configuration
+
+===== The Firebase CLI
+
+One of the 3rd party tools installed by NPM is the https://firebase.google.com/docs/cli/#administrative_commands[Firebase CLI] tool. We added an alias for it above.  We're going to use it here to push our initial data into our firebase project directly. But first you need to update the .firebaserc file with the name of your firebase project.
+
+First, list your firebase projects:
+
+[source, bash]
+> firebase list
+
+You'll probably be told to login. And once you do (and re-run 'list') you'll get something that looks like this:
+
+[source, bash]
+┌────────────────────────┬────────────────────────────┬─────────────┐
+│ Name                   │ Project ID / Instance      │ Permissions │
+├────────────────────────┼────────────────────────────┼─────────────┤
+│ ReVectorDemo (current) │ revectordemo               │ Owner       │
+└────────────────────────┴────────────────────────────┴─────────────┘
+
+Now open link:.firebaserc[] and replace 'revectordemo' with the *Project ID* of your project.
+
+With that done, we should now be ready to push our initial data:
+
+[source, bash]
+> firebase database:update "/" ./src/environments/database.init.json
+
+We could have used either push or set, but chose update to reduce the risk of frying you existing data for those readers who may rush through docs without reading carefully :~)
+
+
+==== Building and deploying: Production
+
+We're going straight to the production build first, then we'll walk back to the development builds. This is partly to be certain that the production build works before you change any code. A lot of the supporting tools, such as Angular 2 and the Angular CLI, are only now starting to settle down into stable libraries, so breakage is quite possible.
+
+To deploy your project to Firebase hosting we just need to run two commands:
+
+[source, bash]
+> ng build -prod
+> firebase deploy
+
+
+Magic, no?
+
+==== Building and deploying: Development
+
+There are two development builds that will watch your code for changes by default. Well, two that we use. You can read up on the https://github.com/angular/angular-cli[Angular CLI] for more details if you wish (hint: you should probably do this eventually - it's really very powerful and it will save you a TONNE of time creating new components and routes!)
+
+===== ng serve
+
+When you're working on UI widgets, you'll probably want this build:
+
+[source, bash]
+> ng serve
+
+It starts builds your project and starts a server, then watches for changes. It includes live-reload, so your browser will update in the background each time the build completes (which is to say, after each change you make).
+
+===== ng test
+
+For editing service oriented code, ng test is where it's at:
+
+[source, bash]
+> ng test
+
+Builds your code and runs your unit tests (using Karma). Rebuilds on changes and runs the tests again. Does development get any better?
 
 == Contributing
 
 @todo
 
-=== Building
-
-Create the local environment file (./src/environments/environment.local.ts) and add your firebase config to it:
-
-[source, javascript]
-/**
- * Environment that does not get committed to source control
- */
-export const noCommitEnvironment = {
-  firebaseConfig: {
-    apiKey: "$KEY",
-    authDomain: "$DOMAIN.firebaseapp.com",
-    databaseURL: "https://$DOMAIN.firebaseio.com",
-    storageBucket: "$DOMAIN.appspot.com",
-  }
-};
-
-Then:
-
-[source, bash]
-npm install
-ng serve
-
-You'll need to install angular-cli globally if you haven't already. Or (as I prefer to do) create an alias:
-
-[source, bash]
-echo alias ng="./node_modules/.bin/ng" >> ~/.bash_aliases
-source ~/.bash_aliases
 
 === Running unit tests
 
-@todo
+[source, bash]
+ng test
 
 === Running end-to-end tests
 
