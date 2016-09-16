@@ -48,19 +48,19 @@ export class UserModel implements User {
 
   private checkName() {
     let result = null
-    if (!name) {
+    if (!this.name) {
       result = {
         name: {
           notNull: "Value cannot be null"
         }
       }
-    } else if (name.length < 4) {
+    } else if (this.name.length < 4) {
       result = {
         name: {
           minLength: {
             message: "Value too short",
             minLength: 4,
-            actual: name.length
+            actual: this.name.length
           }
         }
       }

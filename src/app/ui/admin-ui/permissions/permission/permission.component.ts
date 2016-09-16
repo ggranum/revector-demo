@@ -41,7 +41,7 @@ export class PermissionComponent {
       .map(() => {
         let change = {
           previous: Object.assign({}, this._previous),
-          current: this.permission
+          current: Object.assign({}, this.permission)
         }
         this._previous = Object.assign({}, this.permission)
         this._changed = false

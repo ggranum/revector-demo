@@ -18,7 +18,7 @@ export class PermissionListComponent {
   @Output() removePermission: EventEmitter<Permission> = new EventEmitter<Permission>(false)
 
   permissions: Permission[] = []
-  tempIdx:number = 0
+  private _tempIdx:number = 0
 
   constructor(private _store: Store<AuthServiceState>) {
 
@@ -47,7 +47,7 @@ export class PermissionListComponent {
 
   doAddPermission() {
     let permission: Permission = {
-      name: this._nextName("Permission"),
+      $key: this._nextName("Permission"),
       description: "",
       orderIndex: this.permissions[this.permissions.length - 1].orderIndex + 1
     }
@@ -55,13 +55,13 @@ export class PermissionListComponent {
   }
 
   _nextName(name:string){
-    while(this._nameExists(name + ' ' + (++this.tempIdx))) {}
-    return name + ' ' + this.tempIdx
+    while(this._nameExists(name + ' ' + (++this._tempIdx))) {}
+    return name + ' ' + this._tempIdx
   }
 
   _nameExists(name:string){
     return this.permissions.some((permission:Permission) =>{
-      return permission.name == name
+      return permission.$key == name
     })
   }
 

@@ -22,6 +22,8 @@ export class RoleListComponent {
   roles:Role[] = []
   permissions:Permission[] = []
 
+  private _tempIdx = 0
+
   constructor(private _store: Store<AuthServiceState>) {
 
   }
@@ -53,9 +55,25 @@ export class RoleListComponent {
       this.roleChange.emit(role)
   }
 
-  doAddRole(){
-    let role:Role = { name: "", description: ""}
+  doAddRole() {
+    let role: Role = {
+      $key: this._nextName("Role"),
+      description: "",
+      orderIndex: this.roles[this.roles.length - 1].orderIndex + 1
+    }
     this.addRole.emit(role)
   }
+
+  _nextName(name:string){
+    while(this._nameExists(name + ' ' + (++this._tempIdx))) {}
+    return name + ' ' + this._tempIdx
+  }
+
+  _nameExists(name:string){
+    return this.roles.some((role:Role) =>{
+      return role.$key == name
+    })
+  }
+
 
 }
