@@ -1,9 +1,5 @@
 = ReVector Demo
 
-ifdef::env-github[]
-image:https://img.shields.io/badge/release-standard%20version-brightgreen.svg[Standard Version, link=https://github.com/conventional-changelog/standard-version]
-endif::[]
-
 == About
 
 Demo for https://github.com/ggranum/revector[ReVector] components. Currently hosts all source for ReVector due to https://github.com/angular/angular-cli/issues/1465[angular/angular-cli issue 1465]
