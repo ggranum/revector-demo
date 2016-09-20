@@ -5,7 +5,7 @@ import {Actions, Effect} from '@ngrx/effects'
 import {Observable} from 'rxjs'
 import {PermissionActions} from './permission.actions'
 import {AngularFire} from 'angularfire2'
-import {TypedAction, ObjMap, Update} from '../../../../shared'
+import {TypedAction, ObjMap, Update} from '@revector/shared'
 import {PermissionModel} from '../../models/permission-model'
 
 

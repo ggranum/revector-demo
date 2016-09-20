@@ -19,6 +19,24 @@
     ],
     "types": [
       "jasmine"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@revector/auth-service": [
+        "./app/services/auth-service"
+      ],
+      "@revector/shared": [
+        "./app/shared"
+      ],
+      "@revector/admin-ui": [
+        "./app/ui/admin-ui"
+      ],
+      "@revector/email-password-top-nav-login": [
+        "./app/ui/email-password-top-nav-login"
+      ],
+      "@revector/asciidoctor-panel": [
+        "./app/ui/asciidoctor-panel"
+      ]
+    }
   }
 }

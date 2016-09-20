@@ -1,6 +1,6 @@
 import {Permission, PermissionState, AuthServiceState} from '../../interfaces'
 import {PermissionActions} from './permission.actions'
-import {Update, TypedAction, ActionReducerSet} from '../../../../shared'
+import {Update, TypedAction, ActionReducerSet} from '@revector/shared'
 
 export const permissionReducers = new ActionReducerSet<AuthServiceState>()
 

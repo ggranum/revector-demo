@@ -8,8 +8,8 @@ import {
   SignInState,
   SignInStates,
   PermissionState
-} from '../../../../services/auth-service'
-import {Update} from '../../../../shared'
+} from '@revector/auth-service'
+import {Update} from '@revector/shared'
 
 
 @Component({

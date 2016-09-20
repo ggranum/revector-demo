@@ -2,7 +2,11 @@
 import {BrowserModule} from '@angular/platform-browser'
 import {NgModule} from '@angular/core'
 import {CommonModule} from '@angular/common'
-import {AngularFireModule, AuthMethods, AuthProviders} from 'angularfire2'
+import {
+  AngularFireModule,
+  AuthMethods,
+  AuthProviders
+} from 'angularfire2'
 
 // Material design
 import {MdButtonModule} from '@angular2-material/button/button'
@@ -22,22 +26,32 @@ import {MdMenuModule} from '@angular2-material/menu/menu'
 
 // NG RX
 import {StoreDevtoolsModule} from '@ngrx/store-devtools'
-import {StoreLogMonitorModule, useLogMonitor} from '@ngrx/store-log-monitor'
+import {
+  StoreLogMonitorModule,
+  useLogMonitor
+} from '@ngrx/store-log-monitor'
 import {StoreModule} from '@ngrx/store'
 import {EffectsModule} from '@ngrx/effects';
 
 // Dev modules
-import {RvAsciidoctorPanelModule} from './ui/asciidoctor-panel';
-import {AuthModule, AuthReducers} from './services/auth-service'
-import {AdminUiModule} from "./ui/admin-ui";
-import {SimpleTopNavLoginModule} from './ui/email-password-top-nav-login';
+import {RvAsciidoctorPanelModule} from '@revector/asciidoctor-panel';
+import {
+  AuthModule,
+  AuthReducers,
+  CurrentUserEffects,
+  RoleEffects,
+  PermissionEffects,
+  UserEffects
+} from '@revector/auth-service'
+import {AdminUiModule} from "@revector/admin-ui";
+import {SimpleTopNavLoginModule} from '@revector/email-password-top-nav-login';
 
 
 // Our Components
 import {environment} from '../environments/environment';
 import {AppContainer} from './app.container'
 import {AppComponent} from './app.component'
-import {CurrentUserEffects, RoleEffects, PermissionEffects, UserEffects} from './services/auth-service/state'
+
 
 const firebaseConfig = environment.firebaseConfig
 

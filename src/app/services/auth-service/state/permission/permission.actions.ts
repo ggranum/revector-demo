@@ -1,9 +1,8 @@
 import {Permission, PermissionState} from '../../interfaces'
 import {
   ActionDefinition, InvokableActionSet, actionDefinition,
-  invokableActionSet
-} from '../../../../shared'
-import {Update} from '../../../../shared/rv-ngrx-util'
+  invokableActionSet, Update
+} from '@revector/shared'
 
 const PERMISSION_PREFIX = '[Auth.permission] '
 

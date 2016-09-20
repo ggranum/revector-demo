@@ -11,8 +11,8 @@ import {
   MappedPermission,
   Permission,
   RolePermission,
-} from '../../../../services/auth-service'
-import {ObjMap} from '../../../../shared'
+} from '@revector/auth-service'
+import {ObjMap} from '@revector/shared'
 
 
 @Component({

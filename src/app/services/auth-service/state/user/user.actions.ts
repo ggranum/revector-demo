@@ -2,7 +2,7 @@ import {User, UserRole, UserState, UserRolesMappings, UserPermissionsMappings, U
 import {
   ActionDefinition, InvokableActionSet, actionDefinition,
   invokableActionSet
-} from '../../../../shared'
+} from '@revector/shared'
 
 const USER_PREFIX = '[Auth.user] '
 

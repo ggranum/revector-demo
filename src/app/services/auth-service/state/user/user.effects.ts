@@ -13,7 +13,7 @@ import {
   UserPermissionsMappings,
   MappedPermission
 } from '../../interfaces'
-import {TypedAction, cleanFirebaseMap, ObjMap} from '../../../../shared'
+import {TypedAction, cleanFirebaseMap, ObjMap} from '@revector/shared'
 import {UserModel} from '../../models/user-model'
 
 

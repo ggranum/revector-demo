@@ -6,7 +6,7 @@ import {Observable} from 'rxjs'
 import {AuthServiceStoreState, Role, RolePermission, MappedPermission, RolePermissionsMappings} from '../../interfaces'
 import {RoleActions} from './role.actions'
 import {RoleModel} from '../../models/role-model'
-import {ObjMap, TypedAction, cleanFirebaseMap, Update} from '../../../../shared'
+import {ObjMap, TypedAction, cleanFirebaseMap, Update} from '@revector/shared'
 
 
 @Injectable()

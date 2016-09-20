@@ -1,7 +1,6 @@
 import {Role, RoleState, AuthServiceState, RolePermissionsMappings, RolePermission} from '../../interfaces'
 import {RoleActions} from './role.actions'
-import {TypedAction, ActionReducerSet} from '../../../../shared'
-import {Update} from '../../../../shared/rv-ngrx-util'
+import {TypedAction, ActionReducerSet, Update} from '@revector/shared'
 
 
 export const roleReducers = new ActionReducerSet<AuthServiceState>()

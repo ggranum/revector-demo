@@ -19,7 +19,7 @@ let reducers = {
 }
 
 
-describe('Auth-services.state.current-user', () => {
+describe('Auth-services.current-user.state', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [],
@@ -28,10 +28,6 @@ describe('Auth-services.state.current-user', () => {
       ],
     })
   })
-
-  it('Loads the ', () => {
-    expect(1).toBeTruthy();
-  });
 
   it('on "signIn.invoke", sets the signInState to unknown and clears user info',
     inject([Store], (_store: Store<AuthServiceStoreState>) => {

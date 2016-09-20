@@ -5,8 +5,7 @@ import {
   actionDefinition,
   invokableActionSet,
   Update
-} from '../../../../shared'
-import {} from '../../../../shared/rv-ngrx-util'
+} from '@revector/shared'
 
 const ROLE_PREFIX = '[Auth.role] '
 export interface RoleActionsIF {

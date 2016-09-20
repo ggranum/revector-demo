@@ -1,5 +1,5 @@
 import {User, AuthServiceSignInState, EmailPasswordCredentials} from '../../interfaces'
-import {TypedActionDefinition, InvokableActionSet, typedActionDefinition, invokableActionSet} from '../../../../shared'
+import {TypedActionDefinition, InvokableActionSet, typedActionDefinition, invokableActionSet} from '@revector/shared'
 
 export const CURRENT_USER_PREFIX = '[Auth.current-user] '
 

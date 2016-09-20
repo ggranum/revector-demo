@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input, EventEmitter, Output} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {Role, RoleState, Permission, PermissionState, AuthServiceState} from '../../../../services/auth-service'
+import {Role, RoleState, Permission, PermissionState, AuthServiceState} from '@revector/auth-service'
 
 
 @Component({

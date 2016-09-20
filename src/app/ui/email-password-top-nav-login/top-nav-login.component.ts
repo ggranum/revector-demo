@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceStoreState, SignInStates, SignInState, CurrentUserActions} from '../../services/auth-service';
+import {AuthServiceStoreState, SignInStates, SignInState, CurrentUserActions} from '@revector/auth-service';
 
 
 @Component({

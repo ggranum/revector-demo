@@ -1,4 +1,4 @@
-import {ActionReducerSet} from '../../../shared/rv-ngrx-util'
+import {ActionReducerSet} from '@revector/shared'
 import {AuthServiceState, SignInStates} from '../interfaces'
 import {userReducers} from './user/user.state'
 import {currentUserReducers} from './current-user/current-user.state'

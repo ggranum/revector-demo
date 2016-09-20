@@ -9,7 +9,7 @@ import {
   AuthServiceState,
   User,
   UserState
-} from '../../../../services/auth-service'
+} from '@revector/auth-service'
 
 
 @Component({

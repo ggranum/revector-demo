@@ -1,20 +1,18 @@
 import {Injectable, OnDestroy} from '@angular/core'
 import {Observable} from 'rxjs'
 import {Store} from '@ngrx/store'
-
-import {AuthServiceCIF, UserAuthTokenIF, EmailPasswordCredentials} from '../../service/auth.service.interface'
-import {CurrentUserActions} from './current-user.actions'
-import {AuthServiceStoreState, SignInStates, AuthServiceState, User} from '../../interfaces'
 import {Actions, Effect} from '@ngrx/effects'
-import {TypedAction} from '../../../../shared/rv-ngrx-util'
+
+import {TypedAction} from '@revector/shared'
+import {AuthServiceCIF, UserAuthTokenIF, EmailPasswordCredentials} from '../../service/auth.service.interface'
+import {AuthServiceStoreState, SignInStates, AuthServiceState, User} from '../../interfaces'
+import {CurrentUserActions} from './current-user.actions'
 
 
 @Injectable()
 export class CurrentUserEffects implements OnDestroy {
 
   appState: AuthServiceState
-
-
 
   @Effect() requestSignIn$ = this.actions$
     .ofType(CurrentUserActions.signIn.invoke.type)

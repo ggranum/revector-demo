@@ -1,7 +1,7 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core'
 import {Observable} from 'rxjs'
 import {Store} from '@ngrx/store'
-import {User, SignInState, AuthServiceStoreState} from '../../services/auth-service'
+import {User, SignInState, AuthServiceStoreState} from '@revector/auth-service'
 
 
 @Component({

@@ -3,9 +3,7 @@ import {
   UserPermission, MappedPermission
 } from '../../interfaces'
 import {UserActions} from './user.actions'
-import {TypedAction, ActionReducerSet} from '../../../../shared'
-import {generatePushID} from '../../../../shared/firebase-generate-push-id'
-import {ensureExists, pathExists, ObjMap, removeIfExists} from '../../../../shared/core-util'
+import {generatePushID, TypedAction, ActionReducerSet, ensureExists, pathExists, ObjMap, removeIfExists} from '@revector/shared'
 
 
 export const userReducers = new ActionReducerSet<AuthServiceState>()
