@@ -14,6 +14,17 @@ export class CurrentUserEffects implements OnDestroy {
 
   appState: AuthServiceState
 
+
+
+  @Effect() requestSignIn$ = this.actions$
+    .ofType(CurrentUserActions.signIn.invoke.type)
+    .switchMap((action: TypedAction<EmailPasswordCredentials>) => this.requestSignIn(action.payload))
+
+
+  @Effect() requestSignOut$ = this.actions$
+    .ofType(CurrentUserActions.signOut.invoke.type)
+    .switchMap(payload => this.requestSignOut())
+
   constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public authService: AuthServiceCIF) {
     authService.globalEventObserver().subscribe((authState: UserAuthTokenIF) => {
       this.globalAuthEventHandler(authState)
@@ -22,17 +33,8 @@ export class CurrentUserEffects implements OnDestroy {
     store.select((s: AuthServiceStoreState) => s.auth).subscribe((s: AuthServiceState) => this.appState = s, this.onError)
   }
 
-  @Effect() requestSignIn$ = this.actions$
-    .ofType(CurrentUserActions.signIn.invoke.type)
-    .switchMap((action:TypedAction<EmailPasswordCredentials>) => this.requestSignIn(action.payload))
-
-
-  @Effect() requestSignOut$ = this.actions$
-    .ofType(CurrentUserActions.signOut.invoke.type)
-    .switchMap(payload => this.requestSignOut())
-
   onError(e: Error): void {
-    console.error("CurrentUserEffects", "onError", e)
+    console.error('CurrentUserEffects', 'onError', e)
   }
 
   requestSignIn(payload: EmailPasswordCredentials) {
@@ -79,7 +81,7 @@ export class CurrentUserEffects implements OnDestroy {
 
 
   private globalAuthEventHandler(authState: UserAuthTokenIF) {
-    if (this.appState.transient.signInState.state == SignInStates.unknown) {
+    if (this.appState.transient.signInState.state === SignInStates.unknown) {
       if (authState && authState.auth) {
         this.handleUserRemembered(authState);
       } else {

@@ -1,11 +1,11 @@
-/deep/  rv-user-list md-list md-list-item .md-list-item {
-  height:auto;
+/deep/ rv-user-list md-list md-list-item .md-list-item {
+  height: auto;
 }
 
-/deep/ rv-user-list .ng-valid[required], .ng-valid.required  {
+/deep/ rv-user-list .ng-valid[required], .ng-valid.required {
   border-left: 5px solid #42A948; /* green */
 }
 
-/deep/ rv-user-list .ng-invalid:not(form)  {
+/deep/ rv-user-list .ng-invalid:not(form) {
   border-left: 5px solid #a94442; /* red */
 }

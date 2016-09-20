@@ -53,8 +53,8 @@ export class UserComponent {
       .map(() => new Event('blur'))
   }
 
-  ngOnChanges(change:any){
-    if(change['userPermissions']){
+  ngOnChanges(change: any) {
+    if (change['userPermissions']) {
     }
   }
 
@@ -109,16 +109,16 @@ export class UserComponent {
     this.submitted = true;
   }
 
-  hasPermission(perm:Permission){
+  hasPermission(perm: Permission) {
     return !!this.userPermissions[perm.$key]
   }
 
-  isExplicitlyGranted(perm:Permission){
+  isExplicitlyGranted(perm: Permission) {
     let userPerm = this.userPermissions[perm.$key]
     return userPerm && userPerm.explicitlyGranted === true
   }
 
-  isExplicitlyRevoked(perm:Permission){
+  isExplicitlyRevoked(perm: Permission) {
     let userPerm = this.userPermissions[perm.$key]
     return userPerm && userPerm.explicitlyRevoked === true
   }

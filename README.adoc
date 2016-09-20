@@ -71,7 +71,12 @@ Generally speaking, adding an alias is more developer friendly. But when that's 
 
 The backend is provided by Firebase. So you'll need a firebase project. Create one here: https://console.firebase.google.com/.
 
-Once you've created the project, open it to the overview page (if it wasn't opened for you: https://console.firebase.google.com/project/${YourProject}/overview) and click 'Add Firebase to your web app'. You'll be given a popup that contains your Firebase configuration.
+You may want to find and replace '${YourProject}' in this document with the *identity* of your new project. Ignore case, and if you are using WebStorm set 'Preserve Case' to true.
+
+Once you've created the project, open it to the overview page (if it wasn't opened for you: https://console.firebase.google.com/project/${yourproject}/overview) and click 'Add Firebase to your web app'. You'll be given a popup that contains your Firebase configuration.
+
+You will also need to enable email/password authentication. Do so here: https://console.firebase.google.com/project/${YourProject}/authentication/providers
+
 
 ==== Firebase API Configuration: environment.local.ts
 Back in your copy of ReVector-Demo, navigate to './src/environments' and create a new file named 'environment.local.ts'. Paste your firebase credentials in so the file looks like the following:
@@ -81,9 +86,9 @@ Back in your copy of ReVector-Demo, navigate to './src/environments' and create 
 export const noCommitEnvironment = {
   firebaseConfig: {
     apiKey: "your-key",
-    authDomain: "yourDomain",
-    databaseURL: "https://yourdomain.firebaseio.com",
-    storageBucket: "yourdomain.appspot.com",
+    authDomain: "${yourproject}",
+    databaseURL: "https://${yourproject}.firebaseio.com",
+    storageBucket: "${yourproject}.appspot.com",
     messagingSenderId: "yourSenderId"
   }
 };

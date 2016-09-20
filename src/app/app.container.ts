@@ -9,7 +9,6 @@ import 'style!@angular2-material/core/overlay/overlay.css';
 import 'style!asciidoctorjs-web-repack/css/asciidoctor.css';
 
 
-
 @Component({
   selector: 'app-root-container',
   template: `

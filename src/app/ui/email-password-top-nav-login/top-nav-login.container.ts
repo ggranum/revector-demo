@@ -16,16 +16,16 @@ export class TopNavLoginContainer {
 
   signInState$: Observable<SignInState>
   user$: Observable<User>
-  errorMessage:Observable<string>
+  errorMessage: Observable<string>
 
   constructor(private _store: Store<AuthServiceStoreState>) {
-    this.signInState$ = _store.select((s:AuthServiceStoreState) => safe(() => s.auth.transient.signInState) )
-    this.user$ = _store.select((s:AuthServiceStoreState) => safe(() => s.auth.transient.currentUser) )
+    this.signInState$ = _store.select((s: AuthServiceStoreState) => safe(() => s.auth.transient.signInState))
+    this.user$ = _store.select((s: AuthServiceStoreState) => safe(() => s.auth.transient.currentUser))
   }
 }
 
 
-let safe = function(fn:()=>any){
+let safe = function (fn: ()=>any) {
   try {
     return fn()
   } catch (e) {

@@ -19,8 +19,8 @@ export class RoleModel implements Role {
     checks.push(this.checkName())
 
     checks.forEach((item) => {
-      if(item){
-        if(!result){
+      if (item) {
+        if (!result) {
           result = {}
         }
         result = Object.assign(result, item)
@@ -35,14 +35,14 @@ export class RoleModel implements Role {
     if (!this.name) {
       result = {
         name: {
-          notNull: "Value cannot be null"
+          notNull: 'Value cannot be null'
         }
       }
     } else if (this.name.length < 4) {
       result = {
         name: {
           minLength: {
-            message: "Value too short",
+            message: 'Value too short',
             minLength: 4,
             actual: this.name.length
           }

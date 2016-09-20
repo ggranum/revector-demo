@@ -28,8 +28,8 @@ export class RoleComponent {
 
 
   submitted = false;
-  private _changed:boolean
-  private _previous:Role
+  private _changed: boolean
+  private _previous: Role
 
 
   constructor() {
@@ -57,8 +57,8 @@ export class RoleComponent {
       .map(() => new Event('blur'))
   }
 
-  ngOnChanges(change:any){
-    if(change['role']){
+  ngOnChanges(change: any) {
+    if (change['role']) {
       this._previous = Object.assign({}, this.role)
       this._changed = false
     }
@@ -90,7 +90,7 @@ export class RoleComponent {
   }
 
   doTogglePermission(permission: Permission) {
-    let rolePermission:RolePermission = {
+    let rolePermission: RolePermission = {
       permission_name: permission.$key,
       role_name: this.role.$key
     }
@@ -101,12 +101,12 @@ export class RoleComponent {
     }
   }
 
-  hasPermission(perm:Permission){
+  hasPermission(perm: Permission) {
     let userPerm = this.rolePermissions[perm.$key]
     return userPerm && userPerm.explicitlyGranted === true
   }
 
-  isExplicitlyRevoked(perm:Permission){
+  isExplicitlyRevoked(perm: Permission) {
     let userPerm = this.rolePermissions[perm.$key]
     return userPerm && userPerm.explicitlyRevoked === true
   }

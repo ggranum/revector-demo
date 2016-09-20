@@ -35,7 +35,6 @@ roleReducers.registerMapped(RoleActions.getRoles.fulfilled, MAPPING, (state: Rol
 roleReducers.register(RoleActions.getRoles.failed)
 
 
-
 roleReducers.registerMapped(RoleActions.updateRole.invoke, MAPPING, (state: RoleState, action: TypedAction<Update<Role>>) => {
   let newState = Object.assign({}, state)
   delete newState[action.payload.previous.$key]

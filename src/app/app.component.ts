@@ -9,6 +9,7 @@ import {Component, ChangeDetectionStrategy} from '@angular/core'
 export class AppComponent {
   title = 'ReVector Demo'
   asciidoctorContent: string = ''
+
   constructor() {
     this.asciidoctorContent = `
 = Hello, AsciiDoc!

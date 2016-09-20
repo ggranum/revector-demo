@@ -24,8 +24,8 @@ export class PermissionComponent {
 
 
   submitted = false;
-  private _changed:boolean
-  private _previous:Permission
+  private _changed: boolean
+  private _previous: Permission
 
 
   constructor() {
@@ -53,8 +53,8 @@ export class PermissionComponent {
       .map(() => new Event('blur'))
   }
 
-  ngOnChanges(change:any){
-    if(change['permission']){
+  ngOnChanges(change: any) {
+    if (change['permission']) {
       this._previous = Object.assign({}, this.permission)
       this._changed = false
     }

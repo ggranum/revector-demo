@@ -22,7 +22,7 @@ import {MdMenuModule} from '@angular2-material/menu/menu'
 
 // NG RX
 import {StoreDevtoolsModule} from '@ngrx/store-devtools'
-import {StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor'
+import {StoreLogMonitorModule, useLogMonitor} from '@ngrx/store-log-monitor'
 import {StoreModule} from '@ngrx/store'
 import {EffectsModule} from '@ngrx/effects';
 
@@ -94,9 +94,7 @@ let reducers = {
     MdToolbarModule.forRoot(),
     MdTooltipModule.forRoot(),
   ],
-  providers: [
-
-  ],
+  providers: [],
   entryComponents: [AppContainer],
   bootstrap: [AppContainer]
 })

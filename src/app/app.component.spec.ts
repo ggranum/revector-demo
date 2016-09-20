@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
-import { inject, TestBed } from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import {inject, TestBed} from '@angular/core/testing';
+import {AppComponent} from './app.component';
 
 describe('App: ReVectorDemo', () => {
   beforeEach(() => {
-    TestBed.configureCompiler({ providers: [AppComponent]});
+    TestBed.configureCompiler({providers: [AppComponent]});
   });
 
   it('should create the app',

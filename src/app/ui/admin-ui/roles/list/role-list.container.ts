@@ -56,7 +56,6 @@ export class RoleListContainer {
   }
 
 
-
   onError(e: Error): void {
     console.error("CurrentUserEffects", "onError", e)
   }

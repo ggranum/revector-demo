@@ -15,19 +15,19 @@ import {AuthServiceState, User, CurrentUserActions, SignInStates, SignInState} f
 })
 export class TopNavProfileComponent {
 
-  @Input() signInState: SignInState  = {
+  @Input() signInState: SignInState = {
     state: SignInStates.unknown
   }
-  @Input() user:User
+  @Input() user: User
 
-  logoutButtonLabel:string = "Sign Out"
+  logoutButtonLabel: string = "Sign Out"
 
-  showAccountFlyout:boolean = false
+  showAccountFlyout: boolean = false
 
   constructor(private _store: Store<AuthServiceState>) {
   }
 
-  isSignedIn(signInState:SignInState){
+  isSignedIn(signInState: SignInState) {
     return signInState.state == SignInStates.signedIn
   }
 

@@ -5,23 +5,25 @@
     </button>
 
     <md-menu #menu="mdMenu">
-      <button md-menu-item> Refresh </button>
-      <button md-menu-item> Settings </button>
-      <button md-menu-item> Help </button>
-      <button md-menu-item disabled> Sign Out </button>
+      <button md-menu-item> Refresh</button>
+      <button md-menu-item> Settings</button>
+      <button md-menu-item> Help</button>
+      <button md-menu-item disabled> Sign Out</button>
     </md-menu>
     <span flex>Permissions</span>
     <div layout-fill layout="row" layout-align="end center">
-      <button md-mini-fab (click)="doAddPermission()"> <md-icon class="md-24">add</md-icon> </button>
+      <button md-mini-fab (click)="doAddPermission()">
+        <md-icon class="md-24">add</md-icon>
+      </button>
     </div>
   </md-toolbar>
 
   <md-list layout-fill>
     <md-list-item *ngFor="let permission of permissions" class="rv-permission-list-item" layout-fill>
       <rv-permission layout-fill
-               [permission]="permission"
-               (change)="onChange($event)"
-               (removePermission)="onRemovePermission($event)"
+                     [permission]="permission"
+                     (change)="onChange($event)"
+                     (removePermission)="onRemovePermission($event)"
       ></rv-permission>
     </md-list-item>
   </md-list>

@@ -1,11 +1,10 @@
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs'
 import {User} from '../interfaces'
 
 export interface EmailPasswordCredentials {
   email: string,
   password: string
 }
-
 
 
 export interface UserAuthTokenIF {

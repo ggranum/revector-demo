@@ -5,7 +5,7 @@ import {Actions, Effect} from '@ngrx/effects'
 import {Observable} from 'rxjs'
 import {PermissionActions} from './permission.actions'
 import {AngularFire} from 'angularfire2'
-import {TypedAction, cleanFirebaseMap, ObjMap, Update} from '../../../../shared'
+import {TypedAction, ObjMap, Update} from '../../../../shared'
 import {PermissionModel} from '../../models/permission-model'
 
 
@@ -14,31 +14,29 @@ export class PermissionEffects implements OnDestroy {
 
   private _fbRoot: string = '/auth'
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {
-
-  }
-
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() getPermissions$ = this.actions$
     .ofType(PermissionActions.getPermissions.invoke.type)
     .switchMap((action: TypedAction<Permission>) => this.getPermissions())
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() addPermission$ = this.actions$
     .ofType(PermissionActions.addPermission.invoke.type)
     .switchMap((action: TypedAction<Permission>) => this.addPermission(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() updatePermission$ = this.actions$
     .ofType(PermissionActions.updatePermission.invoke.type)
     .switchMap((action: TypedAction<Update<Permission>>) => this.updatePermission(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() removePermission$ = this.actions$
     .ofType(PermissionActions.removePermission.invoke.type)
     .switchMap((action: TypedAction<Permission>) => this.removePermission(action.payload))
 
-  toFirebaseValue(value: Permission):Permission {
+  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) { }
+
+  toFirebaseValue(value: Permission): Permission {
     return {
       description: value.description,
       orderIndex: value.orderIndex,
@@ -47,7 +45,7 @@ export class PermissionEffects implements OnDestroy {
 
   getPermissions() {
     let fbPermissions = <Observable<any>>this.firebase.database.object(`${this._fbRoot}/permissions`).first()
-    fbPermissions = fbPermissions.map((permissionsMap:ObjMap<MappedPermission>) => {
+    fbPermissions = fbPermissions.map((permissionsMap: ObjMap<MappedPermission>) => {
       delete permissionsMap['$key']
       Object.keys(permissionsMap).forEach((key: string) => {
         permissionsMap[key].$key = key

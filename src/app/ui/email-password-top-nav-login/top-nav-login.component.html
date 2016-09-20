@@ -1,4 +1,5 @@
-<div *ngIf="isSignedOut(signInState) || isUnknownState(signInState)" class="rv-nav-login-form" layout="row" layout-align="space-between center">
+<div *ngIf="isSignedOut(signInState) || isUnknownState(signInState)" class="rv-nav-login-form" layout="row"
+     layout-align="space-between center">
   <form (ngSubmit)="onSubmit($event)" #loginForm="ngForm" flex layout="row" layout-align="space-between center">
     <md-input [(ngModel)]="username" name="fUsername" #fUsername="ngModel"
               class="rv-username rv-input"
@@ -24,14 +25,14 @@
       </span>
     </button>
   </form>
-    <button md-raised-button color="accent"
-            class="rv-signup rv-button"
-            [disabled]="loginForm.invalid || isSigningUp(signInState)"
-            (click)="doSignupAction()">
+  <button md-raised-button color="accent"
+          class="rv-signup rv-button"
+          [disabled]="loginForm.invalid || isSigningUp(signInState)"
+          (click)="doSignupAction()">
       <span>
         <i class="material-icons rv-button-icon">lock</i><i class="rv-button-text">{{signupButtonLabel}}</i>
       </span>
-    </button>
+  </button>
 
   <div>{{errorMsg}}</div>
 </div>

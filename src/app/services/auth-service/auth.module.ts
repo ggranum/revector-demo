@@ -1,7 +1,7 @@
-import {NgModule, SkipSelf, Optional} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {CurrentUserEffects, RoleEffects, PermissionEffects} from "./state/index";
-import {AuthServiceCIF, FirebaseAuthService} from "./service/index";
+import {NgModule, SkipSelf, Optional} from '@angular/core'
+import {CommonModule} from '@angular/common'
+import {CurrentUserEffects, RoleEffects, PermissionEffects} from './state/index'
+import {AuthServiceCIF, FirebaseAuthService} from './service/index'
 
 
 @NgModule({
@@ -15,14 +15,14 @@ import {AuthServiceCIF, FirebaseAuthService} from "./service/index";
     PermissionEffects,
     {provide: AuthServiceCIF, useClass: FirebaseAuthService},
   ],
-  exports: [ ]
+  exports: []
 })
 export class AuthModule {
 
-  constructor(public effects:CurrentUserEffects, @Optional() @SkipSelf() parentModule: AuthModule) {
+  constructor(public effects: CurrentUserEffects, @Optional() @SkipSelf() parentModule: AuthModule) {
     if (parentModule) {
       throw new Error(
-        'AuthModule is already loaded. Import it in the AppModule only');
+        'AuthModule is already loaded. Import it in the AppModule only')
     }
   }
 }

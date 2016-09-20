@@ -12,7 +12,6 @@ import {
 import {Update} from '../../../../shared'
 
 
-
 @Component({
   selector: 'rv-permission-list',
   template: ` 

@@ -27,6 +27,5 @@
   "peerDependencies": {
     "@angular/core": "^2.0.0-rc.5",
     "asciidoctorjs-web-repack": "^1.5.5"
-
   }
 }

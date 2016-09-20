@@ -53,7 +53,9 @@ permissionReducers.registerMapped(PermissionActions.updatePermission.fulfilled,
   })
 
 permissionReducers.register(PermissionActions.removePermission.invoke)
-permissionReducers.registerMapped(PermissionActions.removePermission.fulfilled, MAPPING, (state: PermissionState, action: TypedAction<Permission>) => {
+permissionReducers.registerMapped(PermissionActions.removePermission.fulfilled,
+  MAPPING,
+  (state: PermissionState, action: TypedAction<Permission>) => {
   let newState = Object.assign({}, state)
   delete newState[action.payload.$key]
   return newState

@@ -117,7 +117,7 @@ userReducers.register(UserActions.removeUserFromRole.invoke,
     let roleName = action.payload.role_name
     let path = `user_roles.${userId}.${roleName}`
     let existed = removeIfExists(state, path)
-    if(existed){
+    if (existed) {
       state.user_roles[userId] = Object.assign({}, state.user_roles[userId])
       let permissions: ObjMap<boolean> = ensureExists(state, `role_permissions.${roleName}`, {})
       let userPermissions: ObjMap<MappedPermission> = ensureExists(state, `user_permissions.${userId}`, {})
@@ -125,18 +125,18 @@ userReducers.register(UserActions.removeUserFromRole.invoke,
         let userPermission: MappedPermission = userPermissions[permissionName] || {}
         userPermission.roles = Object.assign({}, userPermission.roles)
         delete userPermission.roles[roleName]
-        if(Object.keys(userPermission.roles).length === 0){
+        if (Object.keys(userPermission.roles).length === 0) {
           delete userPermission.roles
         }
-        if(userPermission.explicitlyGranted === false){
+        if (userPermission.explicitlyGranted === false) {
           delete userPermission.explicitlyGranted
         }
-        if(userPermission.explicitlyRevoked === false){
+        if (userPermission.explicitlyRevoked === false) {
           delete userPermission.explicitlyRevoked
         }
-        if(Object.keys(userPermission).length === 0){
+        if (Object.keys(userPermission).length === 0) {
           delete userPermissions[permissionName]
-        } else{
+        } else {
           userPermissions[permissionName] = userPermission
         }
       })

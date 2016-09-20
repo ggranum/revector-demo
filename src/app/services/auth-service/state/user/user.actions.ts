@@ -30,6 +30,10 @@ export let UserActions: UserActionsIF = {
   getUserRoles: invokableActionSet<UserRolesMappings, void, UserRolesMappings>(USER_PREFIX + 'Get user roles'),
   addUserToRole: invokableActionSet<UserState, UserRole, UserRole>(USER_PREFIX + 'Add user to role'),
   removeUserFromRole: invokableActionSet<UserState, UserRole, UserRole>(USER_PREFIX + 'Remove user from role'),
-  getUserPermissions: invokableActionSet<UserPermissionsMappings, void, UserPermissionsMappings>(USER_PREFIX + 'Get user permissions'),
-  grantPermissionToUser: invokableActionSet<UserPermissionsMappings, UserPermission, UserPermission>(USER_PREFIX + 'Grant permission to User'),
-  revokePermissionFromUser: invokableActionSet<UserPermissionsMappings, UserPermission, UserPermission>(USER_PREFIX + 'Revoke permission from User'),}
+  getUserPermissions: invokableActionSet<UserPermissionsMappings, void, UserPermissionsMappings>(
+    USER_PREFIX + 'Get user permissions'),
+  grantPermissionToUser: invokableActionSet<UserPermissionsMappings, UserPermission, UserPermission>(
+    USER_PREFIX + 'Grant permission to User'),
+  revokePermissionFromUser: invokableActionSet<UserPermissionsMappings, UserPermission, UserPermission>(
+    USER_PREFIX + 'Revoke permission from User'),
+}

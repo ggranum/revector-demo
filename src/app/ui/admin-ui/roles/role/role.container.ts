@@ -51,7 +51,7 @@ export class RoleContainer {
 
     let allRolePermissions$: Observable<RolePermissionsMappings> = _store.select((s: AuthServiceStoreState) => {
       return s.auth.role_permissions
-    } )
+    })
 
     this.rolePermissions$ = allRolePermissions$.map(permissions => {
       return permissions[this.role.$key] || {}

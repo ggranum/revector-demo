@@ -22,63 +22,62 @@ export class UserEffects implements OnDestroy {
 
   private _fbRoot: string = '/auth'
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {
-  }
-
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() getUsers$ = this.actions$
     .ofType(UserActions.getUsers.invoke.type)
     .switchMap((action: TypedAction<User>) => this.getUsers())
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() addUser$ = this.actions$
     .ofType(UserActions.addUser.invoke.type)
     .switchMap((action: TypedAction<User>) => this.addUser(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() updateUser$ = this.actions$
     .ofType(UserActions.updateUser.invoke.type)
     .switchMap((action: TypedAction<User>) => this.updateUser(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() removeUser$ = this.actions$
     .ofType(UserActions.removeUser.invoke.type)
     .switchMap((action: TypedAction<User>) => this.removeUser(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() getUserRoles$ = this.actions$
     .ofType(UserActions.getUserRoles.invoke.type)
     .switchMap((action: TypedAction<UserRolesMappings>) => this.getUserRoles())
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() addUserToRole$ = this.actions$
     .ofType(UserActions.addUserToRole.invoke.type)
     .switchMap((action: TypedAction<UserRole>) => this.addUserToRole(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() removeUserFromRole$ = this.actions$
     .ofType(UserActions.removeUserFromRole.invoke.type)
     .switchMap((action: TypedAction<UserRole>) => this.removeUserFromRole(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() getUserPermissions$ = this.actions$
     .ofType(UserActions.getUserPermissions.invoke.type)
     .switchMap((action: TypedAction<UserPermissionsMappings>) => this.getUserPermissions())
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() grantPermission$ = this.actions$
     .ofType(UserActions.grantPermissionToUser.invoke.type)
     .switchMap((action: TypedAction<UserPermission>) => this.grantPermission(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() revokePermission$ = this.actions$
     .ofType(UserActions.revokePermissionFromUser.invoke.type)
     .switchMap((action: TypedAction<UserPermission>) => this.revokePermission(action.payload))
 
+  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {
+  }
 
   mappedPermissionToFirebase(value: MappedPermission): MappedPermission {
     let result: MappedPermission = Object.assign({}, value)
-    if(value && value.roles){
+    if (value && value.roles) {
       result.roles = Object.assign({}, value.roles)
     }
     return result
@@ -140,7 +139,8 @@ export class UserEffects implements OnDestroy {
   }
 
   addUserToRole(userRole: UserRole): Observable<TypedAction<UserRole>> {
-    let fbUserRoleRef = this.firebase.database.object(`${this._fbRoot}/user_roles/${userRole.user_uid}/${userRole.role_name}`)
+    let path = `${this._fbRoot}/user_roles/${userRole.user_uid}/${userRole.role_name}`;
+    let fbUserRoleRef = this.firebase.database.object(path)
     let fbPromise = <Promise<any>>fbUserRoleRef.set(true)
     return Observable.fromPromise(fbPromise).mergeMap(() => {
       return this.addUserPermissionsForRole(userRole)
@@ -153,7 +153,8 @@ export class UserEffects implements OnDestroy {
     return fbRolePermissions.mergeMap((list: MappedPermission[]) => {
       return Observable.of(...list)
     }).mergeMap((perm: MappedPermission) => {
-      let promise = <Promise<any>>this.firebase.database.object(`${userPermsPath}/${perm.$key}/roles/${userRole.role_name}`).set(true)
+      let promise = <Promise<any>>this.firebase.database.object(
+        `${userPermsPath}/${perm.$key}/roles/${userRole.role_name}`).set(true)
       return Observable.fromPromise(promise)
     }).mergeMap((foo) => {
       return Observable.of(UserActions.addUserToRole.fulfilled.action(userRole))
@@ -161,7 +162,8 @@ export class UserEffects implements OnDestroy {
   }
 
   removeUserFromRole(userRole: UserRole): Observable<TypedAction<UserRole>> {
-    let fbUesrRole = this.firebase.database.object(`${this._fbRoot}/user_roles/${userRole.user_uid}/${userRole.role_name}`)
+    let path = `${this._fbRoot}/user_roles/${userRole.user_uid}/${userRole.role_name}`;
+    let fbUesrRole = this.firebase.database.object(path)
     let fbPromise = <Promise<any>>fbUesrRole.remove()
     return Observable.fromPromise(fbPromise).mergeMap(() => {
       return this.removeUserPermissionsForRole(userRole)
@@ -170,11 +172,13 @@ export class UserEffects implements OnDestroy {
 
   removeUserPermissionsForRole(userRole: UserRole): Observable<TypedAction<UserRole>> {
     let userPermsPath = `${this._fbRoot}/user_permissions/${userRole.user_uid}`
+
     let fbRolePermissions = this.firebase.database.list(`${this._fbRoot}/role_permissions/${userRole.role_name}`)
     return fbRolePermissions.mergeMap((list: MappedPermission[]) => {
       return Observable.of(...list)
     }).mergeMap((perm: MappedPermission) => {
-      let promise = <Promise<any>>this.firebase.database.object(`${userPermsPath}/${perm.$key}/roles/${userRole.role_name}`).remove()
+      let promise = <Promise<any>>this.firebase.database.object(
+        `${userPermsPath}/${perm.$key}/roles/${userRole.role_name}`).remove()
       return Observable.fromPromise(promise)
     }).mergeMap((foo) => {
       return Observable.of(UserActions.removeUserFromRole.fulfilled.action(userRole))
@@ -200,7 +204,8 @@ export class UserEffects implements OnDestroy {
             explicitlyGranted: true
           }
       })
-    let fbUserPermRef = this.firebase.database.object(`${this._fbRoot}/user_permissions/${userPermission.user_uid}/${userPermission.permission_name}`)
+    let path = `${this._fbRoot}/user_permissions/${userPermission.user_uid}/${userPermission.permission_name}`;
+    let fbUserPermRef = this.firebase.database.object(path)
     let fbAddPermissionPromise = <Promise<any>>fbUserPermRef.set(fbValue)
 
     fbAddPermissionPromise = fbAddPermissionPromise.then(() => {
@@ -221,7 +226,8 @@ export class UserEffects implements OnDestroy {
           }
 
       })
-    let fbUserPermRef = this.firebase.database.object(`${this._fbRoot}/user_permissions/${userPermission.user_uid}/${userPermission.permission_name}`)
+    let path = `${this._fbRoot}/user_permissions/${userPermission.user_uid}/${userPermission.permission_name}`;
+    let fbUserPermRef = this.firebase.database.object(path)
     let fbRevokePermissionPromise = <Promise<any>>fbUserPermRef.set(fbValue)
 
     fbRevokePermissionPromise = fbRevokePermissionPromise.then(() => {

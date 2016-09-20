@@ -40,7 +40,7 @@
         </button>
       </div>
     </div>
-    <div class="rv-user-roles-wrapper" layout="column" layout-align="space-between start"  layout-fill>
+    <div class="rv-user-roles-wrapper" layout="column" layout-align="space-between start" layout-fill>
       <div class="rv-sub-heading">Roles:</div>
       <div class="rv-user-role" *ngFor="let role of roles" layout="row" layout-fill layout-align="space-between center">
         <md-checkbox [checked]="userRoles[role.$key] === true" (change)="doToggleRole(role)">
@@ -48,14 +48,15 @@
         </md-checkbox>
       </div>
     </div>
-    <div class="rv-user-permissions-wrapper" layout="column" layout-align="space-between start"  layout-fill>
+    <div class="rv-user-permissions-wrapper" layout="column" layout-align="space-between start" layout-fill>
       <div class="rv-sub-heading">Permissions:</div>
-      <div class="rv-user-permission" *ngFor="let perm of permissions" layout="row" layout-fill layout-align="space-between center">
+      <div class="rv-user-permission" *ngFor="let perm of permissions" layout="row" layout-fill
+           layout-align="space-between center">
         <md-checkbox [checked]="hasPermission(perm)"
                      [class.rv-explicitly-revoked]="isExplicitlyRevoked(perm)"
                      [class.rv-explicitly-granted]="isExplicitlyGranted(perm)"
                      (change)="doTogglePermission(perm)"
-                     >
+        >
           <span flex="50">{{perm.$key}}</span>
         </md-checkbox>
       </div>

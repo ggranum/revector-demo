@@ -4,7 +4,8 @@
 
   <div *ngIf="showAccountFlyout" class="rv-profile-flyout" aria-label="Account Information" aria-hidden="false">
     <div class="rv-profile-user-card" layout="row" layout-align="space-between center">
-      <div *ngIf="user.photoUrl" class="rv-profile-user-image" style="background-image: url({{user.photoUrl}});" title="Profile Photo"></div>
+      <div *ngIf="user.photoUrl" class="rv-profile-user-image" style="background-image: url({{user.photoUrl}});"
+           title="Profile Photo"></div>
       <div flex
            class="rv-profile-user-info">
         <div class="rv-user-given-name">{{user.displayName}}</div>

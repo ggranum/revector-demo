@@ -14,44 +14,42 @@ export class RoleEffects implements OnDestroy {
 
   private _fbRoot: string = '/auth'
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {
-
-  }
-
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() getRoles$ = this.actions$
     .ofType(RoleActions.getRoles.invoke.type)
     .switchMap((action: TypedAction<Role>) => this.getRoles())
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() addRole$ = this.actions$
     .ofType(RoleActions.addRole.invoke.type)
     .switchMap((action: TypedAction<Role>) => this.addRole(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() updateRole$ = this.actions$
     .ofType(RoleActions.updateRole.invoke.type)
     .switchMap((action: TypedAction<Update<Role>>) => this.updateRole(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() removeRole$ = this.actions$
     .ofType(RoleActions.removeRole.invoke.type)
     .switchMap((action: TypedAction<Role>) => this.removeRole(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() getRolePermissions$ = this.actions$
     .ofType(RoleActions.getRolePermissions.invoke.type)
     .switchMap((action: TypedAction<RolePermissionsMappings>) => this.getRolePermissions())
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() grantPermission$ = this.actions$
     .ofType(RoleActions.grantPermissionToRole.invoke.type)
     .switchMap((action: TypedAction<RolePermission>) => this.grantPermission(action.payload))
 
-  //noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols
   @Effect() revokePermission$ = this.actions$
     .ofType(RoleActions.revokePermissionFromRole.invoke.type)
     .switchMap((action: TypedAction<RolePermission>) => this.revokePermission(action.payload))
+
+  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {  }
 
   toFirebaseValue(value: Role): Role {
     return Object.assign({}, value)
@@ -59,7 +57,7 @@ export class RoleEffects implements OnDestroy {
 
   mappedPermissionToFirebase(value: MappedPermission): MappedPermission {
     let result: MappedPermission = Object.assign({}, value)
-    if(value && value.roles){
+    if (value && value.roles) {
       result.roles = Object.assign({}, value.roles)
     }
     return result
@@ -67,7 +65,7 @@ export class RoleEffects implements OnDestroy {
 
   getRoles() {
     let fbRoles = <Observable<any>>this.firebase.database.object(`${this._fbRoot}/roles`).first()
-    fbRoles = fbRoles.map((roleMap:ObjMap<Role>) => {
+    fbRoles = fbRoles.map((roleMap: ObjMap<Role>) => {
       delete roleMap['$key']
       Object.keys(roleMap).forEach((key: string) => {
         roleMap[key].$key = key
@@ -149,7 +147,8 @@ export class RoleEffects implements OnDestroy {
         let current: MappedPermission = rolePermissions[rolePermission.permission_name]
         fireValue = this.mappedPermissionToFirebase(current)
       })
-    let fbRolePermRef = this.firebase.database.object(`${this._fbRoot}/role_permissions/${rolePermission.role_name}/${rolePermission.permission_name}`)
+    let path = `${this._fbRoot}/role_permissions/${rolePermission.role_name}/${rolePermission.permission_name}`
+    let fbRolePermRef = this.firebase.database.object(path)
     let fbAddRolePromise = <Promise<any>>fbRolePermRef.set(fireValue)
 
     fbAddRolePromise = fbAddRolePromise.then(() => {
@@ -161,7 +160,8 @@ export class RoleEffects implements OnDestroy {
   }
 
   revokePermission(rolePermission: RolePermission) {
-    let fbRolePermRef = this.firebase.database.object(`${this._fbRoot}/role_permissions/${rolePermission.role_name}/${rolePermission.permission_name}`)
+    let path = `${this._fbRoot}/role_permissions/${rolePermission.role_name}/${rolePermission.permission_name}`
+    let fbRolePermRef = this.firebase.database.object(path)
     let fbPromise = <Promise<any>>fbRolePermRef.remove()
     fbPromise = fbPromise.then(() => {
       return RoleActions.revokePermissionFromRole.fulfilled.action(rolePermission)

@@ -26,7 +26,10 @@ export let RoleActions: RoleActionsIF = {
   addRole: invokableActionSet<RoleState, Role, Role>(ROLE_PREFIX + 'Add Role'),
   updateRole: invokableActionSet<RoleState, Update<Role>, Update<Role>>(ROLE_PREFIX + 'Update Role'),
   removeRole: invokableActionSet<RoleState, Role, Role>(ROLE_PREFIX + 'Remove Role'),
-  getRolePermissions: invokableActionSet<RolePermissionsMappings, void, RolePermissionsMappings>(ROLE_PREFIX + 'Get role permissions'),
-  grantPermissionToRole: invokableActionSet<RolePermissionsMappings, RolePermission, RolePermission>(ROLE_PREFIX + 'Grant permission to Role'),
-  revokePermissionFromRole: invokableActionSet<RolePermissionsMappings, RolePermission, RolePermission>(ROLE_PREFIX + 'Revoke permission from Role'),
+  getRolePermissions: invokableActionSet<RolePermissionsMappings, void, RolePermissionsMappings>(
+    ROLE_PREFIX + 'Get role permissions'),
+  grantPermissionToRole: invokableActionSet<RolePermissionsMappings, RolePermission, RolePermission>(
+    ROLE_PREFIX + 'Grant permission to Role'),
+  revokePermissionFromRole: invokableActionSet<RolePermissionsMappings, RolePermission, RolePermission>(
+    ROLE_PREFIX + 'Revoke permission from Role'),
 }

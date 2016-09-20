@@ -18,7 +18,7 @@ export class PermissionListComponent {
   @Output() removePermission: EventEmitter<Permission> = new EventEmitter<Permission>(false)
 
   permissions: Permission[] = []
-  private _tempIdx:number = 0
+  private _tempIdx: number = 0
 
   constructor(private _store: Store<AuthServiceState>) {
 
@@ -27,7 +27,7 @@ export class PermissionListComponent {
   ngOnChanges(change) {
     if (change.permissionsObj) {
       let permissionsObj = change.permissionsObj.currentValue
-      let tempPermissions:Permission[] = Object.keys(permissionsObj).map((key: string) => {
+      let tempPermissions: Permission[] = Object.keys(permissionsObj).map((key: string) => {
         return permissionsObj[key]
       })
       tempPermissions.sort((a, b) => {
@@ -54,13 +54,14 @@ export class PermissionListComponent {
     this.addPermission.emit(permission)
   }
 
-  _nextName(name:string){
-    while(this._nameExists(name + ' ' + (++this._tempIdx))) {}
+  _nextName(name: string) {
+    while (this._nameExists(name + ' ' + (++this._tempIdx))) {
+    }
     return name + ' ' + this._tempIdx
   }
 
-  _nameExists(name:string){
-    return this.permissions.some((permission:Permission) =>{
+  _nameExists(name: string) {
+    return this.permissions.some((permission: Permission) => {
       return permission.$key == name
     })
   }
