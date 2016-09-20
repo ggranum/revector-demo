@@ -1,3 +1,25 @@
+<a name="0.6.1"></a>
+## [0.6.1](https://github.com/ggranum/revector-demo/compare/v0.6.0...v0.6.1) (2016-09-20)
+
+
+* BREAKING CHANGE: change to @path import statements for modules ([7512608](https://github.com/ggranum/revector-demo/commit/7512608))
+
+
+### Features
+
+* **changelogs:** replace standard-version with conventional-changelog-cli ([e47dfab](https://github.com/ggranum/revector-demo/commit/e47dfab))
+
+
+### BREAKING CHANGES
+
+* change to @path import statements for modules
+
+Currently requires a local development version of angular-cli with the
+fixes discussed in https://github.com/angular/angular-cli/issues/1465
+manually applied.
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/ggranum/revector-demo/compare/v0.5.1...v0.6.0) (2016-09-16)
 
