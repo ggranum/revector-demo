@@ -1,3 +1,13 @@
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/ggranum/revector-demo/compare/v0.6.3...v0.7.0) (2016-10-11)
+
+
+### Features
+
+* **Build:** add github token to deploy script ([86fbe39](https://github.com/ggranum/revector-demo/commit/86fbe39))
+
+
+
 <a name="0.6.3"></a>
 ## [0.6.3](https://github.com/ggranum/revector-demo/compare/v0.6.2...v0.6.3) (2016-10-11)
 
