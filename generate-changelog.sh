@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 # npm publish with goodies
 # prerequisites:
-# `npm install -g conventional-recommended-bump conventional-changelog conventional-github-releaser conventional-commits-detector json`
-# `np` with optional argument `patch`/`minor`/`major`/`<version>`
+# Create a github access token [https://github.com/settings/tokens] and save it in a file named 'generate-changelog-token.local.txt'
+# Run this script with optional argument `patch`/`minor`/`major`/`<version>`
 # defaults to conventional-recommended-bump
 # and optional argument preset `angular`/ `jquery` ...
 # defaults to conventional-commits-detector
 
-cp package.json _package.json &&
-  preset=`./node_modules/.bin/conventional-commits-detector` &&
+
+githubToken=$(cat ./generate-changelog-token.local.txt) &&
+  cp package.json _package.json &&
+  preset=$(./node_modules/.bin/conventional-commits-detector) &&
   echo 'Using preset: ' $preset &&
-  bump=`./node_modules/.bin/conventional-recommended-bump -p angular` &&
+  bump=$(./node_modules/.bin/conventional-recommended-bump -p angular) &&
   echo 'Bumping ' ${1:-$bump} '. Running npm --no-git-tag-version' &&
   npm --no-git-tag-version version ${1:-$bump} &>/dev/null &&
   echo 'Updating changelog...' &&
@@ -26,7 +28,7 @@ cp package.json _package.json &&
   npm version ${1:-$bump} -m "chore(release): %s" &&
   echo 'Run git push --follow-tags'
   git push --follow-tags &&
-  ./node_modules/.bin/conventional-github-releaser -p ${2:-$preset} &&
+  ./node_modules/.bin/conventional-github-releaser -t ${githubToken} -p ${2:-$preset} &&
   echo 'Run npm publish' &&
   npm publish &&
   echo 'done'
