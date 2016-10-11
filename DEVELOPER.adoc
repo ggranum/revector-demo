@@ -1,5 +1,13 @@
 = DEVELOPER
 
+
+
+== Build Process
+
+=== Release
+
+This project uses https://github.com/conventional-changelog/conventional-changelog-cli[conventional-changelog].
+
 == Terminology
 
 === Variable Naming
