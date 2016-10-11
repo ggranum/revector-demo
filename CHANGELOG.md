@@ -2,6 +2,16 @@
 ## [0.6.3](https://github.com/ggranum/revector-demo/compare/v0.6.2...v0.6.3) (2016-10-11)
 
 
+### Features
+
+* **Build:** add logging to deploy script ([46a9277](https://github.com/ggranum/revector-demo/commit/46a9277))
+
+
+
+<a name="0.6.3"></a>
+## [0.6.3](https://github.com/ggranum/revector-demo/compare/v0.6.2...v0.6.3) (2016-10-11)
+
+
 
 <a name="0.6.2"></a>
 ## [0.6.2](https://github.com/ggranum/revector-demo/compare/v0.6.1...v0.6.2) (2016-10-11)
