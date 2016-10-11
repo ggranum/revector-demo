@@ -1,3 +1,14 @@
+<a name="0.6.2"></a>
+## [0.6.2](https://github.com/ggranum/revector-demo/compare/v0.6.1...v0.6.2) (2016-10-11)
+
+
+### Features
+
+* **Build:** Docs and deploy scripts ([ae659d8](https://github.com/ggranum/revector-demo/commit/ae659d8))
+* **Dependencies:** upgrade angular, angular-cli, ngrx. ([302eec3](https://github.com/ggranum/revector-demo/commit/302eec3))
+
+
+
 <a name="0.6.1"></a>
 ## [0.6.1](https://github.com/ggranum/revector-demo/compare/v0.6.0...v0.6.1) (2016-09-20)
 
