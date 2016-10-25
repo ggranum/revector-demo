@@ -1,12 +1,25 @@
-import {Injectable, OnDestroy} from '@angular/core'
+import {
+  Injectable,
+  OnDestroy
+} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceStoreState, Permission, MappedPermission} from '../../interfaces'
-import {Actions, Effect} from '@ngrx/effects'
+import {
+  AuthServiceStoreState,
+  Permission,
+  MappedPermission
+} from '../../interfaces'
+import {
+  Actions,
+  Effect
+} from '@ngrx/effects'
 import {Observable} from 'rxjs'
 import {PermissionActions} from './permission.actions'
 import {AngularFire} from 'angularfire2'
-import {TypedAction, ObjMap, Update} from '@revector/shared'
-import {PermissionModel} from '../../models/permission-model'
+import {
+  TypedAction,
+  ObjMap,
+  Update
+} from '@revector/shared'
 
 
 @Injectable()
@@ -34,7 +47,8 @@ export class PermissionEffects implements OnDestroy {
     .ofType(PermissionActions.removePermission.invoke.type)
     .switchMap((action: TypedAction<Permission>) => this.removePermission(action.payload))
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) { }
+  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {
+  }
 
   toFirebaseValue(value: Permission): Permission {
     return {
@@ -47,6 +61,7 @@ export class PermissionEffects implements OnDestroy {
     let fbPermissions = <Observable<any>>this.firebase.database.object(`${this._fbRoot}/permissions`).first()
     fbPermissions = fbPermissions.map((permissionsMap: ObjMap<MappedPermission>) => {
       delete permissionsMap['$key']
+      delete permissionsMap['$exists']
       Object.keys(permissionsMap).forEach((key: string) => {
         permissionsMap[key].$key = key
       })
@@ -56,19 +71,16 @@ export class PermissionEffects implements OnDestroy {
   }
 
   addPermission(permission: Permission) {
-    let model = PermissionModel.from(permission)
-    if (model.validate() === null) {
-      let fireValue = this.toFirebaseValue(permission)
-      let fbPermission = this.firebase.database.object(`${this._fbRoot}/permissions/${permission.$key}`)
+    let fireValue = this.toFirebaseValue(permission)
+    let fbPermission = this.firebase.database.object(`${this._fbRoot}/permissions/${permission.$key}`)
 
-      let fbPromise = <Promise<any>>fbPermission.set(fireValue)
-      fbPromise = fbPromise.then(() => {
-        return PermissionActions.addPermission.fulfilled.action(permission)
-      }, (e) => {
-        return PermissionActions.addPermission.failed.action(e)
-      })
-      return Observable.fromPromise(fbPromise)
-    }
+    let fbPromise = <Promise<any>>fbPermission.set(fireValue)
+    fbPromise = fbPromise.then(() => {
+      return PermissionActions.addPermission.fulfilled.action(permission)
+    }, (e) => {
+      return PermissionActions.addPermission.failed.action(e)
+    })
+    return Observable.fromPromise(fbPromise)
   }
 
   updatePermission(update: Update<Permission>) {

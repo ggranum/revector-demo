@@ -20,13 +20,14 @@
 
   <md-list layout-fill>
     <md-list-item *ngFor="let user of users" class="rv-user-list-item" layout-fill>
-      <rv-user layout-fill
-               [user]="user"
-               [roles]="roles"
-               [permissions]="permissions"
-               (change)="onChange($event)"
-               (removeUser)="onRemoveUser($event)"
-      ></rv-user>
+      <rv-user-list-item
+        flex layout="row" layout-align="center"
+        [user]="user"
+        [roles]="roles"
+        [permissions]="permissions"
+        (change)="onChange($event)"
+        (removeUser)="onRemoveUser($event)"
+      ></rv-user-list-item>
     </md-list-item>
   </md-list>
 

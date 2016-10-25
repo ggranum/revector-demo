@@ -67,6 +67,7 @@ export class RoleEffects implements OnDestroy {
     let fbRoles = <Observable<any>>this.firebase.database.object(`${this._fbRoot}/roles`).first()
     fbRoles = fbRoles.map((roleMap: ObjMap<Role>) => {
       delete roleMap['$key']
+      delete roleMap['$exists']
       Object.keys(roleMap).forEach((key: string) => {
         roleMap[key].$key = key
       })

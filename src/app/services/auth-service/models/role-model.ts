@@ -1,54 +1,79 @@
-import {Role} from '../interfaces'
+import {
+  Role,
+  PermissionMappings
+} from '../interfaces'
+import {
+  MappedPermission,
+  Permission,
+  RolePermissionsMappings
+} from "@revector/auth-service";
+import {ObjMap} from "@revector/shared";
+
 
 
 export class RoleModel implements Role {
-  name: string
+  $key: string
   description: string
+  orderIndex?: number
 
-  static from(role: Role): RoleModel {
+  permissions: Map<String, Permission> = new Map()
+
+  static from(role: Role, $key?: string): RoleModel {
     let model = new RoleModel()
     Object.assign(model, role)
+    if ($key) {
+      model.$key = $key
+    }
     return model
   }
 
-
-  validate() {
-    let checks = []
-    let result = null
-
-    checks.push(this.checkName())
-
-    checks.forEach((item) => {
-      if (item) {
-        if (!result) {
-          result = {}
-        }
-        result = Object.assign(result, item)
-      }
+  assignPermissions(...permissions: Permission[]) {
+    permissions.forEach((permission) => {
+      this.permissions.set(permission.$key, permission)
     })
-    return result
   }
 
+  getMappedPermissions(existingPermissions: ObjMap<MappedPermission>, forUser: boolean = false): ObjMap<MappedPermission> {
+    let mappedPerms: ObjMap<MappedPermission> = this.getOwnMappedPermissions(forUser)
+    let allPerms:PermissionMappings = Object.assign({}, existingPermissions)
 
-  private checkName() {
-    let result = null
-    if (!this.name) {
-      result = {
-        name: {
-          notNull: 'Value cannot be null'
-        }
+    Object.keys(mappedPerms).forEach((key:string) =>{
+      let perm = mappedPerms[key]
+      let existingPerm = allPerms[key]
+      let newPerm:MappedPermission = Object.assign({}, perm, existingPerm)
+      if(existingPerm && existingPerm.roles){
+        newPerm.roles = Object.assign({}, perm.roles, existingPerm.roles)
       }
-    } else if (this.name.length < 4) {
-      result = {
-        name: {
-          minLength: {
-            message: 'Value too short',
-            minLength: 4,
-            actual: this.name.length
-          }
-        }
+      allPerms[key] = newPerm
+    })
+    return allPerms
+  }
+
+  getOwnMappedPermissions(forUser:boolean = false):PermissionMappings {
+    let mappedPerms: PermissionMappings = {}
+    this.permissions.forEach((permission: Permission) => {
+      let mappedPerm:MappedPermission = { }
+      mappedPerm.$key = permission.$key
+      mappedPerm.roles = mappedPerm.roles || {}
+      if (forUser) {
+        mappedPerm.roles[this.$key] = true
+      } else{
+        mappedPerm.explicitlyGranted = true
       }
-      return result
+      mappedPerms[permission.$key] = mappedPerm
+    })
+    return mappedPerms;
+  }
+
+  toJson():Role{
+    return {
+      $key: this.$key,
+      description:this.description,
+      orderIndex: this.orderIndex
     }
+  }
+
+  validate() {
+    return true
   }
 }

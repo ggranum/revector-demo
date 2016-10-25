@@ -9,20 +9,7 @@ import {
 } from 'angularfire2'
 
 // Material design
-import {MdButtonModule} from '@angular2-material/button/button'
-import {MdCheckboxModule} from '@angular2-material/checkbox/checkbox'
-import {MdRadioModule} from '@angular2-material/radio/radio'
-import {MdSidenavModule} from '@angular2-material/sidenav/sidenav'
-import {MdListModule} from '@angular2-material/list/list'
-import {MdGridListModule} from '@angular2-material/grid-list/grid-list'
-import {MdCardModule} from '@angular2-material/card/card'
-import {MdIconModule} from '@angular2-material/icon/icon'
-import {MdInputModule} from '@angular2-material/input/input'
-import {MdTabsModule} from '@angular2-material/tabs/tabs'
-import {MdToolbarModule} from '@angular2-material/toolbar/toolbar'
-import {MdTooltipModule} from '@angular2-material/tooltip/tooltip'
-import {MdRippleModule} from '@angular2-material/core/ripple/ripple'
-import {MdMenuModule} from '@angular2-material/menu/menu'
+import { MaterialModule } from '@angular/material'
 
 // NG RX
 import {StoreDevtoolsModule} from '@ngrx/store-devtools'
@@ -45,12 +32,16 @@ import {
 } from '@revector/auth-service'
 import {AdminUiModule} from "@revector/admin-ui";
 import {SimpleTopNavLoginModule} from '@revector/email-password-top-nav-login';
+import {SignInPanelModule} from '@revector/sign-in-panel';
 
 
 // Our Components
 import {environment} from '../environments/environment';
 import {AppContainer} from './app.container'
 import {AppComponent} from './app.component'
+
+import { routing,
+  appRoutingProviders }  from './app.routing';
 
 
 const firebaseConfig = environment.firebaseConfig
@@ -75,6 +66,11 @@ let reducers = {
     RvAsciidoctorPanelModule,
     AuthModule,
     SimpleTopNavLoginModule,
+    SignInPanelModule,
+    routing,
+
+    /* Demo Pages / Components */
+
 
     /* Firebase Modules */
     AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
@@ -93,22 +89,11 @@ let reducers = {
     CommonModule,
 
     /* Ng2MD modules */
-    MdButtonModule.forRoot(),
-    MdCardModule.forRoot(),
-    MdCheckboxModule.forRoot(),
-    MdGridListModule.forRoot(),
-    MdIconModule.forRoot(),
-    MdInputModule.forRoot(),
-    MdListModule.forRoot(),
-    MdMenuModule.forRoot(),
-    MdRadioModule.forRoot(),
-    MdRippleModule.forRoot(),
-    MdSidenavModule.forRoot(),
-    MdTabsModule.forRoot(),
-    MdToolbarModule.forRoot(),
-    MdTooltipModule.forRoot(),
+    MaterialModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    appRoutingProviders
+  ],
   entryComponents: [AppContainer],
   bootstrap: [AppContainer]
 })

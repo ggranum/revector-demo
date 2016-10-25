@@ -34,8 +34,14 @@
       "@revector/email-password-top-nav-login": [
         "./app/ui/email-password-top-nav-login"
       ],
+      "@revector/sign-in-panel": [
+        "./app/ui/sign-in-panel"
+      ],
       "@revector/asciidoctor-panel": [
         "./app/ui/asciidoctor-panel"
+      ],
+      "@revector/drawer": [
+        "./app/ui/widgets/drawer"
       ]
     }
   }

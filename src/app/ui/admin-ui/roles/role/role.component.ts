@@ -15,6 +15,7 @@ export class RoleComponent {
   @Input() role: Role
   @Input() permissions: Permission[]
   @Input() rolePermissions: ObjMap<MappedPermission>
+  @Input() collapsed: boolean = true
 
   @Output() change: Observable<Update<Role>>
   @Output() removeRole: EventEmitter<Role> = new EventEmitter<Role>(false)
@@ -37,12 +38,14 @@ export class RoleComponent {
     distinct = distinct.debounceTime(10).distinctUntilChanged()
 
     this.focus = distinct
-      .filter((v) => v === true)
+      .filter((focused) => focused === true)
       .map(() => new Event('focus'))
 
     this.change = distinct
       .filter((focused) => focused === false && this._changed)
       .map(() => {
+        this.collapsed = false
+
         let change = {
           previous: Object.assign({}, this._previous),
           current: Object.assign({}, this.role)
@@ -53,7 +56,7 @@ export class RoleComponent {
       })
 
     this.blur = distinct
-      .filter((v) => v === false)
+      .filter((focused) => focused === false)
       .map(() => new Event('blur'))
   }
 

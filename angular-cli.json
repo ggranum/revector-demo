@@ -16,6 +16,7 @@
       "mobile": false,
       "styles": [
         "styles.css",
+        "theme.scss",
         "angular-material.layouts.min.css"
       ],
       "scripts": [],

@@ -24,4 +24,7 @@ export {
 } from './interfaces'
 
 
+export {RoleModel} from './models/role-model'
+export {UserModel} from './models/user-model'
+
 

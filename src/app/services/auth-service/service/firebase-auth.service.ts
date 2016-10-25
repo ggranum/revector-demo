@@ -64,7 +64,7 @@ export class FirebaseAuthService implements AuthServiceCIF {
   }
 
   updateAccountInfo(user: User): Observable<any> {
-    let info = this.angularFire.database.object(`${this._fbRoot}/users/${user.uid}/info`)
+    let info = this.angularFire.database.object(`${this._fbRoot}/users/${user.uid}`)
     let p = <Promise<any>>info.set(user)
     return Observable.fromPromise(p)
   }

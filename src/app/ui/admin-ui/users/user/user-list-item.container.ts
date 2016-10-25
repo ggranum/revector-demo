@@ -1,4 +1,11 @@
-import {Component, ChangeDetectionStrategy, Input, EventEmitter, Output} from '@angular/core'
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  EventEmitter,
+  Output,
+  ViewEncapsulation
+} from '@angular/core'
 import {Observable} from 'rxjs'
 import {Store} from '@ngrx/store'
 import {
@@ -19,9 +26,10 @@ import {ObjMap} from '@revector/shared'
 
 
 @Component({
-  selector: 'rv-user',
+  selector: 'rv-user-list-item',
   template: ` 
- <rv-user-component layout-fill
+ <rv-user-list-item-component
+               flex layout="row" layout-align="start"
                [user]="user"
                [roles]="roles"
                [permissions]="permissions"
@@ -35,11 +43,12 @@ import {ObjMap} from '@revector/shared'
                (removeUser)="removeUser.emit($event)"
                (focus)="focus.emit($event)"
                (blur)="blur.emit($event)"
-      ></rv-user-component>
+      ></rv-user-list-item-component>
 `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
-export class UserContainer {
+export class UserListItemContainer {
 
   @Input() user: User
   @Input() roles: Role[]

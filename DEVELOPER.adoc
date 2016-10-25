@@ -4,6 +4,19 @@
 
 == Build Process
 
+
+== Build / Run
+
+Assuming you've aliased `ng` (angularCLI) or have installed it globally:
+
+[source, bash]
+> npm install
+> ng serve
+# In new terminal window
+> open http://localhost:4200/
+
+
+
 === Release
 
 This project uses https://github.com/conventional-changelog/conventional-changelog-cli[conventional-changelog].

@@ -1,0 +1,6 @@
+@import 'app/ui/sign-in-panel/sign-in-panel.component';
+
+
+@mixin apply-theme-to-app($theme) {
+  @include rv-apply-theme-sign-in-panel($theme);
+}

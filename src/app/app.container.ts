@@ -3,17 +3,14 @@ import {Component, ChangeDetectionStrategy} from '@angular/core'
 
 /**
  * Global style imports for the entire App.
+ * @todo ggranum: Migrate asciidoctor.css into SCSS and add (optional) namespacing0
  */
-import 'style!@angular2-material/core/style/core.css';
-import 'style!@angular2-material/core/overlay/overlay.css';
-import 'style!asciidoctorjs-web-repack/css/asciidoctor.css';
+// import 'style!asciidoctorjs-web-repack/css/asciidoctor.css';
 
 
 @Component({
   selector: 'app-root-container',
-  template: `
-<app-root></app-root>
-`,
+  template: `<router-outlet></router-outlet>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppContainer {

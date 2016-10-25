@@ -1,11 +1,26 @@
-import {Injectable, OnDestroy} from '@angular/core'
+import {
+  Injectable,
+  OnDestroy
+} from '@angular/core'
 import {Observable} from 'rxjs'
 import {Store} from '@ngrx/store'
-import {Actions, Effect} from '@ngrx/effects'
+import {
+  Actions,
+  Effect
+} from '@ngrx/effects'
 
 import {TypedAction} from '@revector/shared'
-import {AuthServiceCIF, UserAuthTokenIF, EmailPasswordCredentials} from '../../service/auth.service.interface'
-import {AuthServiceStoreState, SignInStates, AuthServiceState, User} from '../../interfaces'
+import {
+  AuthServiceCIF,
+  UserAuthTokenIF,
+  EmailPasswordCredentials
+} from '../../service/auth.service.interface'
+import {
+  AuthServiceStoreState,
+  SignInStates,
+  AuthServiceState,
+  User
+} from '../../interfaces'
 import {CurrentUserActions} from './current-user.actions'
 
 
@@ -14,14 +29,26 @@ export class CurrentUserEffects implements OnDestroy {
 
   appState: AuthServiceState
 
+  // noinspection JSUnusedGlobalSymbols
   @Effect() requestSignIn$ = this.actions$
     .ofType(CurrentUserActions.signIn.invoke.type)
     .switchMap((action: TypedAction<EmailPasswordCredentials>) => this.requestSignIn(action.payload))
 
 
+  // noinspection JSUnusedGlobalSymbols
   @Effect() requestSignOut$ = this.actions$
     .ofType(CurrentUserActions.signOut.invoke.type)
-    .switchMap(payload => this.requestSignOut())
+    .switchMap(action => this.requestSignOut())
+
+  // noinspection JSUnusedGlobalSymbols
+  @Effect() requestSignUp$ = this.actions$
+    .ofType(CurrentUserActions.signUp.invoke.type)
+    .switchMap((action: TypedAction<EmailPasswordCredentials>) => this.requestSignUp(action.payload))
+
+  // noinspection JSUnusedGlobalSymbols
+  @Effect({dispatch: false}) requestSignUpFulfilled$ = this.actions$
+    .ofType(CurrentUserActions.signUp.fulfilled.type)
+    .switchMap((action: TypedAction<User>) => this.requestSignUpFulfilled(action.payload))
 
   constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public authService: AuthServiceCIF) {
     authService.globalEventObserver().subscribe((authState: UserAuthTokenIF) => {
@@ -47,29 +74,26 @@ export class CurrentUserEffects implements OnDestroy {
   }
 
 
-  onSigningUp(value: boolean) {
-    // if (value === true) {
-    //   this.authService.requestSignUp(this.appState.authToken).subscribe(
-    //     (userAuthInfo: User) => {
-    //       this.store.dispatch(this.appActions.requestSignUpFulfilled(userAuthInfo))
-    //     },
-    //     (e) => {
-    //       this.store.dispatch(this.appActions.requestSignUpFailed(e))
-    //     }
-    //   )
-    // }
+  requestSignUp(payload: EmailPasswordCredentials) {
+    return this.authService.requestSignUp(payload).map(
+      (userAuthInfo: User) => {
+        return CurrentUserActions.signUp.fulfilled.action(userAuthInfo)
+      },
+      (e) => {
+        return CurrentUserActions.signUp.failed.action(e)
+      }
+    )
   }
 
-  onSignUpFulfilled(value: boolean) {
-    // if (value === true) {
-    //   this.authService.populateNewAccountInfo(this.appState.user).subscribe(
-    //     () => {
-    //     },
-    //     (e) => {
-    //       this.store.dispatch(this.appActions.requestSignUpFailed(e))
-    //     }
-    //   )
-    // }
+  requestSignUpFulfilled(user: User) {
+    return this.authService.populateNewAccountInfo(user).map(
+      () => {
+        return Observable.of(true)
+      },
+      (e) => {
+        return Observable.of(false)
+      }
+    )
   }
 
   requestSignOut() {

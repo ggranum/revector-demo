@@ -1,16 +1,31 @@
-import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core'
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  ViewEncapsulation
+} from '@angular/core'
 import {Observable} from 'rxjs'
-import {User, Role, UserRole, Permission, UserPermission, MappedPermission} from '@revector/auth-service'
+import {
+  User,
+  Role,
+  UserRole,
+  Permission,
+  UserPermission,
+  MappedPermission
+} from '@revector/auth-service'
 import {ObjMap} from '@revector/shared'
 
 
 @Component({
-  selector: 'rv-user-component',
-  templateUrl: 'user.component.html',
-  styleUrls: ['user.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'rv-user-list-item-component',
+  templateUrl: 'user-list-item.component.html',
+  styleUrls: ['user-list-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
-export class UserComponent {
+export class UserListItemComponent {
 
   @Input() user: User
   @Input() roles: Role[]
@@ -18,7 +33,12 @@ export class UserComponent {
   @Input() permissions: Permission[]
   @Input() userPermissions: ObjMap<MappedPermission> = {}
 
+  @Input() showSelector: boolean = true
+  @Input() selected: boolean = false
+  @Input() expanded: boolean = false
+
   @Output() change: Observable<User>;
+  @Output() selectionChange: EventEmitter<boolean> = new EventEmitter<boolean>(false)
   @Output() removeUser: EventEmitter<User> = new EventEmitter<User>(false)
   @Output() addUserRole: EventEmitter<UserRole> = new EventEmitter<UserRole>(false)
   @Output() removeUserRole: EventEmitter<UserRole> = new EventEmitter<UserRole>(false)
@@ -31,30 +51,32 @@ export class UserComponent {
   @Output() focus: Observable<Event>
   @Output() blur: Observable<Event>
 
-
   submitted = false;
   private _changed
-
 
   constructor() {
     let distinct: Observable<boolean> = this._focusDebouncer.asObservable()
     distinct = distinct.debounceTime(10).distinctUntilChanged()
 
     this.focus = distinct
-      .filter((v) => v === true)
-      .map(() => new Event('focus'))
+      .filter((focused) => focused === true)
+      .map(() => {
+        this.expanded = true
+        return new Event('focus')
+      })
 
     this.change = distinct
-      .filter((v) => v === false && this._changed)
+      .filter((focused) => focused === false && this._changed)
       .map(() => this.user)
 
     this.blur = distinct
-      .filter((v) => v === false)
+      .filter((focused) => focused === false)
       .map(() => new Event('blur'))
   }
 
   ngOnChanges(change: any) {
-    if (change['userPermissions']) {
+    if(change["userRoles"]){
+      console.log('UserListItemComponent', 'ngOnChanges', this.roles, this.userRoles)
     }
   }
 
@@ -62,31 +84,38 @@ export class UserComponent {
     this.removeUser.emit(this.user)
   }
 
-  doToggleRole(role: Role) {
+  doToggleRole(role: Role, enabled:boolean) {
     let userRole = {
       role_name: role.$key,
       user_uid: this.user.uid
     }
-    if (this.userRoles[role.$key]) {
-      this.removeUserRole.emit(userRole)
-    } else {
+    if (enabled) {
       this.addUserRole.emit(userRole)
+    } else {
+      this.removeUserRole.emit(userRole)
     }
 
   }
 
-  doTogglePermission(permission: Permission) {
-    let userPermission = {
-      permission_name: permission.$key,
-      user_uid: this.user.uid
+  doTogglePermission(permission: Permission, userPermission:UserPermission, event:Event) {
+    if(!userPermission){
+      userPermission = {
+        permission_name: permission.$key,
+        user_uid: this.user.uid
+      }
     }
     if (this.userPermissions[permission.$key]) {
       this.removeUserPermission.emit(userPermission)
     } else {
       this.addUserPermission.emit(userPermission)
     }
-
   }
+
+  doToggleSelected() {
+    this.selected = !this.selected
+    this.selectionChange.emit(this.selected)
+  }
+
 
   onChange(event: Event) {
     event.stopPropagation()
@@ -113,14 +142,6 @@ export class UserComponent {
     return !!this.userPermissions[perm.$key]
   }
 
-  isExplicitlyGranted(perm: Permission) {
-    let userPerm = this.userPermissions[perm.$key]
-    return userPerm && userPerm.explicitlyGranted === true
-  }
 
-  isExplicitlyRevoked(perm: Permission) {
-    let userPerm = this.userPermissions[perm.$key]
-    return userPerm && userPerm.explicitlyRevoked === true
-  }
 
 }

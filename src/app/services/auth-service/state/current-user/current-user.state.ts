@@ -87,7 +87,7 @@ currentUserReducers.registerMapped(CurrentUserActions.signUp.fulfilled,
   (state: AuthServiceSignInState, action: Action): AuthServiceSignInState => {
     let newState: AuthServiceSignInState = {
       signInState: {
-        state: SignInStates.newAccount
+        state: SignInStates.signedIn
       },
       currentUser: action.payload
     }

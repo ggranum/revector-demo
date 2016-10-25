@@ -1,6 +1,17 @@
 <form *ngIf="role != null" (ngSubmit)="onSubmit($event)" #roleForm="ngForm">
   <div class="rv-role-form-wrapper" layout="column" layout-align="start start" layout-fill>
     <div flex layout="row" layout-align="space-between center" layout-fill>
+      <div class="rv-drawer-toggle" flex layout="row" layout-align="start center">
+        <button md-mini-fab
+                type="button"
+                aria-label="Expand Roles and Permissions"
+                (focus)="onFocus($event)"
+                (blur)="onBlur($event)"
+                (click)="collapsed = !collapsed"
+                [disabled]="false">
+          <md-icon class="md-24">{{collapsed ? 'chevron_right' : 'expand_more'}}</md-icon>
+        </button>
+      </div>
       <div class="rv-role-inputs-wrapper" layout="row" flex="80" layout-align="space-between start">
         <md-input [(ngModel)]="role.$key" name="name" #fName="ngModel"
                   class="rv-input"
@@ -28,7 +39,6 @@
       <div class="rv-delete-button" flex layout="row" layout-align="end center">
         <button md-mini-fab
                 type="button"
-                class="ui button"
                 aria-label="Delete Role"
                 (focus)="onFocus($event)"
                 (blur)="onBlur($event)"
@@ -38,7 +48,7 @@
         </button>
       </div>
     </div>
-    <div class="rv-role-permissions-wrapper" layout="column" layout-align="space-between start" layout-fill>
+    <div *ngIf="!collapsed" class="rv-role-permissions-wrapper" layout="column" layout-align="space-between start" layout-fill>
       <div class="rv-sub-heading">Permissions:</div>
       <div class="rv-role-permission" *ngFor="let perm of permissions" layout="row" layout-fill
            layout-align="space-between center">

@@ -1,9 +1,23 @@
 import {
-  User, UserState, UserRole, UserRolesMappings, AuthServiceState, UserPermissionsMappings,
-  UserPermission, MappedPermission
+  User,
+  UserState,
+  UserRole,
+  UserRolesMappings,
+  AuthServiceState,
+  UserPermissionsMappings,
+  UserPermission,
+  MappedPermission
 } from '../../interfaces'
 import {UserActions} from './user.actions'
-import {generatePushID, TypedAction, ActionReducerSet, ensureExists, pathExists, ObjMap, removeIfExists} from '@revector/shared'
+import {
+  generatePushID,
+  TypedAction,
+  ActionReducerSet,
+  ensureExists,
+  pathExists,
+  ObjMap,
+  removeIfExists
+} from '@revector/shared'
 
 
 export const userReducers = new ActionReducerSet<AuthServiceState>()
@@ -175,10 +189,9 @@ userReducers.registerMapped(UserActions.grantPermissionToUser.invoke,
       newState = Object.assign({}, state)
       userPermissions = {}
     }
-    let permission = userPermissions[permissionId] || {}
+    let permission: MappedPermission = userPermissions[permissionId] || {}
 
     permission = Object.assign({}, permission, {
-      name: action.payload.permission_name,
       explicitlyGranted: true
     })
     delete permission.explicitlyRevoked
@@ -200,13 +213,16 @@ userReducers.registerMapped(UserActions.revokePermissionFromUser.invoke,
       newState = Object.assign({}, state)
       userPermissions = {}
     }
-    let permission = userPermissions[permissionId] || {}
+    let permission: MappedPermission = userPermissions[permissionId] || {}
 
-    permission = Object.assign({}, permission, {
-      name: action.payload.permission_name,
-      explicitlyRevoked: true
-    })
-    delete permission.explicitlyGranted
+    if (permission.explicitlyGranted === true) {
+      delete permission.explicitlyGranted
+    } else if (permission.roles != null) {
+      permission = Object.assign({}, permission, {
+        explicitlyRevoked: true
+      })
+    }
+
     userPermissions[permissionId] = permission
     newState[userId] = userPermissions
     return newState

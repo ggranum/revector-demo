@@ -77,6 +77,7 @@ export class UserEffects implements OnDestroy {
 
   mappedPermissionToFirebase(value: MappedPermission): MappedPermission {
     let result: MappedPermission = Object.assign({}, value)
+    debugger
     if (value && value.roles) {
       result.roles = Object.assign({}, value.roles)
     }
@@ -200,6 +201,7 @@ export class UserEffects implements OnDestroy {
     this.store.select((s: AuthServiceStoreState) => s.auth.user_permissions[userPermission.user_uid])
       .subscribe((userPermissions: ObjMap<MappedPermission>) => {
         let current: MappedPermission = userPermissions[userPermission.permission_name]
+        debugger
         fbValue = this.mappedPermissionToFirebase(current) || {
             explicitlyGranted: true
           }
