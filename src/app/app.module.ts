@@ -78,8 +78,7 @@ let reducers = {
 
     /* NgRx */
     StoreModule.provideStore(reducers),
-    StoreDevtoolsModule.instrumentStore({monitor: useLogMonitor({visible: true, position: 'left'})}),
-    StoreLogMonitorModule,
+    StoreDevtoolsModule.instrumentOnlyWithExtension(),
     EffectsModule.run(CurrentUserEffects),
     EffectsModule.run(RoleEffects),
     EffectsModule.run(PermissionEffects),

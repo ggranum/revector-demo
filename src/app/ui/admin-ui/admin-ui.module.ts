@@ -26,17 +26,20 @@ import {UserPermissionEditorComponent} from "./users/user/user-permission-editor
 
 import {MdButtonModule} from '@angular/material/button'
 import {MdButtonToggleModule} from '@angular/material/button-toggle'
-import {MdIconModule} from '@angular/material/icon/icon'
-import {MdInputModule} from '@angular/material/input/input'
-import {MdToolbarModule} from '@angular/material/toolbar/toolbar'
+import {MdIconModule} from '@angular/material/icon'
+import {MdInputModule} from '@angular/material/input'
+import {MdToolbarModule} from '@angular/material/toolbar'
 import {MdMenuModule} from '@angular/material/menu'
-import {MdListModule} from '@angular/material/list/list'
-import {MdCheckboxModule} from '@angular/material/checkbox/checkbox'
+import {MdListModule} from '@angular/material/list'
+import {MdCheckboxModule} from '@angular/material/checkbox'
+import {MdTabsModule} from '@angular/material/tabs'
 
 import {DrawerModule} from "@revector/drawer";
+import {AdminPage} from "./admin.page";
 
 @NgModule({
   declarations: [
+    AdminPage,
     UserListContainer,
     UserListComponent,
     UserListItemComponent,
@@ -63,9 +66,11 @@ import {DrawerModule} from "@revector/drawer";
     MdToolbarModule,
     MdCheckboxModule,
     MdButtonToggleModule,
+    MdTabsModule,
     DrawerModule
   ],
   exports: [
+    AdminPage,
     UserListItemContainer,
     UserListContainer,
     RoleListContainer,

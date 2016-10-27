@@ -11,7 +11,7 @@ import {
   SignInPanelDemo,
   SignInPanelPage
 } from "@revector/sign-in-panel";
-import {UserListItemDemo} from "@revector/admin-ui";
+import {AdminPage, UserListItemDemo} from "@revector/admin-ui";
 import {MainContainer} from "./main.container";
 
 
@@ -19,6 +19,7 @@ import {MainContainer} from "./main.container";
   imports: [
     RouterModule.forRoot([
         {path: 'sign-in', component: SignInPanelPage},
+        {path: 'admin', component: AdminPage},
         {path: 'permissions', component: PermissionListContainer},
         {path: 'roles', component: RoleListContainer},
         {path: '', component: MainContainer},

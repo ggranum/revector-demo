@@ -49,6 +49,14 @@ puts "Hello, World!"
     this.router.navigate(['./sign-in', {redirect:''}]);
   }
 
+  userIsAdmin(){
+    return this.user && !this.user.isAnonymous
+  }
+
+  navigateToAdmin(){
+    this.router.navigate(['./admin']);
+  }
+
   isSignedIn(signInState: SignInState) {
     return signInState.state == SignInStates.signedIn
   }
