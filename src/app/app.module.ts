@@ -31,17 +31,17 @@ import {
   UserEffects
 } from '@revector/auth-service'
 import {AdminUiModule} from "@revector/admin-ui";
-import {SimpleTopNavLoginModule} from '@revector/email-password-top-nav-login';
+import {SimpleTopNavLoginModule} from '@revector/inline-login-form';
 import {SignInPanelModule} from '@revector/sign-in-panel';
 
 
 // Our Components
 import {environment} from '../environments/environment';
-import {AppContainer} from './app.container'
 import {AppComponent} from './app.component'
+import {MainContainer} from './main.container'
+import {MainComponent} from './main.component'
 
-import { routing,
-  appRoutingProviders }  from './app.routing';
+import { AppRoutingModule}  from './app.routing';
 
 
 const firebaseConfig = environment.firebaseConfig
@@ -57,8 +57,9 @@ let reducers = {
 
 @NgModule({
   declarations: [
-    AppContainer,
-    AppComponent
+    AppComponent,
+    MainContainer,
+    MainComponent
   ],
   imports: [
     /* Dev modules */
@@ -67,7 +68,7 @@ let reducers = {
     AuthModule,
     SimpleTopNavLoginModule,
     SignInPanelModule,
-    routing,
+    AppRoutingModule,
 
     /* Demo Pages / Components */
 
@@ -91,11 +92,8 @@ let reducers = {
     /* Ng2MD modules */
     MaterialModule.forRoot(),
   ],
-  providers: [
-    appRoutingProviders
-  ],
-  entryComponents: [AppContainer],
-  bootstrap: [AppContainer]
+  entryComponents: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 

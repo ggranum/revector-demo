@@ -2,7 +2,9 @@ import {
   Component,
   ChangeDetectionStrategy,
   Input,
-  ViewEncapsulation
+  ViewEncapsulation,
+  EventEmitter,
+  Output
 } from '@angular/core'
 import {Observable} from 'rxjs'
 import {Store} from '@ngrx/store'
@@ -21,7 +23,12 @@ import {AuthInfo} from "./sign-in-panel.component";
   [username]="username"
   (signIn)="onSignIn($event)"
   (signUp)="onSignUp($event)"
-  >
+  (forgotPassword)="onForgotPassword($event)"
+
+  [preventSubmit]="true"
+  [displayMode]="signIn"
+  [requireEmailUsername]="true"
+>
 
 </rv-sign-in-panel-component>`,
   encapsulation: ViewEncapsulation.None,
@@ -29,9 +36,9 @@ import {AuthInfo} from "./sign-in-panel.component";
 })
 export class SignInPanelContainer {
 
-
-  @Input() username: string
+  @Input() username: string = ""
   @Input() requireEmailUsername: boolean
+
   user$: Observable<User>
 
   constructor(private _store: Store<AuthServiceStoreState>) {
@@ -52,7 +59,7 @@ export class SignInPanelContainer {
     }))
   }
 
-  onForgotPassword(authInfo: AuthInfo){
+  onForgotPassword(authInfo: AuthInfo) {
     console.log('SignInPanelDemo', 'onForgotPassword', authInfo)
   }
 }

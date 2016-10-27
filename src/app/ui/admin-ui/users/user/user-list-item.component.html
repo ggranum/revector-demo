@@ -46,16 +46,16 @@
         </div>
       </div>
     </div>
-    <rv-drawer [expanded]="expanded" (expandedChanged)="expanded = $event">
-      <div class="rv-user-roles-wrapper"  layout="row" layout-align="start center">
-        <div class="rv-sub-heading">Roles:</div>
-        <div class="rv-user-role" *ngFor="let role of roles">
+    <rv-drawer [expanded]="expanded" (expandedChanged)="expanded = $event" flex="initial" layout="column" layout-align="start">
+      <div class="rv-user-roles-wrapper"  flex layout-wrap layout="row" layout-align="start center">
+        <div class="rv-sub-heading" flex>Roles:</div>
+        <div class="rv-user-role" flex *ngFor="let role of roles">
           <rv-role-avatar [role]="role" [active]="userRoles[role.$key] === true" (change)="doToggleRole(role, $event)"></rv-role-avatar>
         </div>
       </div>
-      <div class="rv-user-permissions-wrapper" layout="row" layout-align="start center">
+      <div class="rv-user-permissions-wrapper" flex layout="row" layout-wrap layout-align="start center">
         <div class="rv-sub-heading">Permissions:</div>
-        <div class="rv-user-permission" *ngFor="let perm of permissions" >
+        <div class="rv-user-permission" flex *ngFor="let perm of permissions" >
           <rv-user-permission-editor [permission]="perm" [mappedPermission]="userPermissions[perm.$key]" (change)="doTogglePermission(perm, userPermissions[perm.$key], $event)"></rv-user-permission-editor>
         </div>
       </div>

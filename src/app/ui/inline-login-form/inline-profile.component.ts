@@ -8,12 +8,12 @@ import {AuthServiceState, User, CurrentUserActions, SignInStates, SignInState} f
 
 
 @Component({
-  selector: 'gg-top-nav-profile-component',
-  templateUrl: 'top-nav-profile.component.html',
-  styleUrls: ['top-nav-login.component.scss'],
+  selector: 'rv-inline-profile-component',
+  templateUrl: 'inline-profile.component.html',
+  styleUrls: ['inline-login-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TopNavProfileComponent {
+export class InlineProfileComponent {
 
   @Input() signInState: SignInState = {
     state: SignInStates.unknown
@@ -26,6 +26,8 @@ export class TopNavProfileComponent {
 
   constructor(private _store: Store<AuthServiceState>) {
   }
+
+
 
   isSignedIn(signInState: SignInState) {
     return signInState.state == SignInStates.signedIn

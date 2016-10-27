@@ -1,22 +1,34 @@
-import { ModuleWithProviders } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {
+  NgModule,
+} from '@angular/core';
+import {
+  RouterModule
+} from '@angular/router';
 
-import {AppComponent} from "./app.component";
 import {RoleListContainer} from "@revector/admin-ui";
 import {PermissionListContainer} from "@revector/admin-ui";
-import {SignInPanelDemo} from "@revector/sign-in-panel";
+import {
+  SignInPanelDemo,
+  SignInPanelPage
+} from "@revector/sign-in-panel";
 import {UserListItemDemo} from "@revector/admin-ui";
+import {MainContainer} from "./main.container";
 
-const appRoutes: Routes = [
-  { path: 'permissions', component: PermissionListContainer },
-  { path: 'roles', component: RoleListContainer },
-  { path: 'demo/sign-in-panel', component: SignInPanelDemo },
-  { path: 'demo/user-item', component: UserListItemDemo },
-  { path: '', component: AppComponent }
-];
 
-export const appRoutingProviders: any[] = [
-
-];
-
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+@NgModule({
+  imports: [
+    RouterModule.forRoot([
+        {path: 'sign-in', component: SignInPanelPage},
+        {path: 'permissions', component: PermissionListContainer},
+        {path: 'roles', component: RoleListContainer},
+        {path: '', component: MainContainer},
+        {path: 'demo/sign-in-panel', component: SignInPanelDemo},
+        {path: 'demo/user-item', component: UserListItemDemo}
+      ])
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AppRoutingModule {
+}

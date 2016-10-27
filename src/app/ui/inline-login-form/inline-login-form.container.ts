@@ -2,17 +2,18 @@ import {Component, ChangeDetectionStrategy} from '@angular/core'
 import {Observable} from 'rxjs'
 import {Store} from '@ngrx/store'
 import {User, SignInState, AuthServiceStoreState} from '@revector/auth-service'
+import {safe} from "@revector/shared";
 
 
 @Component({
-  selector: 'gg-top-nav-login',
+  selector: 'rv-inline-login-form',
   template: `
-<gg-top-nav-login-component [signInState]="signInState$ | async" [errorMessage]="errorMessage | async"></gg-top-nav-login-component>
-<gg-top-nav-profile-component [signInState]="signInState$ | async" [user]="user$ | async"></gg-top-nav-profile-component>
+<rv-inline-login-form-component [signInState]="signInState$ | async" [errorMessage]="errorMessage | async"></rv-inline-login-form-component>
+<rv-inline-profile-component [signInState]="signInState$ | async" [user]="user$ | async"></rv-inline-profile-component>
 `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TopNavLoginContainer {
+export class InlineLoginFormContainer {
 
   signInState$: Observable<SignInState>
   user$: Observable<User>
@@ -21,14 +22,5 @@ export class TopNavLoginContainer {
   constructor(private _store: Store<AuthServiceStoreState>) {
     this.signInState$ = _store.select((s: AuthServiceStoreState) => safe(() => s.auth.transient.signInState))
     this.user$ = _store.select((s: AuthServiceStoreState) => safe(() => s.auth.transient.currentUser))
-  }
-}
-
-
-let safe = function (fn: ()=>any) {
-  try {
-    return fn()
-  } catch (e) {
-    return null
   }
 }

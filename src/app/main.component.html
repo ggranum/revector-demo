@@ -12,8 +12,17 @@
       </button>
 
       <span flex>{{title}}</span>
-      <div flex="grow" layout-fill layout-align="end center" layout="row">
-        <gg-top-nav-login flex align="end"></gg-top-nav-login>
+      <div flex="grow" layout="row" layout-align="end">
+        <button md-raised-button
+                *ngIf="!isSignedIn(signInState)"
+                [disabled]="false"
+                color="accent" class="rv-button" (click)="signIn($event)">
+      <span>
+        <i class="material-icons rv-button-icon">lock</i><i class="rv-button-text">{{loginButtonLabel}}</i>
+      </span>
+        Sign In
+        </button>
+        <rv-inline-profile-component [signInState]="signInState" [user]="user"></rv-inline-profile-component>
       </div>
     </div>
 
@@ -29,7 +38,7 @@
       <rv-role-list></rv-role-list>
     </md-card>
 
-    <md-card style="width: 50%;overflow: auto">
+    <md-card style="width: 50%">
       <rv-user-list></rv-user-list>
     </md-card>
 

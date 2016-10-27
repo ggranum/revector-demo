@@ -75,9 +75,6 @@ export class UserListItemComponent {
   }
 
   ngOnChanges(change: any) {
-    if(change["userRoles"]){
-      console.log('UserListItemComponent', 'ngOnChanges', this.roles, this.userRoles)
-    }
   }
 
   doRemoveUser() {

@@ -13,7 +13,7 @@ import {MdButtonToggleChange} from "@angular/material";
   selector: 'rv-role-avatar',
   template: `
 <div>
-<md-button-toggle  [checked]="active" (change)="doChange($event)">{{role.description}}</md-button-toggle>
+<md-button-toggle  [checked]="active" (change)="doChange($event)">{{role.$key}}</md-button-toggle>
 </div>
 `,
   styleUrls: ['user-list-item.component.scss'],

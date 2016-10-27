@@ -31,8 +31,8 @@
       "@revector/admin-ui": [
         "./app/ui/admin-ui"
       ],
-      "@revector/email-password-top-nav-login": [
-        "./app/ui/email-password-top-nav-login"
+      "@revector/inline-login-form": [
+        "./app/ui/inline-login-form"
       ],
       "@revector/sign-in-panel": [
         "./app/ui/sign-in-panel"

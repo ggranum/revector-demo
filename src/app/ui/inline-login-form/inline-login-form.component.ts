@@ -4,12 +4,12 @@ import {AuthServiceStoreState, SignInStates, SignInState, CurrentUserActions} fr
 
 
 @Component({
-  selector: 'gg-top-nav-login-component',
-  templateUrl: 'top-nav-login.component.html',
-  styleUrls: ['top-nav-login.component.scss'],
+  selector: 'rv-inline-login-form-component',
+  templateUrl: 'inline-login-form.component.html',
+  styleUrls: ['inline-login-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TopNavLoginComponent {
+export class InlineLoginFormComponent {
 
   @Input() signInState: SignInState = {
     state: SignInStates.unknown

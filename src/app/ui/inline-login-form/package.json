@@ -1,9 +1,9 @@
 {
-  "name": "@revector/email-password-top-nav-login",
+  "name": "@revector/inline-login-form",
   "version": "0.0.1-alpha.5",
   "description": "A horizontal login form that relies on @revector/auth-service",
-  "main": "./email-password-top-nav-login.module.js",
-  "typings": "./email-password-top-nav-login.module.d.ts",
+  "main": "./inline-login-form.module.js",
+  "typings": "./inline-login-form.module.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/ggranum/revector.git"

@@ -71,3 +71,11 @@ export const removeIfExists = (object: any, path: string): boolean => {
   }
   return existed
 }
+
+export const safe = (fn: ()=>any) => {
+  try {
+    return fn()
+  } catch (e) {
+    return null
+  }
+}

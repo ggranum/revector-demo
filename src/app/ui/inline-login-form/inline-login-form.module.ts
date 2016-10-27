@@ -9,15 +9,15 @@ import {MdIconModule} from '@angular/material/icon/icon'
 import {MdInputModule} from '@angular/material/input/input'
 
 
-import {TopNavLoginContainer} from './top-nav-login.container'
-import {TopNavLoginComponent} from './top-nav-login.component'
-import {TopNavProfileComponent} from './top-nav-profile.component'
+import {InlineLoginFormContainer} from './inline-login-form.container'
+import {InlineLoginFormComponent} from './inline-login-form.component'
+import {InlineProfileComponent} from './inline-profile.component'
 
 @NgModule({
   declarations: [
-    TopNavLoginContainer,
-    TopNavLoginComponent,
-    TopNavProfileComponent,
+    InlineLoginFormContainer,
+    InlineLoginFormComponent,
+    InlineProfileComponent,
   ],
   imports: [
     CommonModule,
@@ -28,7 +28,8 @@ import {TopNavProfileComponent} from './top-nav-profile.component'
     MdInputModule
   ],
   exports: [
-    TopNavLoginContainer
+    InlineLoginFormContainer,
+    InlineProfileComponent
   ]
 })
 export class SimpleTopNavLoginModule {
