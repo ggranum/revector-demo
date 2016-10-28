@@ -6,7 +6,7 @@ import {
 
 @Component({
   selector: 'app-component',
-  template: `<router-outlet></router-outlet>`,
+  template: `<main-container></main-container>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {

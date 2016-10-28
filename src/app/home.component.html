@@ -1,0 +1,37 @@
+<div layout="row" layout-align="center">
+  <div class="app-content" layout="column" layout-align="start" flex="80">
+
+    <md-card>
+      <rv-asciidoctor-panel style="white-space:normal;overflow-wrap: normal;overflow: auto"
+                            [content]="asciidoctorContent"></rv-asciidoctor-panel>
+    </md-card>
+    <md-card>
+      <button md-button>FLAT</button>
+      <button md-raised-button color="primary">PRIMARY RAISED</button>
+      <button md-raised-button color="accent">ACCENT RAISED</button>
+    </md-card>
+
+    <md-card>
+      <md-checkbox>Unchecked</md-checkbox>
+      <md-checkbox [checked]="true">Checked</md-checkbox>
+      <md-checkbox [indeterminate]="true">Indeterminate</md-checkbox>
+      <md-checkbox [disabled]="true">Disabled</md-checkbox>
+    </md-card>
+
+    <md-card>
+      <md-radio-button name="symbol">Alpha</md-radio-button>
+      <md-radio-button name="symbol">Beta</md-radio-button>
+      <md-radio-button name="symbol" disabled>Gamma</md-radio-button>
+    </md-card>
+
+    <md-card *ngFor="let item of items | async">
+      {{ item.$value }}
+    </md-card>
+
+    <md-card>
+      <md-icon>build</md-icon>
+    </md-card>
+
+  </div>
+</div>
+
