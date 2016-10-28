@@ -1,3 +1,14 @@
+<a name="0.7.1"></a>
+## [0.7.1](https://github.com/ggranum/revector-demo/compare/v0.7.0...v0.7.1) (2016-10-28)
+
+
+### Features
+
+* **auth:** demo and better separation or responsibilities for user-list ([ab21b40](https://github.com/ggranum/revector-demo/commit/ab21b40))
+* **Build:** add version argument guard ([538faa9](https://github.com/ggranum/revector-demo/commit/538faa9))
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/ggranum/revector-demo/compare/v0.6.3...v0.7.0) (2016-10-11)
 
