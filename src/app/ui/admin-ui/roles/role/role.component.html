@@ -1,6 +1,8 @@
-<form *ngIf="role != null" (ngSubmit)="onSubmit($event)" #roleForm="ngForm">
-  <div class="rv-role-form-wrapper" layout="column" layout-align="start start" layout-fill>
-    <div flex layout="row" layout-align="space-between center" layout-fill>
+<div class="rv-role-form-wrapper" flex layout="column" layout-align="start">
+  <form *ngIf="role != null" (ngSubmit)="onSubmit($event)" #roleForm="ngForm"
+        flex layout="row"
+        layout-align="space-between">
+    <div flex layout="row" layout-align="space-between">
       <div class="rv-drawer-toggle" flex layout="row" layout-align="start center">
         <button md-mini-fab
                 type="button"
@@ -12,7 +14,7 @@
           <md-icon class="md-24">{{collapsed ? 'chevron_right' : 'expand_more'}}</md-icon>
         </button>
       </div>
-      <div class="rv-role-inputs-wrapper" layout="row" flex="80" layout-align="space-between start">
+      <div class="rv-role-inputs-wrapper" layout="row" flex="80" layout-align="space-between">
         <md-input [(ngModel)]="role.$key" name="name" #fName="ngModel"
                   class="rv-input"
                   dividerColor="accent"
@@ -48,17 +50,17 @@
         </button>
       </div>
     </div>
-    <div *ngIf="!collapsed" class="rv-role-permissions-wrapper" layout="column" layout-align="space-between start" layout-fill>
+    <div *ngIf="!collapsed" class="rv-role-permissions-wrapper" layout="column" layout-align="space-between">
       <div class="rv-sub-heading">Permissions:</div>
-      <div class="rv-role-permission" *ngFor="let perm of permissions" layout="row" layout-fill
-           layout-align="space-between center">
+      <div class="rv-role-permission" *ngFor="let perm of permissions"
+           layout="row" layout-align="space-between">
         <md-checkbox [checked]="hasPermission(perm)" (change)="doTogglePermission(perm)">
           <span flex="50">{{perm.$key}}</span>
         </md-checkbox>
       </div>
     </div>
-  </div>
-</form>
+  </form>
+</div>
 
 
 

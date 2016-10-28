@@ -20,6 +20,12 @@
   color: white;
 }
 
+a.app-title, a.app-title:visited,a.app-title:active {
+  color: white;
+  text-decoration: none;
+  text-underline: none;
+}
+
 .app-icon-button {
   box-shadow: none;
   user-select: none;
@@ -62,4 +68,10 @@
 
 .app-progress {
   margin: 20px;
+}
+
+
+.rv-button-icon {
+  font-size: small;
+  margin-right:.5em;
 }

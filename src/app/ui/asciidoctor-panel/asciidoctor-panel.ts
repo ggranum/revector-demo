@@ -6,6 +6,7 @@ import {
   AfterContentInit,
   NgModule,
   ModuleWithProviders,
+  ViewEncapsulation,
 } from '@angular/core';
 
 import 'asciidoctorjs-web-repack/asciidoctor-all.min'
@@ -15,7 +16,8 @@ import 'asciidoctorjs-web-repack/asciidoctor-all.min'
   selector: 'rv-asciidoctor-panel',
   templateUrl: 'asciidoctor-panel.html',
   styleUrls: ['asciidoctor-panel.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation:ViewEncapsulation.None
 })
 export class RvAsciidoctorComponent implements AfterContentInit {
 

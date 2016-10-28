@@ -33,7 +33,7 @@ export class InlineProfileComponent {
     return signInState.state == SignInStates.signedIn
   }
 
-  doLogoutAction() {
+  doSignOut() {
     this._store.dispatch(CurrentUserActions.signOut.invoke)
   }
 }

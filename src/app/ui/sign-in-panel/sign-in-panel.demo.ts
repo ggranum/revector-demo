@@ -8,6 +8,7 @@ import {AuthInfo} from "./sign-in-panel.component";
 @Component({
   selector: 'rv-sign-in-panel-demo',
   template: `<h1>Login Panel Demo</h1>
+<h3>Open your browsers debug console to view log messages related to various actions.</h3>
 <div class='demo-content' layout="row" layout-align="center start">
   <rv-sign-in-panel-component 
     [preventSubmit]="true"

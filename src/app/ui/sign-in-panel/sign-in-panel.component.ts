@@ -234,8 +234,6 @@ export class SignInPanelComponent {
   }
 
   forceValidityCheck(form: NgForm) {
-debugger
-    console.log('SignInPanelComponent', 'forceValidityCheck', form.valid)
   }
 
   private cycleDisplayMode(action: SignInAction) {

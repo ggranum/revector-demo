@@ -1,8 +1,7 @@
-<div class="rv-permission-form-wrapper" layout="column" layout-align="start start" layout-fill>
+<div class="rv-permission-form-wrapper" flex layout="column" layout-align="start" >
   <form *ngIf="permission != null" (ngSubmit)="onSubmit($event)" #permissionForm="ngForm"
         flex layout="row"
-        layout-fill
-        layout-align="space-between center">
+        layout-align="space-between">
 
     <div class="rv-permission-inputs-wrapper" layout="row" flex="80" layout-align="space-between start">
       <md-input [(ngModel)]="permission.$key" name="name" #fName="ngModel"

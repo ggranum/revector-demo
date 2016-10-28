@@ -56,6 +56,6 @@ export class SignInPanelPage {
   }
 
   onSignInSuccess(){
-    this.router.navigate([this.redirectTo])
+    this.router.navigate([this.redirectTo || '/'])
   }
 }

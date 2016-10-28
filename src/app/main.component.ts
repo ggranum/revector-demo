@@ -8,7 +8,9 @@ import {
   SignInState,
   User,
   AuthServiceStoreState,
-  SignInStates
+  SignInStates,
+  AuthServiceState,
+  CurrentUserActions
 } from "@revector/auth-service";
 import {Store} from "@ngrx/store";
 import {safe} from "@revector/shared";
@@ -26,27 +28,27 @@ export class MainComponent {
   title = 'ReVector Demo'
   asciidoctorContent: string = ''
   errorMessage: Observable<string>
+  loginButtonLabel: string = "Sign In"
 
-  constructor(private router: Router) {
-    this.asciidoctorContent = `
-= Hello, AsciiDoc!
-Doc Writer <doc@example.com>
 
-An introduction to http://asciidoc.org[AsciiDoc].
+  constructor(private router: Router, private _store: Store<AuthServiceState>) {
 
-== First Section
-
-* item 1
-* item 2
-
-[source,ruby]
-puts "Hello, World!"
-`
   }
 
-
-  signIn() {
+  doSignIn() {
     this.router.navigate(['./sign-in', {redirect:''}]);
+  }
+
+  doSignOut() {
+    this._store.dispatch(CurrentUserActions.signOut.invoke)
+  }
+
+  userIsAdmin(){
+    return this.user && !this.user.isAnonymous
+  }
+
+  navigateToAdmin(){
+    this.router.navigate(['./admin']);
   }
 
   isSignedIn(signInState: SignInState) {

@@ -18,7 +18,7 @@ import {ObjMap} from '@revector/shared'
 @Component({
   selector: 'rv-role',
   template: ` 
- <rv-role-component layout-fill
+ <rv-role-component flex layout="row" layout-align="start"
                [role]="role"
                [permissions]="permissions"
                [rolePermissions]="rolePermissions$ | async"

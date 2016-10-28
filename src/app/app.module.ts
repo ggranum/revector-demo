@@ -40,6 +40,7 @@ import {environment} from '../environments/environment';
 import {AppComponent} from './app.component'
 import {MainContainer} from './main.container'
 import {MainComponent} from './main.component'
+import {HomeComponent} from './home.component'
 
 import { AppRoutingModule}  from './app.routing';
 
@@ -59,7 +60,8 @@ let reducers = {
   declarations: [
     AppComponent,
     MainContainer,
-    MainComponent
+    MainComponent,
+    HomeComponent
   ],
   imports: [
     /* Dev modules */
@@ -78,8 +80,7 @@ let reducers = {
 
     /* NgRx */
     StoreModule.provideStore(reducers),
-    StoreDevtoolsModule.instrumentStore({monitor: useLogMonitor({visible: true, position: 'left'})}),
-    StoreLogMonitorModule,
+    StoreDevtoolsModule.instrumentOnlyWithExtension(),
     EffectsModule.run(CurrentUserEffects),
     EffectsModule.run(RoleEffects),
     EffectsModule.run(PermissionEffects),

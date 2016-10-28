@@ -1,81 +1,34 @@
-<md-sidenav-layout>
+<md-sidenav-layout flex layout="column" layout-align="start">
+  <md-sidenav #sidenav mode="side" class="app-sidenav" flex></md-sidenav>
 
-
-  <md-sidenav #sidenav mode="side" class="app-sidenav"></md-sidenav>
-
-  <md-toolbar color="primary">
-    <div layout-fill layout="row" layout-align="start center">
-      <button
-        class="app-icon-button"
-        (click)="sidenav.toggle()">
-        <i class="material-icons app-toolbar-menu">menu</i>
+  <md-toolbar color="primary" flex layout="column" layout-align="start">
+    <div flex layout="row" layout-align="start center">
+      <button md-icon-button [md-menu-trigger-for]="menu">
+        <md-icon>menu</md-icon>
       </button>
+      <md-menu #menu="mdMenu">
+        <button md-menu-item *ngIf="userIsAdmin()" (click)="navigateToAdmin()"> Admin</button>
+        <button md-menu-item> About</button>
+        <button md-menu-item> Help</button>
+        <button md-menu-item *ngIf="isSignedIn(signInState)" (click)="doSignOut()"> Sign Out</button>
+        <button md-menu-item *ngIf="!isSignedIn(signInState)" (click)="doSignIn()"> Sign In</button>
+      </md-menu>
 
-      <span flex>{{title}}</span>
+      <span flex><a class="app-title" routerLink="/" routerLinkActive="active">{{title}}</a></span>
       <div flex="grow" layout="row" layout-align="end">
         <button md-raised-button
                 *ngIf="!isSignedIn(signInState)"
                 [disabled]="false"
-                color="accent" class="rv-button" (click)="signIn($event)">
+                color="accent" class="rv-button" (click)="doSignIn()">
       <span>
         <i class="material-icons rv-button-icon">lock</i><i class="rv-button-text">{{loginButtonLabel}}</i>
       </span>
-        Sign In
         </button>
         <rv-inline-profile-component [signInState]="signInState" [user]="user"></rv-inline-profile-component>
       </div>
     </div>
 
   </md-toolbar>
-
-  <div class="app-content" layout="column" layout-align="start end">
-
-    <md-card style="width: 50%;overflow: auto">
-      <rv-permission-list></rv-permission-list>
-    </md-card>
-
-    <md-card style="width: 50%;overflow: auto">
-      <rv-role-list></rv-role-list>
-    </md-card>
-
-    <md-card style="width: 50%">
-      <rv-user-list></rv-user-list>
-    </md-card>
-
-    <md-card style="width: 50%;overflow: auto">
-      <rv-asciidoctor-panel style="white-space:normal;overflow-wrap: normal;overflow: auto"
-                            [content]="asciidoctorContent"></rv-asciidoctor-panel>
-    </md-card>
-    <md-card>
-      <button md-button>FLAT</button>
-      <button md-raised-button color="primary">PRIMARY RAISED</button>
-      <button md-raised-button color="accent">ACCENT RAISED</button>
-    </md-card>
-
-    <md-card>
-      <md-checkbox>Unchecked</md-checkbox>
-      <md-checkbox [checked]="true">Checked</md-checkbox>
-      <md-checkbox [indeterminate]="true">Indeterminate</md-checkbox>
-      <md-checkbox [disabled]="true">Disabled</md-checkbox>
-    </md-card>
-
-    <md-card>
-      <md-radio-button name="symbol">Alpha</md-radio-button>
-      <md-radio-button name="symbol">Beta</md-radio-button>
-      <md-radio-button name="symbol" disabled>Gamma</md-radio-button>
-    </md-card>
-
-    <md-card *ngFor="let item of items | async">
-      {{ item.$value }}
-    </md-card>
-
-    <md-card>
-      <md-icon>build</md-icon>
-    </md-card>
-
-  </div>
+  <router-outlet flex></router-outlet>
 
 </md-sidenav-layout>
-
-
-<ngrx-store-log-monitor toggleCommand="ctrl-h" positionCommand="ctrl-m"></ngrx-store-log-monitor>

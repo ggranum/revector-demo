@@ -11,17 +11,18 @@ import {
   SignInPanelDemo,
   SignInPanelPage
 } from "@revector/sign-in-panel";
-import {UserListItemDemo} from "@revector/admin-ui";
-import {MainContainer} from "./main.container";
+import {AdminPage, UserListItemDemo} from "@revector/admin-ui";
+import {HomeComponent} from "./home.component";
 
 
 @NgModule({
   imports: [
     RouterModule.forRoot([
         {path: 'sign-in', component: SignInPanelPage},
+        {path: 'admin', component: AdminPage},
         {path: 'permissions', component: PermissionListContainer},
         {path: 'roles', component: RoleListContainer},
-        {path: '', component: MainContainer},
+        {path: '', component: HomeComponent},
         {path: 'demo/sign-in-panel', component: SignInPanelDemo},
         {path: 'demo/user-item', component: UserListItemDemo}
       ])
