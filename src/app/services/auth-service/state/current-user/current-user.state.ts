@@ -1,16 +1,16 @@
 import {Action} from '@ngrx/store'
 import {CurrentUserActions} from './current-user.actions'
-import {AuthServiceSignInState, SignInStates, AuthServiceState} from '../../interfaces'
+import {CurrentUserState, SignInStates, AuthServiceState} from '../../models'
 import {ActionReducerSet} from '@revector/shared'
 
 
 export const currentUserReducers = new ActionReducerSet<AuthServiceState>()
 
 const MAPPING = {
-  toMapped: (state: AuthServiceState): AuthServiceSignInState => {
+  toMapped: (state: AuthServiceState): CurrentUserState => {
     return state.transient.signInState
   },
-  fromMapped: (state: AuthServiceState, mapped: AuthServiceSignInState): AuthServiceState => {
+  fromMapped: (state: AuthServiceState, mapped: CurrentUserState): AuthServiceState => {
     state.transient = mapped
     return state
   },
@@ -18,9 +18,9 @@ const MAPPING = {
 
 currentUserReducers.registerMapped(CurrentUserActions.initialize,
   MAPPING,
-  (state: AuthServiceSignInState, action: Action): AuthServiceSignInState => {
+  (state: CurrentUserState, action: Action): CurrentUserState => {
     let signedIn = action.payload != null
-    let newState: AuthServiceSignInState = {
+    let newState: CurrentUserState = {
       signInState: {
         state: signedIn ? SignInStates.signedIn : SignInStates.signedOut,
       },
@@ -32,8 +32,8 @@ currentUserReducers.registerMapped(CurrentUserActions.initialize,
 
 currentUserReducers.registerMapped(CurrentUserActions.signIn.invoke,
   MAPPING,
-  (state: AuthServiceSignInState, action: Action): AuthServiceSignInState => {
-    let newState: AuthServiceSignInState = {
+  (state: CurrentUserState, action: Action): CurrentUserState => {
+    let newState: CurrentUserState = {
       signInState: {
         state: SignInStates.signingIn
       },
@@ -46,9 +46,9 @@ currentUserReducers.registerMapped(CurrentUserActions.signIn.invoke,
 
 currentUserReducers.registerMapped(CurrentUserActions.signIn.fulfilled,
   MAPPING,
-  (state: AuthServiceSignInState, action: Action): AuthServiceSignInState => {
+  (state: CurrentUserState, action: Action): CurrentUserState => {
     let signedIn = action.payload != null
-    let newState: AuthServiceSignInState = {
+    let newState: CurrentUserState = {
       signInState: {
         state: signedIn ? SignInStates.signedIn : SignInStates.signedOut,
       },
@@ -59,8 +59,8 @@ currentUserReducers.registerMapped(CurrentUserActions.signIn.fulfilled,
   })
 currentUserReducers.registerMapped(CurrentUserActions.signIn.failed,
   MAPPING,
-  (state: AuthServiceSignInState, action: Action): AuthServiceSignInState => {
-    let newState: AuthServiceSignInState = {
+  (state: CurrentUserState, action: Action): CurrentUserState => {
+    let newState: CurrentUserState = {
       signInState: {
         state: SignInStates.signInFailed,
         error: action.payload
@@ -72,8 +72,8 @@ currentUserReducers.registerMapped(CurrentUserActions.signIn.failed,
   })
 currentUserReducers.registerMapped(CurrentUserActions.signUp.invoke,
   MAPPING,
-  (state: AuthServiceSignInState, action: Action): AuthServiceSignInState => {
-    let newState: AuthServiceSignInState = {
+  (state: CurrentUserState, action: Action): CurrentUserState => {
+    let newState: CurrentUserState = {
       signInState: {
         state: SignInStates.signingUp
       },
@@ -84,8 +84,8 @@ currentUserReducers.registerMapped(CurrentUserActions.signUp.invoke,
   })
 currentUserReducers.registerMapped(CurrentUserActions.signUp.fulfilled,
   MAPPING,
-  (state: AuthServiceSignInState, action: Action): AuthServiceSignInState => {
-    let newState: AuthServiceSignInState = {
+  (state: CurrentUserState, action: Action): CurrentUserState => {
+    let newState: CurrentUserState = {
       signInState: {
         state: SignInStates.signedIn
       },
@@ -96,8 +96,8 @@ currentUserReducers.registerMapped(CurrentUserActions.signUp.fulfilled,
   })
 currentUserReducers.registerMapped(CurrentUserActions.signUp.failed,
   MAPPING,
-  (state: AuthServiceSignInState, action: Action): AuthServiceSignInState => {
-    let newState: AuthServiceSignInState = {
+  (state: CurrentUserState, action: Action): CurrentUserState => {
+    let newState: CurrentUserState = {
       signInState: {
         state: SignInStates.signUpFailed,
         error: action.payload
@@ -109,8 +109,8 @@ currentUserReducers.registerMapped(CurrentUserActions.signUp.failed,
   })
 currentUserReducers.registerMapped(CurrentUserActions.signOut.invoke,
   MAPPING,
-  (state: AuthServiceSignInState, action: Action): AuthServiceSignInState => {
-    let newState: AuthServiceSignInState = {
+  (state: CurrentUserState, action: Action): CurrentUserState => {
+    let newState: CurrentUserState = {
       signInState: {
         state: SignInStates.signingOut
       }
@@ -120,8 +120,8 @@ currentUserReducers.registerMapped(CurrentUserActions.signOut.invoke,
   })
 currentUserReducers.registerMapped(CurrentUserActions.signOut.fulfilled,
   MAPPING,
-  (state: AuthServiceSignInState, action: Action): AuthServiceSignInState => {
-    let newState: AuthServiceSignInState = {
+  (state: CurrentUserState, action: Action): CurrentUserState => {
+    let newState: CurrentUserState = {
       signInState: {
         state: SignInStates.signedOut
       },

@@ -4,12 +4,12 @@ Live demo available https://revectordemo.firebaseapp.com/[here].
 
 == About
 
-Demo project for https://github.com/ggranum/revector[ReVector] components. Currently hosts all source for ReVector due to https://github.com/angular/angular-cli/issues/1465[angular/angular-cli issue 1465]
+Demo project for https://github.com/ggranum/revector[ReVector] components. Currently hosts all source for ReVector as well while we figure out deployment of modules via AngularCLI.
 
 This project uses https://angular.io[Angular2], https://firebase.google.com[Firebase], and https://github.com/ngrx/store[@ngrx] to create 'reactive' style modules that can be dropped into projects that make use of similar features.
 
 
-The flagship module at the moment is the Authentication & Authorization Module - AKA User Management. Check it out [here]
+The flagship module is the Authentication & Authorization Module - AKA User Management. Check it out https://revectordemo.firebaseapp.com/sign-in[here]
 
 == Getting Started
 

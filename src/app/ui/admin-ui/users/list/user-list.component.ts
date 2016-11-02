@@ -2,14 +2,11 @@ import {Component, ChangeDetectionStrategy, Input, EventEmitter, Output} from '@
 import {Store} from '@ngrx/store'
 import {
   Role,
-  RoleState,
   Permission,
-  PermissionState,
-  UserRole,
   AuthServiceState,
-  User,
-  UserState
+  User
 } from '@revector/auth-service'
+import {ObjMap} from "@revector/shared";
 
 
 @Component({
@@ -20,9 +17,9 @@ import {
 })
 export class UserListComponent {
 
-  @Input() usersObj: {[key: string]: UserState} = {}
-  @Input() rolesObj: {[key: string]: RoleState} = {}
-  @Input() permissionsObj: {[key: string]: PermissionState} = {}
+  @Input() usersObj: {[key: string]: ObjMap<User>} = {}
+  @Input() rolesObj: {[key: string]: ObjMap<Role>} = {}
+  @Input() permissionsObj: {[key: string]: ObjMap<Permission>} = {}
 
   @Output() addUser: EventEmitter<User> = new EventEmitter<User>(false)
   @Output() userChange: EventEmitter<User> = new EventEmitter<User>(false)

@@ -1,6 +1,7 @@
 import {Component, ChangeDetectionStrategy, Input, EventEmitter, Output} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceState, Permission, PermissionState} from '@revector/auth-service'
+import {AuthServiceState, Permission} from '@revector/auth-service'
+import {ObjMap} from "@revector/shared";
 
 
 @Component({
@@ -11,7 +12,7 @@ import {AuthServiceState, Permission, PermissionState} from '@revector/auth-serv
 })
 export class PermissionListComponent {
 
-  @Input() permissionsObj: {[key: string]: PermissionState} = {}
+  @Input() permissionsObj: {[key: string]: ObjMap<Permission>} = {}
 
   @Output() addPermission: EventEmitter<Permission> = new EventEmitter<Permission>(false)
   @Output() permissionChange: EventEmitter<Permission> = new EventEmitter<Permission>(false)

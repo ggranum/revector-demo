@@ -6,10 +6,12 @@ import {
   Permission,
   AuthServiceStoreState,
   SignInState,
-  SignInStates,
-  PermissionState
+  SignInStates
 } from '@revector/auth-service'
-import {Update} from '@revector/shared'
+import {
+  Update,
+  ObjMap
+} from '@revector/shared'
 
 
 @Component({
@@ -25,7 +27,7 @@ import {Update} from '@revector/shared'
 })
 export class PermissionListContainer {
 
-  permissions$: Observable<PermissionState>
+  permissions$: Observable<ObjMap<Permission>>
 
   constructor(private _store: Store<AuthServiceStoreState>) {
     _store.select((s: AuthServiceStoreState) => {

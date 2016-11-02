@@ -6,8 +6,8 @@ import {Store} from '@ngrx/store'
 import {
   AuthServiceStoreState,
   Permission,
-  MappedPermission
-} from '../../interfaces'
+  PermissionGrant
+} from '../../models'
 import {
   Actions,
   Effect
@@ -59,7 +59,7 @@ export class PermissionEffects implements OnDestroy {
 
   getPermissions() {
     let fbPermissions = <Observable<any>>this.firebase.database.object(`${this._fbRoot}/permissions`).first()
-    fbPermissions = fbPermissions.map((permissionsMap: ObjMap<MappedPermission>) => {
+    fbPermissions = fbPermissions.map((permissionsMap: ObjMap<PermissionGrant>) => {
       delete permissionsMap['$key']
       delete permissionsMap['$exists']
       Object.keys(permissionsMap).forEach((key: string) => {

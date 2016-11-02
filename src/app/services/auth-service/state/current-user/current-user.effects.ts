@@ -10,17 +10,18 @@ import {
 } from '@ngrx/effects'
 
 import {TypedAction} from '@revector/shared'
+//noinspection TypeScriptPreferShortImport
 import {
   AuthServiceCIF,
-  UserAuthTokenIF,
-  EmailPasswordCredentials
+  UserAuthTokenIF
 } from '../../service/auth.service.interface'
 import {
   AuthServiceStoreState,
   SignInStates,
   AuthServiceState,
-  User
-} from '../../interfaces'
+  User,
+  EmailPasswordCredentials
+} from '../../models'
 import {CurrentUserActions} from './current-user.actions'
 
 

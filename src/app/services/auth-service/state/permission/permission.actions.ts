@@ -1,23 +1,27 @@
-import {Permission, PermissionState} from '../../interfaces'
+import {Permission} from '../../models'
 import {
-  ActionDefinition, InvokableActionSet, actionDefinition,
-  invokableActionSet, Update
+  ActionDefinition,
+  InvokableActionSet,
+  actionDefinition,
+  invokableActionSet,
+  Update,
+  ObjMap
 } from '@revector/shared'
 
 const PERMISSION_PREFIX = '[Auth.permission] '
 
 export interface PermissionActionsIF {
-  initialize: ActionDefinition<PermissionState>
-  getPermissions: InvokableActionSet<PermissionState, void, PermissionState>
-  addPermission: InvokableActionSet<PermissionState, Permission, Permission>
-  updatePermission: InvokableActionSet<PermissionState, Update<Permission>, Update<Permission>>
-  removePermission: InvokableActionSet<PermissionState, Permission, Permission>
+  initialize: ActionDefinition<ObjMap<Permission>>
+  getPermissions: InvokableActionSet<ObjMap<Permission>, void, ObjMap<Permission>>
+  addPermission: InvokableActionSet<ObjMap<Permission>, Permission, Permission>
+  updatePermission: InvokableActionSet<ObjMap<Permission>, Update<Permission>, Update<Permission>>
+  removePermission: InvokableActionSet<ObjMap<Permission>, Permission, Permission>
 }
 
 export let PermissionActions: PermissionActionsIF = {
   initialize: actionDefinition(PERMISSION_PREFIX + 'Initialize'),
-  getPermissions: invokableActionSet<PermissionState, void, PermissionState>(PERMISSION_PREFIX + 'Get Permissions'),
-  addPermission: invokableActionSet<PermissionState, Permission, Permission>(PERMISSION_PREFIX + 'Add Permission'),
-  updatePermission: invokableActionSet<PermissionState, Update<Permission>, Update<Permission>>(PERMISSION_PREFIX + 'Update Permission'),
-  removePermission: invokableActionSet<PermissionState, Permission, Permission>(PERMISSION_PREFIX + 'Remove Permission')
+  getPermissions: invokableActionSet<ObjMap<Permission>, void, ObjMap<Permission>>(PERMISSION_PREFIX + 'Get Permissions'),
+  addPermission: invokableActionSet<ObjMap<Permission>, Permission, Permission>(PERMISSION_PREFIX + 'Add Permission'),
+  updatePermission: invokableActionSet<ObjMap<Permission>, Update<Permission>, Update<Permission>>(PERMISSION_PREFIX + 'Update Permission'),
+  removePermission: invokableActionSet<ObjMap<Permission>, Permission, Permission>(PERMISSION_PREFIX + 'Remove Permission')
 }

@@ -7,10 +7,10 @@ import {
   AuthServiceStoreState,
   SignInState,
   SignInStates,
-  UserState,
-  RoleState,
-  PermissionState
+  Role,
+  Permission
 } from '@revector/auth-service'
+import {ObjMap} from "@revector/shared";
 
 
 @Component({
@@ -28,9 +28,9 @@ import {
 })
 export class UserListContainer {
 
-  users$: Observable<UserState>
-  roles$: Observable<RoleState>
-  permissions$: Observable<PermissionState>
+  users$: Observable<ObjMap<User>>
+  roles$: Observable<ObjMap<Role>>
+  permissions$: Observable<ObjMap<Permission>>
 
   constructor(private _store: Store<AuthServiceStoreState>) {
     _store.select((s: AuthServiceStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))

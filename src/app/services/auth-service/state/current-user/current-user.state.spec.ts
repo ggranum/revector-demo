@@ -8,7 +8,7 @@ import {StoreModule} from '@ngrx/store'
 
 // Dev modules
 import {AuthReducers} from '../../'
-import {AuthServiceStoreState, SignInStates, User} from '../../interfaces'
+import {AuthServiceStoreState, SignInStates, User} from '../../models'
 
 
 // Our Components

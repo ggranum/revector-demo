@@ -1,13 +1,13 @@
 import {
   User,
-  UserState,
+
   UserRole,
-  UserRolesMappings,
+  UsersHaveRolesRelation,
   AuthServiceState,
-  UserPermissionsMappings,
+  UsersHavePermissionGrantsRelation,
   UserPermission,
-  MappedPermission
-} from '../../interfaces'
+  PermissionGrant
+} from '../../models'
 import {UserActions} from './user.actions'
 import {
   generatePushID,
@@ -23,10 +23,10 @@ import {
 export const userReducers = new ActionReducerSet<AuthServiceState>()
 
 const USER_MAPPING = {
-  toMapped: (state: AuthServiceState): UserState => {
+  toMapped: (state: AuthServiceState): ObjMap<User> => {
     return state.users
   },
-  fromMapped: (state: AuthServiceState, mapped: UserState): AuthServiceState => {
+  fromMapped: (state: AuthServiceState, mapped: ObjMap<User>): AuthServiceState => {
     state.users = mapped
     return state
   },
@@ -35,8 +35,8 @@ const USER_MAPPING = {
 
 userReducers.registerMapped(UserActions.addUser.invoke,
   USER_MAPPING,
-  (state: UserState, action: TypedAction<User>) => {
-    let newState: UserState = Object.assign({}, state)
+  (state: ObjMap<User>, action: TypedAction<User>) => {
+    let newState: ObjMap<User> = Object.assign({}, state)
     let user = action.payload
     if (!user.uid) {
       user.uid = generatePushID()
@@ -47,7 +47,7 @@ userReducers.registerMapped(UserActions.addUser.invoke,
 
 userReducers.registerMapped(UserActions.addUser.fulfilled,
   USER_MAPPING,
-  (state: UserState, action: TypedAction<User>) => {
+  (state: ObjMap<User>, action: TypedAction<User>) => {
     return state
   })
 userReducers.register(UserActions.addUser.failed)
@@ -56,7 +56,7 @@ userReducers.register(UserActions.addUser.failed)
 userReducers.register(UserActions.getUsers.invoke)
 userReducers.registerMapped(UserActions.getUsers.fulfilled,
   USER_MAPPING,
-  (state: UserState, action: TypedAction<UserState>) => {
+  (state: ObjMap<User>, action: TypedAction<ObjMap<User>>) => {
     state = Object.assign({}, action.payload)
     return state
   })
@@ -66,7 +66,7 @@ userReducers.registerError(UserActions.getUsers.failed)
 userReducers.register(UserActions.updateUser.invoke)
 userReducers.registerMapped(UserActions.updateUser.fulfilled,
   USER_MAPPING,
-  (state: UserState, action: TypedAction<User>) => {
+  (state: ObjMap<User>, action: TypedAction<User>) => {
     return Object.assign({}, state, {[action.payload.uid]: action.payload})
   })
 userReducers.registerError(UserActions.updateUser.failed)
@@ -75,7 +75,7 @@ userReducers.registerError(UserActions.updateUser.failed)
 userReducers.register(UserActions.removeUser.invoke)
 userReducers.registerMapped(UserActions.removeUser.fulfilled,
   USER_MAPPING,
-  (state: UserState, action: TypedAction<User>) => {
+  (state: ObjMap<User>, action: TypedAction<User>) => {
     let newState = Object.assign({}, state)
     delete newState[action.payload.uid]
     return newState
@@ -84,10 +84,10 @@ userReducers.registerError(UserActions.removeUser.failed)
 
 
 const USER_ROLE_MAPPING = {
-  toMapped: (state: AuthServiceState): UserRolesMappings => {
+  toMapped: (state: AuthServiceState): UsersHaveRolesRelation => {
     return state.user_roles
   },
-  fromMapped: (state: AuthServiceState, mapped: UserRolesMappings): AuthServiceState => {
+  fromMapped: (state: AuthServiceState, mapped: UsersHaveRolesRelation): AuthServiceState => {
     state.user_roles = mapped
     return state
   },
@@ -95,7 +95,7 @@ const USER_ROLE_MAPPING = {
 userReducers.register(UserActions.getUserRoles.invoke)
 userReducers.registerMapped(UserActions.getUserRoles.fulfilled,
   USER_ROLE_MAPPING,
-  (state: UserRolesMappings, action: TypedAction<UserRolesMappings>) => {
+  (state: UsersHaveRolesRelation, action: TypedAction<UsersHaveRolesRelation>) => {
     return action.payload
   })
 userReducers.registerError(UserActions.getUserRoles.failed)
@@ -103,16 +103,16 @@ userReducers.registerError(UserActions.getUserRoles.failed)
 userReducers.register(UserActions.addUserToRole.invoke,
   (state: AuthServiceState, action: TypedAction<UserRole>) => {
     let userId = action.payload.user_uid
-    let roleName = action.payload.role_name
+    let roleName = action.payload.role_key
     let path = `user_roles.${userId}.${roleName}`
     if (!pathExists(state, path)) {
       ensureExists(state, path, true)
     }
     // now update the user's permissions.
     let permissions: ObjMap<boolean> = ensureExists(state, `role_permissions.${roleName}`, {})
-    let userPermissions: ObjMap<MappedPermission> = ensureExists(state, `user_permissions.${userId}`, {})
+    let userPermissions: ObjMap<PermissionGrant> = ensureExists(state, `user_permissions.${userId}`, {})
     Object.keys(permissions).forEach((permissionName: string) => {
-      let userPermission: MappedPermission = userPermissions[permissionName] || {}
+      let userPermission: PermissionGrant = userPermissions[permissionName] || {}
       userPermission.roles = Object.assign({}, userPermission.roles)
       userPermission.roles[roleName] = true
       userPermissions[permissionName] = userPermission
@@ -126,15 +126,15 @@ userReducers.registerError(UserActions.addUserToRole.failed)
 userReducers.register(UserActions.removeUserFromRole.invoke,
   (state: AuthServiceState, action: TypedAction<UserRole>) => {
     let userId = action.payload.user_uid
-    let roleName = action.payload.role_name
+    let roleName = action.payload.role_key
     let path = `user_roles.${userId}.${roleName}`
     let existed = removeIfExists(state, path)
     if (existed) {
       state.user_roles[userId] = Object.assign({}, state.user_roles[userId])
       let permissions: ObjMap<boolean> = ensureExists(state, `role_permissions.${roleName}`, {})
-      let userPermissions: ObjMap<MappedPermission> = ensureExists(state, `user_permissions.${userId}`, {})
+      let userPermissions: ObjMap<PermissionGrant> = ensureExists(state, `user_permissions.${userId}`, {})
       Object.keys(permissions).forEach((permissionName: string) => {
-        let userPermission: MappedPermission = userPermissions[permissionName] || {}
+        let userPermission: PermissionGrant = userPermissions[permissionName] || {}
         userPermission.roles = Object.assign({}, userPermission.roles)
         delete userPermission.roles[roleName]
         if (Object.keys(userPermission.roles).length === 0) {
@@ -161,10 +161,10 @@ userReducers.registerError(UserActions.removeUserFromRole.failed)
 
 
 const USER_PERMISSION_MAPPING = {
-  toMapped: (state: AuthServiceState): UserPermissionsMappings => {
+  toMapped: (state: AuthServiceState): UsersHavePermissionGrantsRelation => {
     return state.user_permissions
   },
-  fromMapped: (state: AuthServiceState, mapped: UserPermissionsMappings): AuthServiceState => {
+  fromMapped: (state: AuthServiceState, mapped: UsersHavePermissionGrantsRelation): AuthServiceState => {
     state.user_permissions = mapped
     return state
   },
@@ -173,23 +173,23 @@ const USER_PERMISSION_MAPPING = {
 userReducers.register(UserActions.getUserPermissions.invoke)
 userReducers.registerMapped(UserActions.getUserPermissions.fulfilled,
   USER_PERMISSION_MAPPING,
-  (state: UserPermissionsMappings, action: TypedAction<UserPermissionsMappings>) => {
+  (state: UsersHavePermissionGrantsRelation, action: TypedAction<UsersHavePermissionGrantsRelation>) => {
     return action.payload
   })
 userReducers.registerError(UserActions.getUserPermissions.failed)
 
 userReducers.registerMapped(UserActions.grantPermissionToUser.invoke,
   USER_PERMISSION_MAPPING,
-  (state: UserPermissionsMappings, action: TypedAction<UserPermission>) => {
+  (state: UsersHavePermissionGrantsRelation, action: TypedAction<UserPermission>) => {
     let newState = state
     let userId = action.payload.user_uid
-    let permissionId = action.payload.permission_name
+    let permissionId = action.payload.permission_key
     let userPermissions = newState[userId]
     if (!userPermissions) {
       newState = Object.assign({}, state)
       userPermissions = {}
     }
-    let permission: MappedPermission = userPermissions[permissionId] || {}
+    let permission: PermissionGrant = userPermissions[permissionId] || {}
 
     permission = Object.assign({}, permission, {
       explicitlyGranted: true
@@ -204,16 +204,16 @@ userReducers.registerError(UserActions.grantPermissionToUser.failed)
 
 userReducers.registerMapped(UserActions.revokePermissionFromUser.invoke,
   USER_PERMISSION_MAPPING,
-  (state: UserPermissionsMappings, action: TypedAction<UserPermission>) => {
+  (state: UsersHavePermissionGrantsRelation, action: TypedAction<UserPermission>) => {
     let newState = state
     let userId = action.payload.user_uid
-    let permissionId = action.payload.permission_name
+    let permissionId = action.payload.permission_key
     let userPermissions = newState[userId]
     if (!userPermissions) {
       newState = Object.assign({}, state)
       userPermissions = {}
     }
-    let permission: MappedPermission = userPermissions[permissionId] || {}
+    let permission: PermissionGrant = userPermissions[permissionId] || {}
 
     if (permission.explicitlyGranted === true) {
       delete permission.explicitlyGranted

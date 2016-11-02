@@ -3,9 +3,8 @@ import {Store} from '@ngrx/store'
 import {Actions, Effect} from '@ngrx/effects'
 import {AngularFire} from 'angularfire2'
 import {Observable} from 'rxjs'
-import {AuthServiceStoreState, Role, RolePermission, MappedPermission, RolePermissionsMappings} from '../../interfaces'
+import {AuthServiceStoreState, Role, RolePermission, PermissionGrant, RoleHasPermissionGrantsRelation} from '../../models'
 import {RoleActions} from './role.actions'
-import {RoleModel} from '../../models/role-model'
 import {ObjMap, TypedAction, cleanFirebaseMap, Update} from '@revector/shared'
 
 
@@ -37,7 +36,7 @@ export class RoleEffects implements OnDestroy {
   // noinspection JSUnusedGlobalSymbols
   @Effect() getRolePermissions$ = this.actions$
     .ofType(RoleActions.getRolePermissions.invoke.type)
-    .switchMap((action: TypedAction<RolePermissionsMappings>) => this.getRolePermissions())
+    .switchMap((action: TypedAction<RoleHasPermissionGrantsRelation>) => this.getRolePermissions())
 
   // noinspection JSUnusedGlobalSymbols
   @Effect() grantPermission$ = this.actions$
@@ -55,8 +54,8 @@ export class RoleEffects implements OnDestroy {
     return Object.assign({}, value)
   }
 
-  mappedPermissionToFirebase(value: MappedPermission): MappedPermission {
-    let result: MappedPermission = Object.assign({}, value)
+  mappedPermissionToFirebase(value: PermissionGrant): PermissionGrant {
+    let result: PermissionGrant = Object.assign({}, value)
     if (value && value.roles) {
       result.roles = Object.assign({}, value.roles)
     }
@@ -77,20 +76,17 @@ export class RoleEffects implements OnDestroy {
   }
 
   addRole(role: Role) {
-    let model = RoleModel.from(role)
-    if (model.validate() === null) {
-      let fireValue: Role = {
-        description: role.description
-      }
-      let fbRole = this.firebase.database.object(`${this._fbRoot}/roles/${role.$key}`)
-      let fbPromise = <Promise<any>>fbRole.set(fireValue)
-      fbPromise = fbPromise.then(() => {
-        return RoleActions.addRole.fulfilled.action(role)
-      }, (e) => {
-        return RoleActions.addRole.failed.action(e)
-      })
-      return Observable.fromPromise(fbPromise)
+    let fireValue: Role = {
+      description: role.description
     }
+    let fbRole = this.firebase.database.object(`${this._fbRoot}/roles/${role.$key}`)
+    let fbPromise = <Promise<any>>fbRole.set(fireValue)
+    fbPromise = fbPromise.then(() => {
+      return RoleActions.addRole.fulfilled.action(role)
+    }, (e) => {
+      return RoleActions.addRole.failed.action(e)
+    })
+    return Observable.fromPromise(fbPromise)
   }
 
   updateRole(update: Update<Role>) {
@@ -135,20 +131,20 @@ export class RoleEffects implements OnDestroy {
   getRolePermissions() {
     let fbRolePermissions = <Observable<any>>this.firebase.database.object(`${this._fbRoot}/role_permissions`).first()
     fbRolePermissions = fbRolePermissions.map((v) => {
-      let map = cleanFirebaseMap<{[permission_name: string]: MappedPermission}>(v)
+      let map = cleanFirebaseMap<{[permission_name: string]: PermissionGrant}>(v)
       return RoleActions.getRolePermissions.fulfilled.action(map)
     })
     return fbRolePermissions
   }
 
   grantPermission(rolePermission: RolePermission) {
-    let fireValue: MappedPermission
-    this.store.select((s: AuthServiceStoreState) => s.auth.role_permissions[rolePermission.role_name])
-      .subscribe((rolePermissions: ObjMap<MappedPermission>) => {
-        let current: MappedPermission = rolePermissions[rolePermission.permission_name]
+    let fireValue: PermissionGrant
+    this.store.select((s: AuthServiceStoreState) => s.auth.role_permissions[rolePermission.role_key])
+      .subscribe((rolePermissions: ObjMap<PermissionGrant>) => {
+        let current: PermissionGrant = rolePermissions[rolePermission.permission_key]
         fireValue = this.mappedPermissionToFirebase(current)
       })
-    let path = `${this._fbRoot}/role_permissions/${rolePermission.role_name}/${rolePermission.permission_name}`
+    let path = `${this._fbRoot}/role_permissions/${rolePermission.role_key}/${rolePermission.permission_key}`
     let fbRolePermRef = this.firebase.database.object(path)
     let fbAddRolePromise = <Promise<any>>fbRolePermRef.set(fireValue)
 
@@ -161,7 +157,7 @@ export class RoleEffects implements OnDestroy {
   }
 
   revokePermission(rolePermission: RolePermission) {
-    let path = `${this._fbRoot}/role_permissions/${rolePermission.role_name}/${rolePermission.permission_name}`
+    let path = `${this._fbRoot}/role_permissions/${rolePermission.role_key}/${rolePermission.permission_key}`
     let fbRolePermRef = this.firebase.database.object(path)
     let fbPromise = <Promise<any>>fbRolePermRef.remove()
     fbPromise = fbPromise.then(() => {

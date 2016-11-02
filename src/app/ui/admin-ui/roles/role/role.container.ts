@@ -7,8 +7,8 @@ import {
   AuthServiceStoreState,
   SignInState,
   SignInStates,
-  RolePermissionsMappings,
-  MappedPermission,
+  RoleHasPermissionGrantsRelation,
+  PermissionGrant,
   Permission,
   RolePermission,
 } from '@revector/auth-service'
@@ -44,12 +44,12 @@ export class RoleContainer {
   @Output() focus: EventEmitter<Event> = new EventEmitter<Event>(false)
   @Output() blur: EventEmitter<Event> = new EventEmitter<Event>(false)
 
-  rolePermissions$: Observable<ObjMap<MappedPermission>>
+  rolePermissions$: Observable<ObjMap<PermissionGrant>>
 
   constructor(private _store: Store<AuthServiceStoreState>) {
     _store.select((s: AuthServiceStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
 
-    let allRolePermissions$: Observable<RolePermissionsMappings> = _store.select((s: AuthServiceStoreState) => {
+    let allRolePermissions$: Observable<RoleHasPermissionGrantsRelation> = _store.select((s: AuthServiceStoreState) => {
       return s.auth.role_permissions
     })
 

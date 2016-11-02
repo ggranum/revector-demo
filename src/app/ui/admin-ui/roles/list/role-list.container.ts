@@ -4,13 +4,15 @@ import {Store} from '@ngrx/store'
 import {
   RoleActions,
   Role,
+  Permission,
   AuthServiceStoreState,
   SignInState,
-  SignInStates,
-  RoleState,
-  PermissionState
+  SignInStates
 } from '@revector/auth-service'
-import {Update} from '@revector/shared'
+import {
+  Update,
+  ObjMap
+} from '@revector/shared'
 
 
 @Component({
@@ -27,8 +29,8 @@ import {Update} from '@revector/shared'
 })
 export class RoleListContainer {
 
-  roles$: Observable<RoleState>
-  permissions$: Observable<PermissionState>
+  roles$: Observable<ObjMap<Role>>
+  permissions$: Observable<ObjMap<Permission>>
 
   constructor(private _store: Store<AuthServiceStoreState>) {
     _store.select((s: AuthServiceStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))

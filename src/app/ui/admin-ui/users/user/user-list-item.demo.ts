@@ -6,15 +6,10 @@ import {
 import {
   User,
   Role,
-  UserRole,
   Permission,
-  MappedPermission,
-  RolePermissionsMappings,
-  RoleModel,
-  UserModel
+  PermissionGrant,
 } from "@revector/auth-service";
 import {ObjMap} from "@revector/shared";
-import {PermissionModel} from "../../../../services/auth-service/models/permission-model";
 
 @Component({
   selector: 'rv-user-item-demo',
@@ -43,56 +38,6 @@ import {PermissionModel} from "../../../../services/auth-service/models/permissi
 })
 export class UserListItemDemo {
 
-  roleMap: any = {
-    "DemoAdmin": {
-      description: "Administrator",
-      orderIndex: 1
-    },
-    "DemoUser": {
-      description: "DemoUser",
-      orderIndex: 10
-    },
-    "DemoGuest": {
-      description: "DemoGuest",
-      orderIndex: 15
-    }
-  }
-
-
-  permissionsMap: any =
-  {
-    "Add user": {
-      description: "Create new users manually",
-      orderIndex: 1
-    },
-
-    "Remove user": {
-      description: "Remove a user account",
-      orderIndex: 10
-    },
-    "Create permission": {
-      description: "Create a new Permission",
-      orderIndex: 20
-    },
-    "Leave comment": {
-      description: "Leave a comment.",
-      orderIndex: 30
-    },
-    "Remove comment": {
-      description: "Remove any comment",
-      orderIndex: 40
-    },
-    "View comments": {
-      description: "View public comments",
-      orderIndex: 50
-    },
-    "View own profile": {
-      description: "View own profile page",
-      orderIndex: 60
-    }
-  }
-
-
   user: User = {
     displayName: "Demo user",
     email: "example@example.com",
@@ -100,56 +45,70 @@ export class UserListItemDemo {
     uid: "abc12345abc234"
   }
 
-  roles: Role[] = []
-  roleModels: RoleModel[]
-  permissions: Permission[]
-  rolePermissions: RolePermissionsMappings = {}
-  userRoles: ObjMap<boolean> = {}
-  userPermissions: ObjMap<MappedPermission> = {}
+  roles: Role[] = [
+    {
+      "$key": "DemoAdmin",
+      "description": "Administrator",
+      "orderIndex": 1,
+    },
+    {
+      "$key": "DemoUser",
+      "description": "DemoUser",
+      "orderIndex": 10
+    }, {
+      "$key": "DemoGuest",
+      "description": "DemoGuest",
+      "orderIndex": 15
+    }]
 
+  permissions: Permission[] = [{
+    "$key": "Add user",
+    "description": "Create new users manually",
+    "orderIndex": 1
+  }, {
+    "$key": "Remove user",
+    "description": "Remove a user account",
+    "orderIndex": 10
+  }, {
+    "$key": "Create permission",
+    "description": "Create a new Permission",
+    "orderIndex": 20
+  }, {
+    "$key": "Leave comment",
+    "description": "Leave a comment.",
+    "orderIndex": 30
+  }, {
+    "$key": "Remove comment",
+    "description": "Remove any comment",
+    "orderIndex": 40
+  }, {
+    "$key": "View comments",
+    "description": "View public comments",
+    "orderIndex": 50
+  }, {
+    "$key": "View own profile",
+    "description": "View own profile page",
+    "orderIndex": 60
+  }]
+  userRoles: ObjMap<boolean> = {"DemoUser": true, "DemoGuest": true}
+  userPermissions: ObjMap<PermissionGrant> = {
+    "Leave comment": {
+      "$key": "Leave comment",
+      "roles": {"DemoUser": true}
+    },
+    "View comments": {
+      "$key": "View comments", "roles": {"DemoGuest": true, "DemoUser": true}
+    },
+    "View own profile": {
+      "$key": "View own profile", "roles": {"DemoUser": true}
+    },
+    "Add user": {
+      "$key": "Add user", "explicitlyGranted": true
+    }
+  }
 
 
   constructor() {
-
-    this.initPermissions();
-    this.initRoles();
-
-    this.userPermissions = {}
-    let userModel = UserModel.from(this.user)
-    userModel.assignRole(this.roleModels[1])
-    userModel.assignRole(this.roleModels[2])
-    userModel.grantPermission(PermissionModel.from(this.permissionsMap["Add user"]))
-
-    this.userRoles = userModel.getUserRoles()
-    this.userPermissions = userModel.getUserPermissions()
-
-  }
-
-
-  private initPermissions() {
-    this.permissions = Object.keys(this.permissionsMap).map((key: string) => {
-      this.permissionsMap[key].$key = key
-      return this.permissionsMap[key]
-    })
-  }
-
-  private initRoles() {
-    this.roleModels = Object.keys(this.roleMap).map((key: string) => {
-      let role = this.roleMap[key]
-      role.$key = key
-      let model = RoleModel.from(role, key)
-      if (role === this.roleMap.DemoAdmin) {
-        model.assignPermissions(...this.permissions)
-      } else if (role === this.roleMap.DemoUser) {
-        model.assignPermissions(this.permissionsMap["Leave comment"],
-          this.permissionsMap["View comments"],
-          this.permissionsMap["View own profile"])
-      } else if (role === this.roleMap.DemoGuest) {
-        model.assignPermissions(this.permissionsMap["View comments"])
-      }
-      this.roles.push(role)
-      return model
-    })
   }
 
   onSelectionChange(event: any) {

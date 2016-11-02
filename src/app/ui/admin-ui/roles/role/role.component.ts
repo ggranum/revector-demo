@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core'
 import {Observable} from 'rxjs'
-import {RolePermission, MappedPermission, Permission, Role} from '@revector/auth-service'
+import {RolePermission, PermissionGrant, Permission, Role} from '@revector/auth-service'
 import {ObjMap, Update} from '@revector/shared'
 
 
@@ -14,7 +14,7 @@ export class RoleComponent {
 
   @Input() role: Role
   @Input() permissions: Permission[]
-  @Input() rolePermissions: ObjMap<MappedPermission>
+  @Input() rolePermissions: ObjMap<PermissionGrant>
   @Input() collapsed: boolean = true
 
   @Output() change: Observable<Update<Role>>
@@ -94,8 +94,8 @@ export class RoleComponent {
 
   doTogglePermission(permission: Permission) {
     let rolePermission: RolePermission = {
-      permission_name: permission.$key,
-      role_name: this.role.$key
+      permission_key: permission.$key,
+      role_key: this.role.$key
     }
     if (this.rolePermissions[permission.$key]) {
       this.removeRolePermission.emit(rolePermission)

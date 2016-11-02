@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import {
   Permission,
-  MappedPermission
+  PermissionGrant
 } from "@revector/auth-service";
 
 
@@ -29,7 +29,7 @@ import {
 export class UserPermissionEditorComponent {
 
   @Input() permission: Permission
-  @Input() mappedPermission: MappedPermission
+  @Input() mappedPermission: PermissionGrant
 
   @Output() change: EventEmitter<Event> = new EventEmitter<Event>(false);
 

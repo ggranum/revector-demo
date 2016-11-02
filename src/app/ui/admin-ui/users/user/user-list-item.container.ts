@@ -15,9 +15,9 @@ import {
   AuthServiceStoreState,
   SignInState,
   SignInStates,
-  UserRolesMappings,
-  UserPermissionsMappings,
-  MappedPermission,
+  UsersHaveRolesRelation,
+  UsersHavePermissionGrantsRelation,
+  PermissionGrant,
   Role,
   Permission,
   UserPermission
@@ -62,7 +62,7 @@ export class UserListItemContainer {
   @Output() blur: EventEmitter<Event> = new EventEmitter<Event>(false)
 
   userRoles$: Observable<{[role_uid: string]: boolean}>
-  userPermissions$: Observable<ObjMap<MappedPermission>>
+  userPermissions$: Observable<ObjMap<PermissionGrant>>
 
 
   constructor(private _store: Store<AuthServiceStoreState>) {

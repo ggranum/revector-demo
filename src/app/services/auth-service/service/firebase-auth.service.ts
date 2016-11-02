@@ -1,8 +1,9 @@
 import {AngularFire, AngularFireAuth, FirebaseAuthState, AuthMethods, AuthProviders} from 'angularfire2'
 import {Injectable} from '@angular/core'
 import {Observable} from 'rxjs'
-import {AuthServiceCIF, UserAuthTokenIF, EmailPasswordCredentials} from './auth.service.interface'
-import {User} from '../interfaces'
+//noinspection TypeScriptPreferShortImport
+import {AuthServiceCIF, UserAuthTokenIF} from './auth.service.interface'
+import {User, EmailPasswordCredentials} from '../models'
 
 const defaultAuthConfig = {
   provider: AuthProviders.Password,

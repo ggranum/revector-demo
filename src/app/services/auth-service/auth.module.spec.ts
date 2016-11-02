@@ -2,7 +2,7 @@
 
 import {inject, TestBed} from '@angular/core/testing'
 import {Store} from '@ngrx/store'
-import {AuthServiceStoreState, SignInStates} from './interfaces'
+import {AuthServiceStoreState, SignInStates} from './models'
 
 // NG RX
 import {StoreModule} from '@ngrx/store'

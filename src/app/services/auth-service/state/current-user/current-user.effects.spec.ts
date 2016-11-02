@@ -8,11 +8,11 @@ import {StoreModule} from '@ngrx/store'
 
 // Dev modules
 import {AuthReducers} from '../../'
-import {AuthServiceStoreState, SignInStates} from '../../interfaces'
+import {AuthServiceStoreState, SignInStates} from '../../models'
 
 
 // Our Components
-import {CurrentUserActions} from '../../state/current-user/current-user.actions'
+import {CurrentUserActions} from '@revector/auth-service'
 
 let reducers = {
   auth: AuthReducers

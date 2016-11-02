@@ -13,7 +13,7 @@ import {
   UserRole,
   Permission,
   UserPermission,
-  MappedPermission
+  PermissionGrant
 } from '@revector/auth-service'
 import {ObjMap} from '@revector/shared'
 
@@ -31,7 +31,7 @@ export class UserListItemComponent {
   @Input() roles: Role[]
   @Input() userRoles: ObjMap<boolean> = {}
   @Input() permissions: Permission[]
-  @Input() userPermissions: ObjMap<MappedPermission> = {}
+  @Input() userPermissions: ObjMap<PermissionGrant> = {}
 
   @Input() showSelector: boolean = true
   @Input() selected: boolean = false
@@ -83,8 +83,8 @@ export class UserListItemComponent {
 
   doToggleRole(role: Role, enabled:boolean) {
     let userRole = {
-      role_name: role.$key,
-      user_uid: this.user.uid
+      user_uid: this.user.uid,
+      role_key: role.$key
     }
     if (enabled) {
       this.addUserRole.emit(userRole)
@@ -97,7 +97,7 @@ export class UserListItemComponent {
   doTogglePermission(permission: Permission, userPermission:UserPermission, event:Event) {
     if(!userPermission){
       userPermission = {
-        permission_name: permission.$key,
+        permission_key: permission.$key,
         user_uid: this.user.uid
       }
     }
