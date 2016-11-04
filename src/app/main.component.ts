@@ -7,7 +7,7 @@ import {Observable} from "rxjs";
 import {
   SignInState,
   User,
-  AuthServiceStoreState,
+  AuthStoreState,
   SignInStates,
   AuthServiceState,
   CurrentUserActions

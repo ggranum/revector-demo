@@ -8,7 +8,7 @@ import {StoreModule} from '@ngrx/store'
 
 // Dev modules
 import {AuthReducers} from '../../'
-import {AuthServiceStoreState, SignInStates} from '../../models'
+import {AuthStoreState, SignInStates} from '../../interfaces'
 
 
 // Our Components
@@ -31,7 +31,7 @@ describe('Auth-services.current-user.effects', () => {
   })
 
   it('on "signIn.invoke", something something.',
-    inject([Store], (_store: Store<AuthServiceStoreState>) => {
+    inject([Store], (_store: Store<AuthStoreState>) => {
 
 
       }

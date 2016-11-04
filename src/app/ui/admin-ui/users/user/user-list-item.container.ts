@@ -12,7 +12,7 @@ import {
   UserActions,
   User,
   UserRole,
-  AuthServiceStoreState,
+  AuthStoreState,
   SignInState,
   SignInStates,
   UsersHaveRolesRelation,
@@ -65,14 +65,14 @@ export class UserListItemContainer {
   userPermissions$: Observable<ObjMap<PermissionGrant>>
 
 
-  constructor(private _store: Store<AuthServiceStoreState>) {
-    _store.select((s: AuthServiceStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
+  constructor(private _store: Store<AuthStoreState>) {
+    _store.select((s: AuthStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
 
-    this.userRoles$ = _store.select((s: AuthServiceStoreState) => {
+    this.userRoles$ = _store.select((s: AuthStoreState) => {
       return s.auth.user_roles ? s.auth.user_roles[this.user.uid] || {} : {}
     })
 
-    this.userPermissions$ = _store.select((s: AuthServiceStoreState) => {
+    this.userPermissions$ = _store.select((s: AuthStoreState) => {
       return s.auth.user_permissions ? s.auth.user_permissions[this.user.uid] || {} : {}
     })
   }

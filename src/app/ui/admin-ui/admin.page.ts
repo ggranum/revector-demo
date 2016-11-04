@@ -8,7 +8,7 @@ import {
   Router,
   ActivatedRoute
 } from "@angular/router";
-import {AuthServiceStoreState} from "@revector/auth-service";
+import {AuthStoreState} from "@revector/auth-service";
 import {Store} from "@ngrx/store";
 
 @Component({
@@ -41,7 +41,7 @@ import {Store} from "@ngrx/store";
 export class AdminPage {
 
 
-  constructor(private route: ActivatedRoute, private router: Router, private _store: Store<AuthServiceStoreState>) {
+  constructor(private route: ActivatedRoute, private router: Router, private _store: Store<AuthStoreState>) {
   }
 
 

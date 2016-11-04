@@ -1,5 +1,5 @@
 import {Observable} from 'rxjs'
-import {User, EmailPasswordCredentials} from '../models'
+import {User, EmailPasswordCredentials} from '../interfaces'
 
 export interface UserAuthTokenIF {
   uid: string;
@@ -8,7 +8,12 @@ export interface UserAuthTokenIF {
   anonymous?: boolean;
 }
 
-export abstract class AuthServiceCIF {
+
+/**
+ * CIF ==> Class-based-interface. Typescript allows implementing (instead of extending) classes. See use in
+ * FirebaseAuthService
+ */
+export abstract class RemoteAuthServiceCIF {
   globalEventObserver: () => Observable<UserAuthTokenIF>
   requestSignIn: (action: EmailPasswordCredentials) => Observable<User>
   requestSignUp: (action: EmailPasswordCredentials) => Observable<User>;

@@ -1,5 +1,5 @@
 import {ActionReducerSet} from '@revector/shared'
-import {AuthServiceState, SignInStates} from '../models'
+import {AuthServiceState, SignInStates} from '../interfaces'
 import {userReducers} from './user/user.state'
 //noinspection TypeScriptPreferShortImport
 import {currentUserReducers} from './current-user/current-user.state'

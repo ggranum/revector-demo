@@ -1,25 +1,17 @@
 /* tslint:disable:no-unused-variable */
-
-import {inject, TestBed} from '@angular/core/testing'
-import {Store} from '@ngrx/store'
-import {AuthServiceStoreState, SignInStates} from './models'
-
+import { TestBed } from "@angular/core/testing";
 // NG RX
-import {StoreModule} from '@ngrx/store'
-
+import { StoreModule } from "@ngrx/store";
 // Dev modules
-import {AuthReducers} from './'
-
-
+import { AuthReducers } from "./";
 // Our Components
-import {CurrentUserActions} from './state/current-user/current-user.actions';
 
 let reducers = {
   auth: AuthReducers
 }
 
 
-describe('Auth-services.state.current-user', () => {
+describe('Auth-services.state.module', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [],

@@ -1,4 +1,4 @@
-import {User, UserRole, UsersHaveRolesRelation, UsersHavePermissionGrantsRelation, UserPermission} from '../../models'
+import {User, UserRole, UsersHaveRolesRelation, UsersHavePermissionGrantsRelation, UserPermission} from '../../interfaces'
 import {
   ActionDefinition,
   InvokableActionSet,

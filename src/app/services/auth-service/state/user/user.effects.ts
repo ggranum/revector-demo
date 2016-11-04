@@ -5,14 +5,14 @@ import {Actions, Effect} from '@ngrx/effects'
 import {Observable} from 'rxjs'
 import {UserActions} from './user.actions'
 import {
-  AuthServiceStoreState,
+  AuthStoreState,
   User,
   UserRole,
   UsersHaveRolesRelation,
   UserPermission,
   UsersHavePermissionGrantsRelation,
   PermissionGrant
-} from '../../models'
+} from '../../interfaces'
 import {TypedAction, cleanFirebaseMap, ObjMap} from '@revector/shared'
 
 
@@ -71,7 +71,7 @@ export class UserEffects implements OnDestroy {
     .ofType(UserActions.revokePermissionFromUser.invoke.type)
     .switchMap((action: TypedAction<UserPermission>) => this.revokePermission(action.payload))
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {
+  constructor(private actions$: Actions, public store: Store<AuthStoreState>, public firebase: AngularFire) {
   }
 
   mappedPermissionToFirebase(value: PermissionGrant): PermissionGrant {
@@ -194,7 +194,7 @@ export class UserEffects implements OnDestroy {
 
   grantPermission(userPermission: UserPermission) {
     let fbValue: PermissionGrant
-    this.store.select((s: AuthServiceStoreState) => s.auth.user_permissions[userPermission.user_uid])
+    this.store.select((s: AuthStoreState) => s.auth.user_permissions[userPermission.user_uid])
       .subscribe((userPermissions: ObjMap<PermissionGrant>) => {
         let current: PermissionGrant = userPermissions[userPermission.permission_key]
         debugger
@@ -216,7 +216,7 @@ export class UserEffects implements OnDestroy {
 
   revokePermission(userPermission: UserPermission) {
     let fbValue: PermissionGrant
-    this.store.select((s: AuthServiceStoreState) => s.auth.user_permissions[userPermission.user_uid])
+    this.store.select((s: AuthStoreState) => s.auth.user_permissions[userPermission.user_uid])
       .subscribe((userPermissions: ObjMap<PermissionGrant>) => {
         let current: PermissionGrant = userPermissions[userPermission.permission_key]
         fbValue = this.mappedPermissionToFirebase(current) || {

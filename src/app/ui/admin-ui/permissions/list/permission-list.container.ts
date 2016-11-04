@@ -4,7 +4,7 @@ import {Store} from '@ngrx/store'
 import {
   PermissionActions,
   Permission,
-  AuthServiceStoreState,
+  AuthStoreState,
   SignInState,
   SignInStates
 } from '@revector/auth-service'
@@ -29,12 +29,12 @@ export class PermissionListContainer {
 
   permissions$: Observable<ObjMap<Permission>>
 
-  constructor(private _store: Store<AuthServiceStoreState>) {
-    _store.select((s: AuthServiceStoreState) => {
+  constructor(private _store: Store<AuthStoreState>) {
+    _store.select((s: AuthStoreState) => {
       return s.auth.transient.signInState
     }).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
 
-    this.permissions$ = _store.select((s: AuthServiceStoreState) => s.auth.permissions)
+    this.permissions$ = _store.select((s: AuthStoreState) => s.auth.permissions)
   }
 
   onSignedIn(value: SignInState) {

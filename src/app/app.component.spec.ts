@@ -1,20 +1,42 @@
 /* tslint:disable:no-unused-variable */
-
-import {inject, TestBed} from '@angular/core/testing';
-import {MainComponent} from './main.component';
-
-describe('App: ReVectorDemo', () => {
-  beforeEach(() => {
-    TestBed.configureCompiler({providers: [MainComponent]});
-  });
-
-  it('should create the app',
-    inject([MainComponent], (app: MainComponent) => {
-      expect(app).toBeTruthy();
-    }));
-
-  it('should have as title \'ReVector Demo\'',
-    inject([MainComponent], (app: MainComponent) => {
-      expect(app.title).toEqual('ReVector Demo');
-    }));
-});
+//
+// import {
+//   TestBed,
+//   async
+// } from '@angular/core/testing';
+// import {APP_BASE_HREF} from '@angular/common';
+// import { AppComponent } from './app.component';
+// import { AppModule } from "./app.module";
+//
+// describe('App: RevectorDemo', () => {
+//
+//   beforeEach(() => {
+//     TestBed.configureTestingModule({
+//       declarations: [
+//       ],
+//       imports: [
+//         AppModule,
+//       ],
+//       providers: [{provide: APP_BASE_HREF, useValue : '/' }]
+//     });
+//   });
+//
+//   it('should create the app', async(() => {
+//     let fixture = TestBed.createComponent(AppComponent);
+//     let app = fixture.debugElement.componentInstance;
+//     expect(app).toBeTruthy();
+//   }));
+//
+//   it(`should have as title 'Revector Demo'`, async(() => {
+//     let fixture = TestBed.createComponent(AppComponent);
+//     let app = fixture.debugElement.componentInstance;
+//     expect(app.title).toEqual('Revector Demo');
+//   }));
+//
+//   it('should render title in a h1 tag', async(() => {
+//     let fixture = TestBed.createComponent(AppComponent);
+//     fixture.detectChanges();
+//     let compiled = fixture.debugElement.nativeElement;
+//     expect(compiled.querySelector('h1').textContent).toContain('Revector Demo');
+//   }));
+// });

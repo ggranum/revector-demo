@@ -4,10 +4,10 @@ import {
 } from '@angular/core'
 import {Store} from '@ngrx/store'
 import {
-  AuthServiceStoreState,
+  AuthStoreState,
   Permission,
   PermissionGrant
-} from '../../models'
+} from '../../interfaces'
 import {
   Actions,
   Effect
@@ -47,7 +47,7 @@ export class PermissionEffects implements OnDestroy {
     .ofType(PermissionActions.removePermission.invoke.type)
     .switchMap((action: TypedAction<Permission>) => this.removePermission(action.payload))
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {
+  constructor(private actions$: Actions, public store: Store<AuthStoreState>, public firebase: AngularFire) {
   }
 
   toFirebaseValue(value: Permission): Permission {
@@ -71,6 +71,7 @@ export class PermissionEffects implements OnDestroy {
   }
 
   addPermission(permission: Permission) {
+    console.log('PermissionEffects', 'addPermission')
     let fireValue = this.toFirebaseValue(permission)
     let fbPermission = this.firebase.database.object(`${this._fbRoot}/permissions/${permission.$key}`)
 

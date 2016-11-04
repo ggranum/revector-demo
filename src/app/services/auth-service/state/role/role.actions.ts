@@ -1,4 +1,4 @@
-import {Role, RolePermission, RoleHasPermissionGrantsRelation} from '../../models'
+import {Role, RolePermission, RolesHavePermissionGrantsRelation} from '../../interfaces'
 import {
   ActionDefinition,
   InvokableActionSet,
@@ -15,9 +15,9 @@ export interface RoleActionsIF {
   addRole: InvokableActionSet<ObjMap<Role>, Role, Role>
   updateRole: InvokableActionSet<ObjMap<Role>, Update<Role>, Update<Role>>
   removeRole: InvokableActionSet<ObjMap<Role>, Role, Role>
-  getRolePermissions: InvokableActionSet<RoleHasPermissionGrantsRelation, void, RoleHasPermissionGrantsRelation>
-  grantPermissionToRole: InvokableActionSet<RoleHasPermissionGrantsRelation, RolePermission, RolePermission>
-  revokePermissionFromRole: InvokableActionSet<RoleHasPermissionGrantsRelation, RolePermission, RolePermission>
+  getRolePermissions: InvokableActionSet<RolesHavePermissionGrantsRelation, void, RolesHavePermissionGrantsRelation>
+  grantPermissionToRole: InvokableActionSet<RolesHavePermissionGrantsRelation, RolePermission, RolePermission>
+  revokePermissionFromRole: InvokableActionSet<RolesHavePermissionGrantsRelation, RolePermission, RolePermission>
 }
 
 export let RoleActions: RoleActionsIF = {
@@ -26,10 +26,10 @@ export let RoleActions: RoleActionsIF = {
   addRole: invokableActionSet<ObjMap<Role>, Role, Role>(ROLE_PREFIX + 'Add Role'),
   updateRole: invokableActionSet<ObjMap<Role>, Update<Role>, Update<Role>>(ROLE_PREFIX + 'Update Role'),
   removeRole: invokableActionSet<ObjMap<Role>, Role, Role>(ROLE_PREFIX + 'Remove Role'),
-  getRolePermissions: invokableActionSet<RoleHasPermissionGrantsRelation, void, RoleHasPermissionGrantsRelation>(
+  getRolePermissions: invokableActionSet<RolesHavePermissionGrantsRelation, void, RolesHavePermissionGrantsRelation>(
     ROLE_PREFIX + 'Get role permissions'),
-  grantPermissionToRole: invokableActionSet<RoleHasPermissionGrantsRelation, RolePermission, RolePermission>(
+  grantPermissionToRole: invokableActionSet<RolesHavePermissionGrantsRelation, RolePermission, RolePermission>(
     ROLE_PREFIX + 'Grant permission to Role'),
-  revokePermissionFromRole: invokableActionSet<RoleHasPermissionGrantsRelation, RolePermission, RolePermission>(
+  revokePermissionFromRole: invokableActionSet<RolesHavePermissionGrantsRelation, RolePermission, RolePermission>(
     ROLE_PREFIX + 'Revoke permission from Role'),
 }

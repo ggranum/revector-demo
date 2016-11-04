@@ -1,4 +1,4 @@
-import {Role, AuthServiceState, RoleHasPermissionGrantsRelation, RolePermission} from '../../models'
+import {Role, AuthServiceState, RolesHavePermissionGrantsRelation, RolePermission} from '../../interfaces'
 import {RoleActions} from './role.actions'
 import {
   TypedAction,
@@ -59,10 +59,10 @@ roleReducers.registerMapped(RoleActions.removeRole.fulfilled,
 
 
 const ROLE_PERMISSION_MAPPING = {
-  toMapped: (state: AuthServiceState): RoleHasPermissionGrantsRelation => {
+  toMapped: (state: AuthServiceState): RolesHavePermissionGrantsRelation => {
     return state.role_permissions
   },
-  fromMapped: (state: AuthServiceState, mapped: RoleHasPermissionGrantsRelation): AuthServiceState => {
+  fromMapped: (state: AuthServiceState, mapped: RolesHavePermissionGrantsRelation): AuthServiceState => {
     state.role_permissions = mapped
     return state
   },
@@ -71,14 +71,14 @@ const ROLE_PERMISSION_MAPPING = {
 roleReducers.register(RoleActions.getRolePermissions.invoke)
 roleReducers.registerMapped(RoleActions.getRolePermissions.fulfilled,
   ROLE_PERMISSION_MAPPING,
-  (state: RoleHasPermissionGrantsRelation, action: TypedAction<RoleHasPermissionGrantsRelation>) => {
+  (state: RolesHavePermissionGrantsRelation, action: TypedAction<RolesHavePermissionGrantsRelation>) => {
     return action.payload
   })
 roleReducers.registerError(RoleActions.getRolePermissions.failed)
 
 roleReducers.registerMapped(RoleActions.grantPermissionToRole.invoke,
   ROLE_PERMISSION_MAPPING,
-  (state: RoleHasPermissionGrantsRelation, action: TypedAction<RolePermission>) => {
+  (state: RolesHavePermissionGrantsRelation, action: TypedAction<RolePermission>) => {
     let newState = state
     let roleId = action.payload.role_key
     let permissionId = action.payload.permission_key
@@ -104,7 +104,7 @@ roleReducers.registerError(RoleActions.grantPermissionToRole.failed)
 
 roleReducers.registerMapped(RoleActions.revokePermissionFromRole.invoke,
   ROLE_PERMISSION_MAPPING,
-  (state: RoleHasPermissionGrantsRelation, action: TypedAction<RolePermission>) => {
+  (state: RolesHavePermissionGrantsRelation, action: TypedAction<RolePermission>) => {
     let newState = state
     let roleId = action.payload.role_key
     let permissionId = action.payload.permission_key

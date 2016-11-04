@@ -1,7 +1,7 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core'
 import {safe} from "@revector/shared";
 import {
-  AuthServiceStoreState,
+  AuthStoreState,
   User,
   SignInState
 } from "@revector/auth-service";
@@ -20,8 +20,8 @@ export class MainContainer
   signInState$: Observable<SignInState>
   user$: Observable<User>
 
-  constructor(private _store: Store<AuthServiceStoreState>) {
-    this.signInState$ = _store.select((s: AuthServiceStoreState) => safe(() =>  s.auth.transient.signInState))
-    this.user$ = _store.select((s: AuthServiceStoreState) => safe(() => s.auth.transient.currentUser))
+  constructor(private _store: Store<AuthStoreState>) {
+    this.signInState$ = _store.select((s: AuthStoreState) => safe(() =>  s.auth.transient.signInState))
+    this.user$ = _store.select((s: AuthStoreState) => safe(() => s.auth.transient.currentUser))
   }
 }

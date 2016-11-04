@@ -12,16 +12,16 @@ import {
 import {TypedAction} from '@revector/shared'
 //noinspection TypeScriptPreferShortImport
 import {
-  AuthServiceCIF,
+  RemoteAuthServiceCIF,
   UserAuthTokenIF
-} from '../../service/auth.service.interface'
+} from '../../service/remote-auth.service.interface'
 import {
-  AuthServiceStoreState,
+  AuthStoreState,
   SignInStates,
   AuthServiceState,
   User,
   EmailPasswordCredentials
-} from '../../models'
+} from '../../interfaces'
 import {CurrentUserActions} from './current-user.actions'
 
 
@@ -34,7 +34,6 @@ export class CurrentUserEffects implements OnDestroy {
   @Effect() requestSignIn$ = this.actions$
     .ofType(CurrentUserActions.signIn.invoke.type)
     .switchMap((action: TypedAction<EmailPasswordCredentials>) => this.requestSignIn(action.payload))
-
 
   // noinspection JSUnusedGlobalSymbols
   @Effect() requestSignOut$ = this.actions$
@@ -51,12 +50,12 @@ export class CurrentUserEffects implements OnDestroy {
     .ofType(CurrentUserActions.signUp.fulfilled.type)
     .switchMap((action: TypedAction<User>) => this.requestSignUpFulfilled(action.payload))
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public authService: AuthServiceCIF) {
+  constructor(private actions$: Actions, public store: Store<AuthStoreState>, public authService: RemoteAuthServiceCIF) {
     authService.globalEventObserver().subscribe((authState: UserAuthTokenIF) => {
       this.globalAuthEventHandler(authState)
     })
 
-    store.select((s: AuthServiceStoreState) => s.auth).subscribe((s: AuthServiceState) => this.appState = s, this.onError)
+    store.select((s: AuthStoreState) => s.auth).subscribe((s: AuthServiceState) => this.appState = s, this.onError)
   }
 
   onError(e: Error): void {

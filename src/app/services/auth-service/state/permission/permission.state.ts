@@ -1,4 +1,4 @@
-import {Permission, AuthServiceState} from '../../models'
+import {Permission, AuthServiceState} from '../../interfaces'
 import {PermissionActions} from './permission.actions'
 import {
   Update,
@@ -20,13 +20,27 @@ const MAPPING = {
   },
 }
 
+/**
+ * getPermissions.invoke: Permissions don't changes on invoke
+ * @todo ggranum: add a transient 'loadingPermissions' flag.
+ */
 permissionReducers.register(PermissionActions.getPermissions.invoke)
+
+
+/**
+ * getPermissions.fulfilled: Value(s) has returned from the service (made from 'permission.effects.ts', in this case)
+ */
 permissionReducers.registerMapped(PermissionActions.getPermissions.fulfilled,
   MAPPING,
   (state: ObjMap<Permission>, action: TypedAction<ObjMap<Permission>>) => {
     state = Object.assign({}, action.payload)
     return state
   })
+
+/**
+ * getPermissions.failed: Request failed
+ * @todo ggranum: Implement error handling.
+ */
 permissionReducers.register(PermissionActions.getPermissions.failed)
 
 
@@ -38,6 +52,7 @@ permissionReducers.registerMapped(PermissionActions.addPermission.invoke,
     newState[permission.$key] = permission
     return newState
   })
+
 
 permissionReducers.registerMapped(PermissionActions.addPermission.fulfilled,
   MAPPING,

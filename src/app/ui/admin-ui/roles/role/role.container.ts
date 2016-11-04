@@ -4,10 +4,10 @@ import {Store} from '@ngrx/store'
 import {
   RoleActions,
   Role,
-  AuthServiceStoreState,
+  AuthStoreState,
   SignInState,
   SignInStates,
-  RoleHasPermissionGrantsRelation,
+  RolesHavePermissionGrantsRelation,
   PermissionGrant,
   Permission,
   RolePermission,
@@ -46,10 +46,10 @@ export class RoleContainer {
 
   rolePermissions$: Observable<ObjMap<PermissionGrant>>
 
-  constructor(private _store: Store<AuthServiceStoreState>) {
-    _store.select((s: AuthServiceStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
+  constructor(private _store: Store<AuthStoreState>) {
+    _store.select((s: AuthStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
 
-    let allRolePermissions$: Observable<RoleHasPermissionGrantsRelation> = _store.select((s: AuthServiceStoreState) => {
+    let allRolePermissions$: Observable<RolesHavePermissionGrantsRelation> = _store.select((s: AuthStoreState) => {
       return s.auth.role_permissions
     })
 

@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {AuthServiceStoreState, SignInStates, SignInState, CurrentUserActions} from '@revector/auth-service';
+import {AuthStoreState, SignInStates, SignInState, CurrentUserActions} from '@revector/auth-service';
 
 
 @Component({
@@ -24,7 +24,7 @@ export class InlineLoginFormComponent {
   loginButtonLabel: string = "Sign In"
   signupButtonLabel: string = "Sign Up"
 
-  constructor(private _store: Store<AuthServiceStoreState>) {
+  constructor(private _store: Store<AuthStoreState>) {
   }
 
   isSignedOut(signInState: SignInState) {

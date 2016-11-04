@@ -1,9 +1,4 @@
-export * from './models/'
-export {UserAuthTokenIF} from './service'
+export * from './interfaces/'
 export * from './state'
+export {UserAuthTokenIF} from './service'
 export {AuthModule} from './auth.module'
-
-
-
-
-

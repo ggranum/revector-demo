@@ -2,8 +2,8 @@ import {AngularFire, AngularFireAuth, FirebaseAuthState, AuthMethods, AuthProvid
 import {Injectable} from '@angular/core'
 import {Observable} from 'rxjs'
 //noinspection TypeScriptPreferShortImport
-import {AuthServiceCIF, UserAuthTokenIF} from './auth.service.interface'
-import {User, EmailPasswordCredentials} from '../models'
+import {RemoteAuthServiceCIF, UserAuthTokenIF} from './remote-auth.service.interface'
+import {User, EmailPasswordCredentials} from '../interfaces'
 
 const defaultAuthConfig = {
   provider: AuthProviders.Password,
@@ -11,7 +11,7 @@ const defaultAuthConfig = {
 }
 
 @Injectable()
-export class FirebaseAuthService implements AuthServiceCIF {
+export class FirebaseAuthService implements RemoteAuthServiceCIF {
 
   private _auth: AngularFireAuth
   private _fbRoot: string = '/auth'

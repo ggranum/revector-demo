@@ -3,7 +3,7 @@
 
 module.exports = function (config) {
   config.set({
-    basePath: '..',
+    basePath: '',
     frameworks: ['jasmine', 'angular-cli'],
     plugins: [
       require('karma-jasmine'),
@@ -24,10 +24,12 @@ module.exports = function (config) {
       }
     },
     angularCli: {
-      config: 'angular-cli.json',
+      config: './angular-cli.json',
       environment: 'dev'
     },
-    reporters: ['progress', 'karma-remap-istanbul'],
+    reporters: config.angularCli && config.angularCli.codeCoverage
+              ? ['progress', 'karma-remap-istanbul']
+              : ['progress'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

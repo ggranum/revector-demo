@@ -7,7 +7,7 @@ export interface RolePermission {
   permission_key: string
 }
 
-export interface RoleHasPermissionGrantsRelation {
+export interface RolesHavePermissionGrantsRelation {
   [role_key: string]: {
     [permission_key: string]: PermissionGrant
   }
@@ -18,8 +18,8 @@ export interface RoleHasPermissionGrantsRelation {
  * permission checking can base 'has permission' checks on a simple existence check against the one data structure.
  */
 export interface RolePermissions {
-  grants: RoleHasPermissionGrantsRelation,
-  revocations: RoleHasPermissionGrantsRelation
+  grants: RolesHavePermissionGrantsRelation,
+  revocations: RolesHavePermissionGrantsRelation
 }
 
 

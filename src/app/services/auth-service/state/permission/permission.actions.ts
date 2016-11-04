@@ -1,4 +1,4 @@
-import {Permission} from '../../models'
+import {Permission} from '../../interfaces'
 import {
   ActionDefinition,
   InvokableActionSet,

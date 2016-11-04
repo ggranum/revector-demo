@@ -1,9 +1,11 @@
 import {NgModule, SkipSelf, Optional} from '@angular/core'
 import {CommonModule} from '@angular/common'
-import {CurrentUserEffects, RoleEffects, PermissionEffects} from './state/index'
-import {AuthServiceCIF, FirebaseAuthService} from './service/index'
+import {CurrentUserEffects, UserEffects, RoleEffects, PermissionEffects} from './state/'
+import {RemoteAuthServiceCIF, FirebaseAuthService} from './service/'
 
-
+/**
+ * State management (including persistence) for Authentication and Authorization.
+ */
 @NgModule({
   declarations: [],
   imports: [
@@ -12,8 +14,9 @@ import {AuthServiceCIF, FirebaseAuthService} from './service/index'
   providers: [
     CurrentUserEffects,
     RoleEffects,
+    UserEffects,
     PermissionEffects,
-    {provide: AuthServiceCIF, useClass: FirebaseAuthService},
+    {provide: RemoteAuthServiceCIF, useClass: FirebaseAuthService},
   ],
   exports: []
 })

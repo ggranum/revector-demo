@@ -5,7 +5,7 @@ import {
   RoleActions,
   Role,
   Permission,
-  AuthServiceStoreState,
+  AuthStoreState,
   SignInState,
   SignInStates
 } from '@revector/auth-service'
@@ -32,11 +32,11 @@ export class RoleListContainer {
   roles$: Observable<ObjMap<Role>>
   permissions$: Observable<ObjMap<Permission>>
 
-  constructor(private _store: Store<AuthServiceStoreState>) {
-    _store.select((s: AuthServiceStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
+  constructor(private _store: Store<AuthStoreState>) {
+    _store.select((s: AuthStoreState) => s.auth.transient.signInState).subscribe((v) => this.onSignedIn(v), (e) => this.onError(e))
 
-    this.roles$ = _store.select((s: AuthServiceStoreState) => s.auth.roles)
-    this.permissions$ = _store.select((s: AuthServiceStoreState) => s.auth.permissions)
+    this.roles$ = _store.select((s: AuthStoreState) => s.auth.roles)
+    this.permissions$ = _store.select((s: AuthStoreState) => s.auth.permissions)
   }
 
   onSignedIn(value: SignInState) {

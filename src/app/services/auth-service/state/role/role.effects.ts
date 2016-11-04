@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store'
 import {Actions, Effect} from '@ngrx/effects'
 import {AngularFire} from 'angularfire2'
 import {Observable} from 'rxjs'
-import {AuthServiceStoreState, Role, RolePermission, PermissionGrant, RoleHasPermissionGrantsRelation} from '../../models'
+import {AuthStoreState, Role, RolePermission, PermissionGrant, RolesHavePermissionGrantsRelation} from '../../interfaces'
 import {RoleActions} from './role.actions'
 import {ObjMap, TypedAction, cleanFirebaseMap, Update} from '@revector/shared'
 
@@ -36,7 +36,7 @@ export class RoleEffects implements OnDestroy {
   // noinspection JSUnusedGlobalSymbols
   @Effect() getRolePermissions$ = this.actions$
     .ofType(RoleActions.getRolePermissions.invoke.type)
-    .switchMap((action: TypedAction<RoleHasPermissionGrantsRelation>) => this.getRolePermissions())
+    .switchMap((action: TypedAction<RolesHavePermissionGrantsRelation>) => this.getRolePermissions())
 
   // noinspection JSUnusedGlobalSymbols
   @Effect() grantPermission$ = this.actions$
@@ -48,7 +48,7 @@ export class RoleEffects implements OnDestroy {
     .ofType(RoleActions.revokePermissionFromRole.invoke.type)
     .switchMap((action: TypedAction<RolePermission>) => this.revokePermission(action.payload))
 
-  constructor(private actions$: Actions, public store: Store<AuthServiceStoreState>, public firebase: AngularFire) {  }
+  constructor(private actions$: Actions, public store: Store<AuthStoreState>, public firebase: AngularFire) {  }
 
   toFirebaseValue(value: Role): Role {
     return Object.assign({}, value)
@@ -139,7 +139,7 @@ export class RoleEffects implements OnDestroy {
 
   grantPermission(rolePermission: RolePermission) {
     let fireValue: PermissionGrant
-    this.store.select((s: AuthServiceStoreState) => s.auth.role_permissions[rolePermission.role_key])
+    this.store.select((s: AuthStoreState) => s.auth.role_permissions[rolePermission.role_key])
       .subscribe((rolePermissions: ObjMap<PermissionGrant>) => {
         let current: PermissionGrant = rolePermissions[rolePermission.permission_key]
         fireValue = this.mappedPermissionToFirebase(current)

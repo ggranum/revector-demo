@@ -10,7 +10,7 @@ import {
 } from "@angular/router";
 import {safe} from "@revector/shared";
 import {
-  AuthServiceStoreState,
+  AuthStoreState,
   User,
   SignInState,
   SignInStates
@@ -33,9 +33,9 @@ export class SignInPanelPage {
   signInState$: Observable<SignInState>
   user$: Observable<User>
 
-  constructor(private route: ActivatedRoute, private router: Router, private _store: Store<AuthServiceStoreState>) {
-    this.signInState$ = _store.select((s: AuthServiceStoreState) => safe(() => s.auth.transient.signInState))
-    this.user$ = _store.select((s: AuthServiceStoreState) => safe(() => s.auth.transient.currentUser))
+  constructor(private route: ActivatedRoute, private router: Router, private _store: Store<AuthStoreState>) {
+    this.signInState$ = _store.select((s: AuthStoreState) => safe(() => s.auth.transient.signInState))
+    this.user$ = _store.select((s: AuthStoreState) => safe(() => s.auth.transient.currentUser))
   }
 
 

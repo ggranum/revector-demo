@@ -8,11 +8,11 @@ import {StoreModule} from '@ngrx/store'
 
 // Dev modules
 import {AuthReducers} from '../../'
-import {AuthServiceStoreState, SignInStates, User} from '../../models'
+import {AuthStoreState, SignInStates, User} from '../../interfaces'
 
 
 // Our Components
-import {CurrentUserActions} from '../../state/current-user/current-user.actions'
+import {CurrentUserActions} from './current-user.actions'
 
 let reducers = {
   auth: AuthReducers
@@ -30,11 +30,11 @@ describe('Auth-services.current-user.state', () => {
   })
 
   it('on "signIn.invoke", sets the signInState to unknown and clears user info',
-    inject([Store], (_store: Store<AuthServiceStoreState>) => {
+    inject([Store], (_store: Store<AuthStoreState>) => {
         let expectedState = SignInStates.unknown
-        let state: AuthServiceStoreState = null
+        let state: AuthStoreState = null
 
-        let subscription = _store.select((s: AuthServiceStoreState) => {
+        let subscription = _store.select((s: AuthStoreState) => {
           state = s;
           return s.auth.transient.signInState
         }).subscribe((v) => {
@@ -49,6 +49,9 @@ describe('Auth-services.current-user.state', () => {
           fail(e)
         })
 
+      /**
+       * need a way to tell the listener about what state we should be expecting - isn't asynchronous programming fun?
+       */
         let actionFn = () => {
           expectedState = SignInStates.signingIn
           return {
@@ -62,11 +65,11 @@ describe('Auth-services.current-user.state', () => {
     ));
 
   it('on "signIn.fulfilled", sets the signInState to "signedIn" and sets the current user to the payload',
-    inject([Store], (_store: Store<AuthServiceStoreState>) => {
+    inject([Store], (_store: Store<AuthStoreState>) => {
         let expectedState = SignInStates.unknown
         let userDisplayName = 'Test User'
-        let state: AuthServiceStoreState = null
-        let subscription = _store.select((s: AuthServiceStoreState) => {
+        let state: AuthStoreState = null
+        let subscription = _store.select((s: AuthStoreState) => {
           state = s;
           return s.auth.transient.signInState
         }).subscribe((v) => {
@@ -96,10 +99,10 @@ describe('Auth-services.current-user.state', () => {
 
 
   it('on "signUp.invoke", sets the signedInState to "signingUp" and clears user info',
-    inject([Store], (_store: Store<AuthServiceStoreState>) => {
+    inject([Store], (_store: Store<AuthStoreState>) => {
         let expectedState = SignInStates.unknown
-        let state: AuthServiceStoreState = null
-        let subscription = _store.select((s: AuthServiceStoreState) => {
+        let state: AuthStoreState = null
+        let subscription = _store.select((s: AuthStoreState) => {
           state = s;
           return s.auth.transient.signInState
         }).subscribe((v) => {
@@ -125,11 +128,11 @@ describe('Auth-services.current-user.state', () => {
     ));
 
   it('on "signUp.fulfilled", sets the signInState to "newAccount" and sets the current user to the payload',
-    inject([Store], (_store: Store<AuthServiceStoreState>) => {
+    inject([Store], (_store: Store<AuthStoreState>) => {
         let expectedState = SignInStates.unknown
         let userDisplayName = 'Test User'
-        let state: AuthServiceStoreState = null
-        let subscription = _store.select((s: AuthServiceStoreState) => {
+        let state: AuthStoreState = null
+        let subscription = _store.select((s: AuthStoreState) => {
           state = s;
           return s.auth.transient.signInState
         }).subscribe((v) => {
@@ -158,10 +161,10 @@ describe('Auth-services.current-user.state', () => {
     ));
 
   it('on "signOut.invoke", sets the signedInState to "signingOut" and clears user info',
-    inject([Store], (_store: Store<AuthServiceStoreState>) => {
+    inject([Store], (_store: Store<AuthStoreState>) => {
         let expectedState = SignInStates.unknown
-        let state: AuthServiceStoreState = null
-        let subscription = _store.select((s: AuthServiceStoreState) => {
+        let state: AuthStoreState = null
+        let subscription = _store.select((s: AuthStoreState) => {
           state = s;
           return s.auth.transient.signInState
         }).subscribe((v) => {
@@ -184,10 +187,10 @@ describe('Auth-services.current-user.state', () => {
     ));
 
   it('on "signOut.fulfilled", sets the signedInState to "signedOut" and user info is empty',
-    inject([Store], (_store: Store<AuthServiceStoreState>) => {
+    inject([Store], (_store: Store<AuthStoreState>) => {
         let expectedState = SignInStates.unknown
-        let state: AuthServiceStoreState = null
-        let subscription = _store.select((s: AuthServiceStoreState) => {
+        let state: AuthStoreState = null
+        let subscription = _store.select((s: AuthStoreState) => {
           state = s;
           return s.auth.transient.signInState
         }).subscribe((v) => {

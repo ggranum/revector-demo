@@ -1,9 +1,9 @@
 {
-  "name": "@revector/email-password-sign-in-panel",
-  "version": "0.0.1-alpha.5",
-  "description": "A horizontal sign-in / sign-up form that works with on @revector/auth-service",
-  "main": "./email-password-sign-in-panel.module.js",
-  "typings": "./email-password-sign-in-panel.module.d.ts",
+  "name": "@revector/sign-in-panel",
+  "version": "0.0.1-alpha.6",
+  "description": "A sign-up form that works with the @revector/auth-service",
+  "main": "./sign-in-panel.module.js",
+  "typings": "./sign-in-panel.module.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/ggranum/revector.git"
@@ -13,6 +13,7 @@
     "angular2",
     "components",
     "authentication",
+    "authorization",
     "auth",
     "firebase",
     "angularFire"
@@ -23,13 +24,10 @@
   },
   "homepage": "https://github.com/ggranum/revector#readme",
   "peerDependencies": {
-    "@angular/core": "2.0.0-rc.5",
-    "@angular/common": "2.0.0-rc.5",
-    "@angular/forms": "0.3.0",
-    "@angular2-material/button": "2.0.0-alpha.7-5",
-    "@angular2-material/checkbox": "2.0.0-alpha.7-5",
-    "@angular2-material/core": "2.0.0-alpha.7-5",
-    "@angular2-material/icon": "2.0.0-alpha.7-5",
-    "@angular2-material/input": "2.0.0-alpha.7-5"
+    "@angular/core": "~2.1.0",
+    "@angular/common": "~2.1.0",
+    "@angular/forms": "~2.1.0",
+    "@angular/platform-browser": "~2.1.0",
+    "@angular/material": "2.0.0-alpha.9-3"
   }
 }

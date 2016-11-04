@@ -1,6 +1,6 @@
 {
   "name": "@revector/inline-login-form",
-  "version": "0.0.1-alpha.5",
+  "version": "0.0.1-alpha.6",
   "description": "A horizontal login form that relies on @revector/auth-service",
   "main": "./inline-login-form.module.js",
   "typings": "./inline-login-form.module.d.ts",
@@ -13,6 +13,7 @@
     "angular2",
     "components",
     "authentication",
+    "authorization",
     "auth",
     "firebase",
     "angularFire"
@@ -23,13 +24,10 @@
   },
   "homepage": "https://github.com/ggranum/revector#readme",
   "peerDependencies": {
-    "@angular/core": "2.0.0-rc.5",
-    "@angular/common": "2.0.0-rc.5",
-    "@angular/forms": "0.3.0",
-    "@angular2-material/button": "2.0.0-alpha.7-5",
-    "@angular2-material/checkbox": "2.0.0-alpha.7-5",
-    "@angular2-material/core": "2.0.0-alpha.7-5",
-    "@angular2-material/icon": "2.0.0-alpha.7-5",
-    "@angular2-material/input": "2.0.0-alpha.7-5"
+    "@angular/core": "~2.1.0",
+    "@angular/common": "~2.1.0",
+    "@angular/forms": "~2.1.0",
+    "@angular/platform-browser": "~2.1.0",
+    "@angular/material": "2.0.0-alpha.9-3"
   }
 }

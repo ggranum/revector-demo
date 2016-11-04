@@ -56,6 +56,15 @@ let reducers = {
   auth: AuthReducers
 }
 
+// for unit tests; can't initialize firebase twice.
+let firebaseApp = null
+try {
+  firebaseApp = window['firebaseApp'] || AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig)
+  window['firebaseApp'] = firebaseApp
+} catch (e) {
+  console.log('error!', e)
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,7 +85,7 @@ let reducers = {
 
 
     /* Firebase Modules */
-    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
+    firebaseApp,
 
     /* NgRx */
     StoreModule.provideStore(reducers),

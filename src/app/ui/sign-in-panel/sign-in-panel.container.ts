@@ -11,7 +11,7 @@ import {Store} from '@ngrx/store'
 import {
   User,
   SignInState,
-  AuthServiceStoreState,
+  AuthStoreState,
   CurrentUserActions
 } from '@revector/auth-service'
 import {AuthInfo} from "./sign-in-panel.component";
@@ -41,8 +41,8 @@ export class SignInPanelContainer {
 
   user$: Observable<User>
 
-  constructor(private _store: Store<AuthServiceStoreState>) {
-    this.user$ = _store.select((s: AuthServiceStoreState) => safe(() => s.auth.transient.currentUser))
+  constructor(private _store: Store<AuthStoreState>) {
+    this.user$ = _store.select((s: AuthStoreState) => safe(() => s.auth.transient.currentUser))
   }
 
   onSignIn(authInfo: AuthInfo) {
