@@ -30,7 +30,6 @@ You can use this project as a quick-start / bootstrap for your own project. You 
 
 Or just download the https://github.com/ggranum/revector-demo/archive/master.zip[zip file] and expand it into the directory of your choice.
 
-[small]##(side note: while we're waiting on https://github.com/angular/angular-cli/issues/1465[angular/angular-cli issue 1465] this will mean having a lot of extra 3rd party code in your project)##
 
 === NPM Install
 

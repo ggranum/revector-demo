@@ -13,10 +13,6 @@ import { MaterialModule } from '@angular/material'
 
 // NG RX
 import {StoreDevtoolsModule} from '@ngrx/store-devtools'
-import {
-  StoreLogMonitorModule,
-  useLogMonitor
-} from '@ngrx/store-log-monitor'
 import {StoreModule} from '@ngrx/store'
 import {EffectsModule} from '@ngrx/effects';
 
@@ -30,8 +26,7 @@ import {
   PermissionEffects,
   UserEffects
 } from '@revector/auth-service'
-import {AdminUiModule} from "@revector/admin-ui";
-import {SimpleTopNavLoginModule} from '@revector/inline-login-form';
+import {AdminUiModule} from "@revector/ui-admin-console";
 import {SignInPanelModule} from '@revector/sign-in-panel';
 
 
@@ -77,7 +72,6 @@ try {
     AdminUiModule,
     RvAsciidoctorPanelModule,
     AuthModule,
-    SimpleTopNavLoginModule,
     SignInPanelModule,
     AppRoutingModule,
 

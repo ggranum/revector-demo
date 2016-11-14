@@ -5,13 +5,13 @@ import {
   RouterModule
 } from '@angular/router';
 
-import {RoleListContainer} from "@revector/admin-ui";
-import {PermissionListContainer} from "@revector/admin-ui";
+import {RoleListContainer} from "@revector/ui-admin-console";
+import {PermissionListContainer} from "@revector/ui-admin-console";
 import {
   SignInPanelDemo,
   SignInPanelPage
 } from "@revector/sign-in-panel";
-import {AdminPage, UserListItemDemo} from "@revector/admin-ui";
+import {AdminPage, UserListItemDemo} from "@revector/ui-admin-console";
 import {HomeComponent} from "./home.component";
 
 

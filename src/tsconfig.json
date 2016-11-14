@@ -19,27 +19,7 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@revector/auth-service": [
-        "./app/services/auth-service"
-      ],
-      "@revector/shared": [
-        "./app/shared"
-      ],
-      "@revector/admin-ui": [
-        "./app/ui/admin-ui"
-      ],
-      "@revector/inline-login-form": [
-        "./app/ui/inline-login-form"
-      ],
-      "@revector/sign-in-panel": [
-        "./app/ui/sign-in-panel"
-      ],
-      "@revector/asciidoctor-panel": [
-        "./app/ui/asciidoctor-panel"
-      ],
-      "@revector/drawer": [
-        "./app/ui/widgets/drawer"
-      ]
+
     }
   }
 }
